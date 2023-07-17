@@ -1,60 +1,118 @@
 import { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Container, Dropdown, Row } from 'react-bootstrap'
 
 function App() {
 
   return (
     <>
-      <Row className="mb-3">
-        <Col className="d-flex">
-        <Button className="d-flex align-middle align-items-center flashcard-button">
-          <span className="material-symbols-outlined">download</span>&nbsp;Save
-        </Button>
-        <Button className="d-flex align-middle align-items-center flashcard-button ms-1">
-          <span className="material-symbols-outlined">file_open</span>&nbsp;Open 
-            flashcards file...
-        </Button>
-        </Col>
-        <Col className="d-flex">
-        <Button className="d-flex align-middle align-items-center ms-auto flashcard-button">
-          <span className="material-symbols-outlined">settings</span>&nbsp;Settings
-        </Button>
-        </Col>
-      </Row>
-      
-      <Row>
-        <Col className="col-sm-auto d-flex align-items-center">
-          <Button className="material-symbols-outlined flashcard-round-button flashcard-button">
-            arrow_back
-          </Button>
-        </Col>
-        <Col className="col-sm-auto flashcard-display">
-          <div>
-            Flashcard Content
-          </div>
-        </Col>
-        <Col className="col-sm-auto d-flex align-items-center">
-          <Button className="material-symbols-outlined flashcard-round-button flashcard-button">
-            arrow_forward
-          </Button>
-        </Col>
-        <Col className="col-sm-auto ms-auto">
-            <Button className={"d-flex align-middle flashcard-button flashcard-menu-button mb-1"}>
-              <span className="material-symbols-outlined">add</span>&nbsp;Add...
+      <Container>
+        <Row>
+          <Col xs={{span: 4, order: 1}} md={{span: 2, order: 1}}>
+            <Dropdown>
+              <Dropdown.Toggle className="flashcard-button border-0">
+                File
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item className="d-flex align-items-center">
+                  <span className="material-symbols-outlined" aria-hidden="true">add</span> &nbsp;New Deck
+                </Dropdown.Item>
+                <Dropdown.Item className="d-flex align-items-center">
+                  <span className="material-symbols-outlined" aria-hidden="true">file_open</span> &nbsp;Open Deck...
+                </Dropdown.Item>
+                <Dropdown.Item className="d-flex align-items-center">
+                  <span className="material-symbols-outlined" aria-hidden="true">menu_open</span> &nbsp;Open Recent...
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item className="d-flex align-items-center">
+                  <span className="material-symbols-outlined" aria-hidden="true">close</span> &nbsp;Close Deck
+                </Dropdown.Item>
+                <Dropdown.Item className="d-flex align-items-center">
+                  <span className="material-symbols-outlined" aria-hidden="true">download</span> &nbsp;Save Deck As...
+                </Dropdown.Item>
+                <Dropdown.Item className="d-flex align-items-center">
+                  <span className="material-symbols-outlined" aria-hidden="true">title</span> &nbsp;Rename Deck...
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+          <Col className="d-flex align-items-center justify-content-center" xs={{span: 12, order: 4}} md={{span: 3, order: 2}}>
+            <span className="material-symbols-outlined" aria-hidden="true">add</span>
+            <span className="material-symbols-outlined" aria-hidden="true">edit</span>
+            <span className="material-symbols-outlined" aria-hidden="true">close</span>
+          </Col>
+
+          <Col xs={{span: 12, order: 3}} md={{span: 2, order: 3}} className="d-flex justify-content-center align-items-center">
+            Deck Name
+          </Col>
+
+          <Col xs={{span: 8, order: 2}} md={{span: 5, order: 4}} className="d-flex justify-content-end">
+            <Dropdown align="end">
+              <style>{`
+                #settingsToggle::after {
+                  display: none;
+                }
+
+                @media screen and (max-width: 576px) {
+                  .xs-full-width-dropdown {
+                    width: 100vw !important;
+                  }
+                }
+
+                @media screen and (min-width: 576px) {
+                  .xs-full-width-dropdown {
+                    min-width: max-content;
+                  }
+                }
+
+                
+              `}</style>
+              <Dropdown.Toggle id="settingsToggle" className="d-flex align-items-center flashcard-button border-0">
+                <span className="material-symbols-outlined" aria-hidden="true" aria-label="Settings">settings</span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="xs-full-width-dropdown">
+                <Dropdown.ItemText className="d-flex align-items-center">
+                  Deck Review Settings
+                </Dropdown.ItemText>
+                <Dropdown.Divider />
+
+                <Dropdown.ItemText className="d-flex align-items-center">
+                  Review order: 
+                  <Dropdown>
+                    <Dropdown.Toggle className="flashcard-button border-0">
+                      In order
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item>In order</Dropdown.Item>
+                      <Dropdown.Item>Reverse order</Dropdown.Item>
+                      <Dropdown.Item>Random</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Dropdown.ItemText>
+
+                <Dropdown.ItemText className="d-flex align-items-center">
+                  Show side of card:
+                  <Dropdown>
+                    <Dropdown.Toggle className="flashcard-button border-0">
+                      Front
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item>Front</Dropdown.Item>
+                      <Dropdown.Item>Back</Dropdown.Item>
+                      <Dropdown.Item>Random</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Dropdown.ItemText>
+              </Dropdown.Menu>
+            </Dropdown>
+            <Button>
+              Review
             </Button>
-            <Button className="d-flex align-middle flashcard-button flashcard-menu-button mb-1">
-              <span className="material-symbols-outlined">edit</span>&nbsp;Edit...
-            </Button>
-            <Button className="d-flex align-middle flashcard-button flashcard-menu-button mb-1">
-              <span className="material-symbols-outlined">delete</span>&nbsp;Delete...
-            </Button>
-            <Button className="d-flex align-middle flashcard-button flashcard-menu-button mb-1">
-              <span className="material-symbols-outlined">view_carousel</span>&nbsp;Review...
-            </Button>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </Container>
     </>
   )
 }
