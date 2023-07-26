@@ -3,70 +3,78 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import { Button, Col, Container, Dropdown, Row } from 'react-bootstrap'
 import CardDisplay from './card/card_display';
-import { Card } from './card/card';
-import CardLayout from './card/cardlayout'
-import CardContentType from './card/cardcontent';
+import { Card, EMPTY_CARD } from './card/card';
 import DisplayFrontProvider, { DisplayFrontProviderFunction } from './DisplayFrontProvider';
+import FileMenu from './FileMenu';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectDeck } from './deck';
+
+
 
 function App() {
 
-  const [cards, setCards] = useState<Card[]>([
-    {
-      frontFace: {
-        layout: CardLayout.ONE_BOX_BH_TWO_BOXES_TH,
-        box1: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 1f"
-          }
-        },
-        box2: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 2f"
-          }
-        },
-        box3: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 3f"
-          }
-        },
-        box4: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 4f"
-          }
-        }
-      },
-      backFace: {
-        layout: CardLayout.ONE_BOX,
-        box1: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 1b"
-          }
-        },
-        box2: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 2b"
-          }
-        },
-        box3: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 3b"
-          }
-        },
-        box4: {
-          type: CardContentType.TEXT,
-          content: {
-            text: "Test 4b"
-          }
-        }
-      }
-    }])
+  // const [cards, setCards] = useState<Card[]>([
+  //   {
+  //     frontFace: {
+  //       layout: CardLayout.ONE_BOX_BH_TWO_BOXES_TH,
+  //       box1: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 1f"
+  //         }
+  //       },
+  //       box2: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 2f"
+  //         }
+  //       },
+  //       box3: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 3f"
+  //         }
+  //       },
+  //       box4: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 4f"
+  //         }
+  //       }
+  //     },
+  //     backFace: {
+  //       layout: CardLayout.ONE_BOX,
+  //       box1: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 1b"
+  //         }
+  //       },
+  //       box2: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 2b"
+  //         }
+  //       },
+  //       box3: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 3b"
+  //         }
+  //       },
+  //       box4: {
+  //         type: CardContentType.TEXT,
+  //         content: {
+  //           text: "Test 4b"
+  //         }
+  //       }
+  //     }
+  //   }])
+
+  const deck = useSelector(selectDeck)
+    const dispatch = useDispatch()
+  
+
   const [currentCardIndex, setCurrentCardIndex] = useState<number>(0)
   const [displayFrontProvider, setDisplayFrontProvider] = useState<DisplayFrontProviderFunction>(() => DisplayFrontProvider.RANDOM)
 
@@ -75,33 +83,7 @@ function App() {
       <Container>
         <Row>
           <Col xs={{ span: 4, order: 1 }} md={{ span: 2, order: 1 }}>
-            <Dropdown>
-              <Dropdown.Toggle className="flashcard-button border-0">
-                File
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <span className="material-symbols-outlined" aria-hidden="true">add</span> &nbsp;New Deck
-                </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <span className="material-symbols-outlined" aria-hidden="true">file_open</span> &nbsp;Open Deck...
-                </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <span className="material-symbols-outlined" aria-hidden="true">menu_open</span> &nbsp;Open Recent...
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Item className="d-flex align-items-center">
-                  <span className="material-symbols-outlined" aria-hidden="true">close</span> &nbsp;Close Deck
-                </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <span className="material-symbols-outlined" aria-hidden="true">download</span> &nbsp;Save Deck As...
-                </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <span className="material-symbols-outlined" aria-hidden="true">title</span> &nbsp;Rename Deck...
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <FileMenu />
           </Col>
           <Col className="d-flex align-items-center justify-content-center" xs={{ span: 12, order: 4 }} md={{ span: 3, order: 2 }}>
             <span className="material-symbols-outlined" aria-hidden="true">add</span>
@@ -186,7 +168,9 @@ function App() {
             </Button>
           </Col>
           <Col xs={{ span: 12, order: 1 }} md={{ span: 10, order: 2 }}>
-            {currentCardIndex >= 0 ? <CardDisplay card={cards[currentCardIndex]} displayFront={displayFrontProvider} /> : ""}
+            {currentCardIndex >= 0 ? <CardDisplay card={deck && deck.currentVersion >= 0 && deck.versions[deck.currentVersion].cards.length > 0 ? 
+            deck.versions[deck.currentVersion].cards[currentCardIndex] : EMPTY_CARD} 
+            displayFront={displayFrontProvider} /> : ""}
           </Col>
           <Col xs={{ span: 6, order: 3 }} md={{ span: 1, order: 3 }} className="d-flex align-items-center">
             <Button className="d-flex align-items-center flashcard-button flashcard-round-button">

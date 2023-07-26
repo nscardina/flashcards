@@ -1,10 +1,20 @@
 import { Col, Container, Row } from "react-bootstrap"
 import { DisplayFrontProviderFunction } from "../DisplayFrontProvider"
-import { Card } from "./card"
+import { Card, EMPTY_CARD } from "./card"
 import CardLayout from "./cardlayout"
 import CardContentType, { CardContentTypeImage, CardContentTypeText, CardContentTypeVideoLink } from "./cardcontent"
+import { useSelector } from "react-redux"
+import { selectDeck } from "../deck"
 
 function CardDisplay({card, displayFront}: {card: Card, displayFront: DisplayFrontProviderFunction}) {
+
+    const deck = useSelector(selectDeck)
+
+    if (card === EMPTY_CARD && !deck) {
+        return (<div className="flashcard-display d-flex align-items-center justify-content-center">
+            No deck opened. Click here to open a deck file...
+        </div>)
+    }
 
     const face = displayFront() ? card.frontFace : card.backFace
 
