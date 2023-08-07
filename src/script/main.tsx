@@ -4,11 +4,11 @@ import App from './App.tsx'
 import '../index.css'
 import 'material-symbols'
 import { Provider } from 'react-redux'
-import { deckStore } from './deck.js'
+import { appStore } from './state/Store.ts'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider store={deckStore}>
+    <Provider store={appStore}>
       <App /> 
     </Provider>
   </React.StrictMode>,
