@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import AppMode from "./app/AppMode";
-import { addCard, setAppMode } from "./state/Store";
-import { useDispatch } from "react-redux";
+import { addCard, selectDeck, setAppMode } from "./state/Store";
+import { useDispatch, useSelector } from "react-redux";
 
 export type ButtonPropsType = {
   onClick: (event: React.MouseEvent | React.KeyboardEvent) => void
@@ -23,10 +23,15 @@ function AddCardButton() {
   )
 }
 
-function EditCardButton({ onClick }: ButtonPropsType) {
+function EditCardButton() {
+
+  const dispatch = useDispatch()
+  const deck = useSelector(selectDeck)
+
   return (
     <Button 
-      onClick={onClick} 
+      disabled={!deck}
+      onClick={() => dispatch(setAppMode(AppMode.EDITING_DECK))} 
       className="d-flex align-items-center flashcard-button border-0"
     >
       <span className="material-symbols-outlined" aria-hidden="true">edit</span>
@@ -34,10 +39,13 @@ function EditCardButton({ onClick }: ButtonPropsType) {
   )
 }
 
-function DeleteCardButton({ onClick }: ButtonPropsType) {
+function DeleteCardButton() {
+
+  const deck = useSelector(selectDeck)
+
   return (
     <Button 
-      onClick={onClick} 
+      disabled={!deck}
       className="d-flex align-items-center flashcard-button border-0 z-1"
     >
       <span className="material-symbols-outlined" aria-hidden="true">

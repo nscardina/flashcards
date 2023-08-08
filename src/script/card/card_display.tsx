@@ -394,26 +394,31 @@ function EditModeBox() {
   return (
     <div className="d-flex w-100 h-100 align-items-center justify-content-center">
       <Dropdown drop="down-centered">
-        <Dropdown.Toggle className="flashcard-button d-flex align-items-center">
+      <style>
+          {
+            `
+            .dropdown-toggle.edit-mode-toggle::after {
+              display: none !important;
+            }
+            `
+          }
+        </style>
+
+        <Dropdown.Toggle className="edit-mode-toggle flashcard-button d-flex align-items-center">
           <span className="material-symbols-outlined">edit</span>
         </Dropdown.Toggle>
-
+        
         <Dropdown.Menu>
-          <style>
-            {`
-                            .dropdown-toggle::after {
-                                display: none !important;
-                            }
-                        `}
-          </style>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => dispatch(setVisibleEditor(Editor.TEXT))}>
             <span className="material-symbols-outlined">article</span>&nbsp;Text
           </Dropdown.Item>
-          <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center">
+          <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
+            onClick={() => dispatch(setVisibleEditor(Editor.IMAGE))}>
             <span className="material-symbols-outlined">image</span>&nbsp;Image
           </Dropdown.Item>
-          <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center">
+          <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
+            onClick={() => dispatch(setVisibleEditor(Editor.VIDEO_LINK))}>
             <span className="material-symbols-outlined">play_arrow</span>&nbsp;Video
           </Dropdown.Item>
         </Dropdown.Menu>
@@ -450,15 +455,16 @@ function CardDisplay() {
     visibleFace.box3,
     visibleFace.box4,
   ].map(box => {
-    if (!box) {
-      return <></>
-    } else if (appMode === AppMode.EDITING_DECK) {
+    // if (!box) {
+    //   return <></>
+    // } else 
+    if (appMode === AppMode.EDITING_DECK) {
       return <EditModeBox />
     } else if (
-      box.type === CardContentType.TEXT &&
-      (box as TextBox).data.text
+      box.type === CardContentType.TEXT && box.data && 
+      (box as TextBox).data!.text
     ) {
-      return <>{(box as TextBox).data.text}</>
+      return <>{(box as TextBox).data!.text}</>
     } else if (
       box.type === CardContentType.IMAGE
     ) {

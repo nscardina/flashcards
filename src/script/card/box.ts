@@ -42,7 +42,7 @@ export type CardContentDataType<T extends CardContentType> =
  */
 export type Box<T extends CardContentType> = {
     type: T,
-    data: CardContentDataType<T>
+    data: CardContentDataType<T> | null
 }
 
 /**

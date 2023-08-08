@@ -38,8 +38,8 @@ function MenuBar() {
           {appMode === AppMode.MANAGING_FILES && (
             <>
               <AddCardButton />
-              <EditCardButton onClick={() => null} />
-              <DeleteCardButton onClick={() => null} />
+              <EditCardButton />
+              <DeleteCardButton />
             </>
           )}
         </Col>
