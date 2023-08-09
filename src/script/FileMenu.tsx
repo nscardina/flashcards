@@ -1,6 +1,7 @@
 import { Dropdown } from "react-bootstrap"
 import { useDispatch } from "react-redux"
 import { useRef } from "react"
+import { addCard } from "./state/Store"
 
 function FileMenu() {
 
@@ -16,7 +17,9 @@ function FileMenu() {
 
               <Dropdown.Menu>
 
-                <Dropdown.Item as="button" className="d-flex align-items-center" >
+                <Dropdown.Item as="button" className="d-flex align-items-center" 
+                  onClick={() => dispatch(addCard())}
+                >
                   <span className="material-symbols-outlined" aria-hidden="true">add</span> &nbsp;New Deck
                 </Dropdown.Item>
 

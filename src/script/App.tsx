@@ -2,13 +2,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import MenuBar from './MenuBar';
 import DeckInteractionArea from './DeckInteractionArea';
+import { useSelector } from 'react-redux';
+import { selectVisibleEditor } from './state/Store';
+import { Editor } from './app/Editor';
+import TextEditor from './TextEditor';
 
 function App() {
+
+    const visibleEditor = useSelector(selectVisibleEditor)
 
     return (
         <>
             <MenuBar/>
             <DeckInteractionArea />
+            {visibleEditor === Editor.TEXT && <TextEditor />}
+            
         </>
     )
 }

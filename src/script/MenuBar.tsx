@@ -1,7 +1,6 @@
 import { Col, Container, Row } from "react-bootstrap"
 import FileMenu from "./FileMenu"
 import EditMenu from "./EditMenu"
-import DeckMenu from "./DeckMenu"
 import { AddCardButton, DeleteCardButton, EditCardButton, EditingDoneButton, ReviewDeckButton } from "./Buttons"
 import AppMode from "./app/AppMode"
 import { useSelector } from "react-redux"
@@ -24,8 +23,8 @@ function MenuBar() {
           <Col style={{ width: "min-content" }}><FileMenu /></Col>
           {appMode === AppMode.EDITING_DECK && (
             <>
+              {/* <Col style={{ width: "min-content" }}><EditMenu /></Col> */}
               <Col style={{ width: "min-content" }}><EditMenu /></Col>
-              <Col style={{ width: "min-content" }}><DeckMenu /></Col>
             </>
           )}
 

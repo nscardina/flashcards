@@ -6,10 +6,10 @@ import { Box, isBox } from "./box"
  */
 export type SideOfCardData = {
     layout: CardLayout
-    box1: Box<any>
-    box2: Box<any>
-    box3: Box<any>
-    box4: Box<any>
+    box1: Box<any> | null
+    box2: Box<any> | null
+    box3: Box<any> | null
+    box4: Box<any> | null
 }
 
 /**
@@ -51,7 +51,7 @@ export type Card = {
 /**
  * Default {@linkcode Card} object used for creating new blank cards.
  */
-export const EMPTY_CARD = {
+export const EMPTY_CARD: Card = {
     front: structuredClone(DEFAULT_SIDE_OF_CARD_DATA),
     back: structuredClone(DEFAULT_SIDE_OF_CARD_DATA),
 }

@@ -6,20 +6,20 @@ export enum Editor {
     /**
      * Value indicating that no editor is currently visible.
      */
-    NONE,
+    NONE = "None",
 
     /**
      * Value indicating that the text editor is currently visible.
      */
-    TEXT,
+    TEXT = "Text",
 
     /**
      * Value indicating that the image editor is currently visible.
      */
-    IMAGE,
+    IMAGE = "Image",
 
     /**
      * Value indicating that the video link editor is currently visible.
      */
-    VIDEO_LINK
+    VIDEO_LINK = "Video Link"
 }

@@ -2,10 +2,10 @@ import { Col, Container, Dropdown, Row } from "react-bootstrap"
 import CardLayout from "./cardlayout"
 import { useDispatch, useSelector } from "react-redux"
 import { Side } from "./side"
-import { selectAppMode, selectDeck, selectVisibleCardIndex, selectVisibleSide, setVisibleEditor } from "../state/Store"
+import { changeEditor, selectAppMode, selectDeck, selectVisibleCardIndex, selectVisibleSide } from "../state/Store"
 import AppMode from "../app/AppMode"
 import { Editor } from "../app/Editor"
-import { CardContentType,  TextBox } from "./box"
+import { Box, Boxes, CardContentType,  TextBox, isImageBox, isTextBox, isVideoBox } from "./box"
 
 /**
  * React component holding a message to display in the place where flashcards 
@@ -22,6 +22,33 @@ function NoDeckOpenedMessage() {
       <input type="file" id="deck_display" className="w-100 h-100 d-flex opacity-0" />
     </div>
   )
+}
+
+function getEditorTypeFromBoxType(box: Box<any> | null): Editor {
+  if (box) {
+    if (isTextBox(box)) {
+      return Editor.TEXT
+    } else if (isImageBox(box)) {
+      return Editor.IMAGE
+    } else if (isVideoBox(box)) {
+      return Editor.VIDEO_LINK
+    }
+  }
+  return Editor.NONE
+}
+
+function getOnClickFuncFromEditorType(type: Editor, box: Boxes): () => any {
+  const dispatch = useDispatch()
+  switch (type) {
+    case Editor.TEXT:
+      return () => dispatch(changeEditor(Editor.TEXT, box))
+    case Editor.IMAGE:
+      return () => dispatch(changeEditor(Editor.IMAGE, box))
+    case Editor.VIDEO_LINK:
+      return () => dispatch(changeEditor(Editor.VIDEO_LINK, box))
+    default:
+      return () => {}
+  }
 }
 
 /**
@@ -41,10 +68,25 @@ function OneBox({ appMode, box }: {
    */
   box: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let type: Editor = Editor.NONE
+
+  if (deck && visibleCardIndex >= 0) {
+    const box1 = deck.cards[visibleCardIndex][visibleSide].box1
+    type = getEditorTypeFromBoxType(box1)
+  }
+
+  let func = getOnClickFuncFromEditorType(type, Boxes.BOX_1)
+  
+
   return (
     <div className={
       `w-100 h-100 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-    }>
+    } onClick={func}>
       {box}
     </div>
   )
@@ -71,16 +113,33 @@ function TwoBoxesVertical({ appMode, box1, box2 }: {
    */
   box2: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let [type1, type2] = [Editor.NONE, Editor.NONE]
+
+  if (deck && visibleCardIndex >= 0) {
+    const side = deck.cards[visibleCardIndex][visibleSide]
+    type1 = getEditorTypeFromBoxType(side.box1)
+    type2 = getEditorTypeFromBoxType(side.box2)
+  }
+
+  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
+  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+
+
   return (
     <Row className="h-100">
       <Col className={
         `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func1}>
         {box1}
       </Col>
       <Col className={
         `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func2}>
         {box2}
       </Col>
     </Row>
@@ -108,16 +167,32 @@ function TwoBoxesHorizontal({ appMode, box1, box2 }: {
    */
   box2: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let [type1, type2] = [Editor.NONE, Editor.NONE]
+
+  if (deck && visibleCardIndex >= 0) {
+    const side = deck.cards[visibleCardIndex][visibleSide]
+    type1 = getEditorTypeFromBoxType(side.box1)
+    type2 = getEditorTypeFromBoxType(side.box2)
+  }
+
+  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
+  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+
   return (
     <Container className="h-100 d-flex flex-column">
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func1}>
         {box1}
       </Row>
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func2}>
         {box2}
       </Row>
     </Container>
@@ -149,23 +224,41 @@ function OneBoxLeftTwoBoxesRight({ appMode, box1, box2, box3 }: {
    */
   box3: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
+
+  if (deck && visibleCardIndex >= 0) {
+    const side = deck.cards[visibleCardIndex][visibleSide]
+    type1 = getEditorTypeFromBoxType(side.box1)
+    type2 = getEditorTypeFromBoxType(side.box2)
+    type3 = getEditorTypeFromBoxType(side.box3)
+  }
+
+  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
+  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+
   return (
     <Row className="h-100">
       <Col className={
         `h-100 ms-3 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func1}>
         {box1}
       </Col>
       <Col className="h-100 align-items-center">
         <Container className="h-100 d-flex flex-column">
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          }>
+          } onClick={func2}>
             {box2}
           </Row>
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          }>
+          } onClick={func3}>
             {box3}
           </Row>
         </Container>
@@ -199,25 +292,43 @@ function OneBoxRightTwoBoxesLeft({ appMode, box1, box2, box3 }: {
    */
   box3: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
+
+  if (deck && visibleCardIndex >= 0) {
+    const side = deck.cards[visibleCardIndex][visibleSide]
+    type1 = getEditorTypeFromBoxType(side.box1)
+    type2 = getEditorTypeFromBoxType(side.box2)
+    type3 = getEditorTypeFromBoxType(side.box3)
+  }
+
+  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
+  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+
   return (
     <Row className="h-100">
       <Col className="h-100 align-items-center">
         <Container className="h-100 d-flex flex-column">
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          }>
+          } onClick={func1}>
             {box1}
           </Row>
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          }>
+          } onClick={func2}>
             {box2}
           </Row>
         </Container>
       </Col>
       <Col className={
         `h-100 ms-3 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func3}>
         {box3}
       </Col>
     </Row>
@@ -249,22 +360,40 @@ function OneBoxTopTwoBoxesBottom({ appMode, box1, box2, box3 }: {
    */
   box3: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
+
+  if (deck && visibleCardIndex >= 0) {
+    const side = deck.cards[visibleCardIndex][visibleSide]
+    type1 = getEditorTypeFromBoxType(side.box1)
+    type2 = getEditorTypeFromBoxType(side.box2)
+    type3 = getEditorTypeFromBoxType(side.box3)
+  }
+
+  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
+  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+
   return (
     <Container className="h-100 d-flex flex-column">
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func1}>
         {box1}
       </Row>
       <Row className="flex-fill mt-2">
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func2}>
           {box2}
         </Col>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func3}>
           {box3}
         </Col>
       </Row>
@@ -297,23 +426,41 @@ function OneBoxBottomTwoBoxesTop({ appMode, box1, box2, box3 }: {
    */
   box3: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
+
+  if (deck && visibleCardIndex >= 0) {
+    const side = deck.cards[visibleCardIndex][visibleSide]
+    type1 = getEditorTypeFromBoxType(side.box1)
+    type2 = getEditorTypeFromBoxType(side.box2)
+    type3 = getEditorTypeFromBoxType(side.box3)
+  }
+
+  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
+  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+
   return (
     <Container className="h-100 d-flex flex-column">
       <Row className="flex-fill mt-2">
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func1}>
           {box1}
         </Col>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func2}>
           {box2}
         </Col>
       </Row>
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      }>
+      } onClick={func3}>
         {box3}
       </Row>
     </Container>
@@ -349,29 +496,50 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
    */
   box4: JSX.Element,
 }) {
+
+  const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const visibleSide = useSelector(selectVisibleSide)
+
+  let [type1, type2, type3, type4] = 
+  [Editor.NONE, Editor.NONE, Editor.NONE, Editor.NONE]
+
+  if (deck && visibleCardIndex >= 0) {
+    const side = deck.cards[visibleCardIndex][visibleSide]
+    type1 = getEditorTypeFromBoxType(side.box1)
+    type2 = getEditorTypeFromBoxType(side.box2)
+    type3 = getEditorTypeFromBoxType(side.box3)
+    type4 = getEditorTypeFromBoxType(side.box4)
+  }
+
+  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
+  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+  const func4 = getOnClickFuncFromEditorType(type4, Boxes.BOX_4)
+
   return (
     <div className="h-100 d-flex flex-column">
       <Row className="flex-fill mb-3">
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func1}>
           {box1}
         </Col>
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func2}>
           {box2}
         </Col>
       </Row>
       <Row className="flex-fill mb-3">
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func3}>
           {box3}
         </Col>
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        }>
+        } onClick={func4}>
           {box4}
         </Col>
       </Row>
@@ -387,7 +555,7 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
  * @param param0 props.
  * @returns React component described above.
  */
-function EditModeBox() {
+function EditModeBox({box}: {box: Boxes}) {
 
   const dispatch = useDispatch()
 
@@ -410,15 +578,21 @@ function EditModeBox() {
         
         <Dropdown.Menu>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
-            onClick={() => dispatch(setVisibleEditor(Editor.TEXT))}>
+            onClick={() => {
+              dispatch(changeEditor(Editor.TEXT, box))
+            }}>
             <span className="material-symbols-outlined">article</span>&nbsp;Text
           </Dropdown.Item>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
-            onClick={() => dispatch(setVisibleEditor(Editor.IMAGE))}>
+            onClick={() => {
+              dispatch(changeEditor(Editor.IMAGE, box))
+            }}>
             <span className="material-symbols-outlined">image</span>&nbsp;Image
           </Dropdown.Item>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
-            onClick={() => dispatch(setVisibleEditor(Editor.VIDEO_LINK))}>
+            onClick={() => {
+              dispatch(changeEditor(Editor.VIDEO_LINK, box))
+            }}>
             <span className="material-symbols-outlined">play_arrow</span>&nbsp;Video
           </Dropdown.Item>
         </Dropdown.Menu>
@@ -454,12 +628,19 @@ function CardDisplay() {
     visibleFace.box2,
     visibleFace.box3,
     visibleFace.box4,
-  ].map(box => {
-    // if (!box) {
-    //   return <></>
-    // } else 
-    if (appMode === AppMode.EDITING_DECK) {
-      return <EditModeBox />
+  ].map((box, index) => {
+    if (appMode === AppMode.EDITING_DECK && box === null) {
+      return <EditModeBox box={(() => {
+        switch (index) {
+          case 0: return Boxes.BOX_1
+          case 1: return Boxes.BOX_2
+          case 2: return Boxes.BOX_3
+          case 3: return Boxes.BOX_4
+          default: throw new Error("Invalid box index; should be impossible")
+        }
+      })()} />
+    } else if (box === null) {
+      return null
     } else if (
       box.type === CardContentType.TEXT && box.data && 
       (box as TextBox).data!.text
@@ -482,34 +663,48 @@ function CardDisplay() {
   switch (visibleFace.layout) {
 
     case CardLayout.ONE_BOX:
-      jsx = <OneBox appMode={appMode} box={box1} />
+      jsx = box1 ? <OneBox appMode={appMode} box={box1} /> : <>Error</>
       break
 
     case CardLayout.TWO_BOXES_V:
-      jsx = <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} />
+      jsx = box1 && box2 ?
+       <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} /> : 
+       <>Error</>
       break
     case CardLayout.TWO_BOXES_H:
-      jsx = <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} />
+      jsx = box1 && box2 ?
+       <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} /> :
+       <>Error</>
       break
     case CardLayout.ONE_BOX_LV_TWO_BOXES_RV:
-      jsx = <OneBoxLeftTwoBoxesRight appMode={appMode}
-        box1={box1} box2={box2} box3={box3} />
+      jsx = box1 && box2 && box3 ?
+       <OneBoxLeftTwoBoxesRight appMode={appMode} 
+       box1={box1} box2={box2} box3={box3} /> :
+       <>Error</>
       break
     case CardLayout.ONE_BOX_RV_TWO_BOXES_LV:
-      jsx = <OneBoxRightTwoBoxesLeft appMode={appMode}
-        box1={box1} box2={box2} box3={box3} />
+      jsx = box1 && box2 && box3 ?
+       <OneBoxRightTwoBoxesLeft appMode={appMode}
+        box1={box1} box2={box2} box3={box3} /> :
+        <>Error</>
       break
     case CardLayout.ONE_BOX_TH_TWO_BOXES_BH:
-      jsx = <OneBoxTopTwoBoxesBottom appMode={appMode}
-        box1={box1} box2={box2} box3={box3} />
+      jsx = box1 && box2 && box3 ?
+       <OneBoxTopTwoBoxesBottom appMode={appMode}
+        box1={box1} box2={box2} box3={box3} /> :
+        <>Error</>
       break
     case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
-      jsx = <OneBoxBottomTwoBoxesTop appMode={appMode}
-        box1={box1} box2={box2} box3={box3} />
+      jsx = box1 && box2 && box3 ?
+       <OneBoxBottomTwoBoxesTop appMode={appMode}
+        box1={box1} box2={box2} box3={box3} /> : 
+        <>Error</>
       break
     case CardLayout.FOUR_BOXES:
-      jsx = <FourBoxes appMode={appMode} 
-        box1={box1} box2={box2} box3={box3} box4={box4} />
+      jsx = box1 && box2 && box3 && box4 ?
+       <FourBoxes appMode={appMode} 
+        box1={box1} box2={box2} box3={box3} box4={box4} /> :
+        <>Error</>
       break
   }
 
