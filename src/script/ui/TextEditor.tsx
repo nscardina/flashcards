@@ -2,24 +2,11 @@ import { useState } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
-import { BaseEditor } from 'slate'
-import { ReactEditor } from 'slate-react'
 import { PayloadAction } from "@reduxjs/toolkit";
-import { Side } from "./card/side";
 import { useDispatch, useSelector } from "react-redux";
-import { Boxes } from "./card/box";
-import { editCard, selectBoxBeingEdited, selectVisibleSide } from "./state/Store";
+import { editCard, selectBoxBeingEdited, selectVisibleSide } from "../state/Store";
 
-type CustomElement = { type: 'paragraph'; children: CustomText[] }
-type CustomText = { text: string }
 
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: BaseEditor & ReactEditor
-    Element: CustomElement
-    Text: CustomText
-  }
-}
 
 export type TextEditorPayload = {
 

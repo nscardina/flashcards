@@ -1,7 +1,7 @@
 import { Dropdown } from "react-bootstrap"
 import { useDispatch } from "react-redux"
-import { changeLayout } from "./state/Store"
-import CardLayout from "./card/cardlayout"
+import { changeLayout } from "../state/Store"
+import CardLayout from "../card/cardlayout"
 
 function EditMenu() {
 

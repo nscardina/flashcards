@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
-import AppMode from "./app/AppMode";
-import { addCard, selectDeck, setAppMode } from "./state/Store";
+import AppMode from "../app/AppMode";
+import { addCard, deleteCard, selectDeck, selectVisibleCardIndex, setAppMode } from "../state/Store";
 import { useDispatch, useSelector } from "react-redux";
 
 export type ButtonPropsType = {
@@ -42,11 +42,14 @@ function EditCardButton() {
 function DeleteCardButton() {
 
   const deck = useSelector(selectDeck)
+  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const dispatch = useDispatch()
 
   return (
     <Button 
       disabled={!deck}
       className="d-flex align-items-center flashcard-button border-0 z-1"
+      onClick={() => dispatch(deleteCard(visibleCardIndex))}
     >
       <span className="material-symbols-outlined" aria-hidden="true">
         close

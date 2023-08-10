@@ -9,6 +9,7 @@ import { ReviewOrder } from "../ReviewOrder";
 import { Editor } from "../app/Editor";
 import { Boxes, CardContentDataType, CardContentType } from "../card/box";
 import CardLayout from "../card/cardlayout";
+import Dialog from "../app/Dialog";
 
 
 /**
@@ -21,6 +22,7 @@ export type AppStoreDataType = {
   deckHistory: DeckHistory,
   reviewOrder: ReviewOrder,
   showSideProviderName: ShowSideProviderName,
+  visibleDialog: Dialog,
   visibleEditor: Editor,
   visibleCardIndex: number,
   visibleSide: Side,
@@ -48,6 +50,7 @@ const INITIAL_STATE: AppStoreDataType = {
   },
   reviewOrder: ReviewOrder.IN_ORDER,
   showSideProviderName: 'FRONT',
+  visibleDialog: Dialog.NONE,
   visibleEditor: Editor.NONE,
   visibleCardIndex: NO_CARD_FOCUSED,
   visibleSide: Side.FRONT,
@@ -56,9 +59,15 @@ const INITIAL_STATE: AppStoreDataType = {
 type EditorActions =
   Action<'editor/newCard'> |
   PayloadAction<EditCardPayload<any>, 'editor/editCard'> |
+  PayloadAction<number, 'editor/deleteCard'> |
+  Action<'editor/newDeck'> |
+  Action<'editor/deleteDeck'> |
   PayloadAction<Boxes, 'editor/boxBeingEdited'> |
+  PayloadAction<Dialog, 'editor/changeDialog'> |
   PayloadAction<{ editor: Editor, box: Boxes }, 'editor/changeEditor'> |
-  PayloadAction<CardLayout, 'editor/cardLayout'>
+  PayloadAction<CardLayout, 'editor/cardLayout'> | 
+  Action<'editor/viewPreviousCard'> |
+  Action<'editor/viewNextCard'>
 
 type AppActions =
   PayloadAction<AppMode, 'app/appMode'> |
@@ -135,7 +144,6 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
           }
         }
       }
-      break
 
     case 'editor/editCard':
       {
@@ -167,13 +175,79 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
           visibleEditor: Editor.NONE,
         }
       }
+    
+    case 'editor/deleteCard':
+      {
+        if (state.deck && action.payload >= 0 && 
+          action.payload < state.deck.cards.length)
+        {
 
+          let newDeck = structuredClone(state.deck)
+          newDeck.cards.splice(action.payload, 1)
+
+          let newCardIndex: number
+
+          if (action.payload === state.visibleCardIndex) {
+            if (state.visibleCardIndex === 0) {
+              newCardIndex = newDeck.cards.length - 1
+            } else {
+              newCardIndex = state.visibleCardIndex - 1
+            }
+          } else if (action.payload >= newDeck.cards.length) {
+            newCardIndex = newDeck.cards.length - 1
+          } else {
+            newCardIndex = state.visibleCardIndex
+          }
+
+          return {
+            ...state,
+            deck: newDeck
+          }
+        } else {
+          return state
+        }
+      }
+
+    case 'editor/newDeck':
+      {
+        if (state.deck !== null) {
+          return {
+            ...state,
+            visibleDialog: Dialog.NEW_DECK_CONFIRMATION_MESSAGE
+          }
+        } else {
+          return {
+            ...state,
+            deck: {
+              name: "Untitled",
+              cards: [structuredClone(EMPTY_CARD)]
+            }
+          }
+        }
+      }
+
+    case 'editor/deleteDeck':
+      {
+        return {
+          ...state,
+          deck: null,
+          visibleDialog: Dialog.NONE
+        }
+      }
 
     case 'editor/boxBeingEdited':
       {
         return {
           ...state,
           boxBeingEdited: action.payload
+        }
+      }
+
+    case 'editor/changeDialog':
+      {
+        return {
+          ...state,
+          visibleDialog: action.payload
         }
       }
 
@@ -208,6 +282,53 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
       }
     }
 
+    case 'editor/viewPreviousCard':
+      {
+        if (state.deck && state.deck.cards.length > 1 && 
+          state.visibleCardIndex > 0)
+        {
+          return {
+            ...state,
+            visibleCardIndex: state.visibleCardIndex - 1
+          }
+        }
+        else if (state.deck && state.deck.cards.length > 1 && 
+          state.visibleCardIndex === 0)
+        {
+          return {
+            ...state,
+            visibleCardIndex: state.deck.cards.length - 1
+          }
+        }
+        else {
+          return state
+        }
+
+      }
+    
+    case 'editor/viewNextCard':
+      {
+        if (state.deck && state.deck.cards.length > 1 && 
+          state.visibleCardIndex < state.deck.cards.length - 1)
+        {
+          return {
+            ...state,
+            visibleCardIndex: state.visibleCardIndex + 1
+          }
+        }
+        else if (state.deck && state.deck.cards.length > 1 && 
+          state.visibleCardIndex === state.deck.cards.length - 1)
+        {
+          return {
+            ...state,
+            visibleCardIndex: 0
+          }
+        }
+        else {
+          return state
+        }
+      }
+
       
 
     default:
@@ -238,6 +359,8 @@ export const selectShowSideProviderName =
   (state: AppStoreDataType) => state.showSideProviderName
 export const selectVisibleCardIndex =
   (state: AppStoreDataType) => state.visibleCardIndex
+export const selectVisibleDialog = 
+  (state: AppStoreDataType) => state.visibleDialog
 export const selectVisibleEditor =
   (state: AppStoreDataType) => state.visibleEditor
 export const selectVisibleSide =
@@ -265,6 +388,26 @@ export function editCard<T extends CardContentType>(
       box: box,
       ...data
     }
+  }
+}
+
+export function deleteCard(index: number): 
+PayloadAction<number, 'editor/deleteCard'> {
+  return {
+    type: 'editor/deleteCard',
+    payload: index
+  }
+}
+
+export function newDeck(): Action<'editor/newDeck'> {
+  return {
+    type: 'editor/newDeck'
+  }
+}
+
+export function deleteDeck(): Action<'editor/deleteDeck'> {
+  return {
+    type: 'editor/deleteDeck'
   }
 }
 
@@ -308,6 +451,14 @@ export function setVisibleEditor(editor: Editor):
   }
 }
 
+export function changeDialog(dialog: Dialog): 
+PayloadAction<Dialog, 'editor/changeDialog'> {
+  return {
+    type: 'editor/changeDialog',
+    payload: dialog
+  }
+}
+
 export function changeEditor(editor: Editor, box: Boxes):
   PayloadAction<{ editor: Editor, box: Boxes }, 'editor/changeEditor'> {
   return {
@@ -324,6 +475,18 @@ export function changeLayout(newLayout: CardLayout):
   return {
     type: "editor/cardLayout",
     payload: newLayout
+  }
+}
+
+export function viewPreviousCard(): Action<'editor/viewPreviousCard'> {
+  return {
+    type: 'editor/viewPreviousCard'
+  }
+}
+
+export function viewNextCard(): Action<'editor/viewNextCard'> {
+  return {
+    type: 'editor/viewNextCard'
   }
 }
 

@@ -1,15 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
-import MenuBar from './MenuBar';
-import DeckInteractionArea from './DeckInteractionArea';
+import MenuBar from './ui/MenuBar';
+import DeckInteractionArea from './ui/DeckInteractionArea';
 import { useSelector } from 'react-redux';
-import { selectVisibleEditor } from './state/Store';
+import { selectVisibleDialog, selectVisibleEditor } from './state/Store';
 import { Editor } from './app/Editor';
-import TextEditor from './TextEditor';
+import TextEditor from './ui/TextEditor';
+import Dialog from './app/Dialog';
+import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
 
 function App() {
 
     const visibleEditor = useSelector(selectVisibleEditor)
+    const visibleDialog = useSelector(selectVisibleDialog)
 
     return (
         <>
@@ -17,6 +20,9 @@ function App() {
             <DeckInteractionArea />
             {visibleEditor === Editor.TEXT && <TextEditor />}
             
+            {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE && 
+            <NewDeckConfirmationMessage />
+            }
         </>
     )
 }

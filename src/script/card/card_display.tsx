@@ -663,48 +663,48 @@ function CardDisplay() {
   switch (visibleFace.layout) {
 
     case CardLayout.ONE_BOX:
-      jsx = box1 ? <OneBox appMode={appMode} box={box1} /> : <>Error</>
+      jsx = box1 ? <OneBox appMode={appMode} box={box1} /> : <></>
       break
 
     case CardLayout.TWO_BOXES_V:
       jsx = box1 && box2 ?
        <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} /> : 
-       <>Error</>
+       <></>
       break
     case CardLayout.TWO_BOXES_H:
       jsx = box1 && box2 ?
        <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} /> :
-       <>Error</>
+       <></>
       break
     case CardLayout.ONE_BOX_LV_TWO_BOXES_RV:
       jsx = box1 && box2 && box3 ?
        <OneBoxLeftTwoBoxesRight appMode={appMode} 
        box1={box1} box2={box2} box3={box3} /> :
-       <>Error</>
+       <></>
       break
     case CardLayout.ONE_BOX_RV_TWO_BOXES_LV:
       jsx = box1 && box2 && box3 ?
        <OneBoxRightTwoBoxesLeft appMode={appMode}
         box1={box1} box2={box2} box3={box3} /> :
-        <>Error</>
+        <></>
       break
     case CardLayout.ONE_BOX_TH_TWO_BOXES_BH:
       jsx = box1 && box2 && box3 ?
        <OneBoxTopTwoBoxesBottom appMode={appMode}
         box1={box1} box2={box2} box3={box3} /> :
-        <>Error</>
+        <></>
       break
     case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
       jsx = box1 && box2 && box3 ?
        <OneBoxBottomTwoBoxesTop appMode={appMode}
         box1={box1} box2={box2} box3={box3} /> : 
-        <>Error</>
+        <></>
       break
     case CardLayout.FOUR_BOXES:
       jsx = box1 && box2 && box3 && box4 ?
        <FourBoxes appMode={appMode} 
         box1={box1} box2={box2} box3={box3} box4={box4} /> :
-        <>Error</>
+        <></>
       break
   }
 
