@@ -3,9 +3,10 @@ import FileMenu from "./FileMenu"
 import EditMenu from "./EditMenu"
 import { AddCardButton, DeleteCardButton, EditCardButton, EditingDoneButton, ReviewDeckButton } from "./Buttons"
 import AppMode from "../app/AppMode"
-import { useSelector } from "react-redux"
-import { selectAppMode, selectDeck } from "../state/Store"
+import { useDispatch, useSelector } from "react-redux"
+import { renameDeck, selectAppMode, selectDeck, setVisibleEditor } from "../state/Store"
 import SettingsMenu from "./SettingsMenu"
+import { Editor } from "../app/Editor"
 
 
 
@@ -13,6 +14,8 @@ function MenuBar() {
 
   const appMode = useSelector(selectAppMode)
   const deck = useSelector(selectDeck)
+
+  const dispatch = useDispatch()
 
   return (
     <Container>
@@ -51,7 +54,12 @@ function MenuBar() {
           md={{ span: 2, order: 3 }}
           className="ms-auto d-flex justify-content-center align-items-center"
         >
-          {deck && deck.name}
+          <span style={{userSelect: 'none'}} 
+            onClick={() => dispatch(setVisibleEditor(Editor.DECK_NAME))}
+          >
+            {deck && deck.name}
+          </span>
+          
         </Col>
         <Col
           xs={{ span: 4, order: 2 }}

@@ -21,5 +21,10 @@ export enum Editor {
     /**
      * Value indicating that the video link editor is currently visible.
      */
-    VIDEO_LINK = "Video Link"
+    VIDEO_LINK = "Video Link",
+
+    /**
+     * Value indicating that the deck name editor is currently visible.
+     */
+    DECK_NAME = "Deck Name",
 }

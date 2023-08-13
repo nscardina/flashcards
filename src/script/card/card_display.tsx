@@ -640,7 +640,7 @@ function CardDisplay() {
         }
       })()} />
     } else if (box === null) {
-      return null
+      return <></>
     } else if (
       box.type === CardContentType.TEXT && box.data && 
       (box as TextBox).data!.text

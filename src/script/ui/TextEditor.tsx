@@ -4,7 +4,9 @@ import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { editCard, selectBoxBeingEdited, selectVisibleSide } from "../state/Store";
+import { changeEditor, editCard, selectBoxBeingEdited, selectVisibleSide } from "../state/Store";
+import { Editor } from "../app/Editor";
+import { Boxes } from "../card/box";
 
 
 
@@ -56,7 +58,12 @@ function TextEditor() {
           </Row>
           <Row>
             <Col className="d-flex justify-content-end">
-              <Button className="mt-3 ms-auto" onClick={() => {
+            <Button className="ms-auto mt-3" onClick={() => dispatch(changeEditor(
+                Editor.NONE, Boxes.BOX_1))}
+              >
+                Cancel
+              </Button>
+              <Button className="ms-3 mt-3" onClick={() => {
 
                 //TODO fix Card face and Box
                 dispatch(editCard(visibleSide,
@@ -67,15 +74,11 @@ function TextEditor() {
               }}>
                 Submit
               </Button>
+              
             </Col>
           </Row>
         </Container>
-
-
-
-
       </Modal.Body>
-
     </Modal>
   )
 }

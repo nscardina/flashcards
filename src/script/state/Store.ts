@@ -62,6 +62,7 @@ type EditorActions =
   PayloadAction<number, 'editor/deleteCard'> |
   Action<'editor/newDeck'> |
   Action<'editor/deleteDeck'> |
+  PayloadAction<string, 'editor/renameDeck'> |
   PayloadAction<Boxes, 'editor/boxBeingEdited'> |
   PayloadAction<Dialog, 'editor/changeDialog'> |
   PayloadAction<{ editor: Editor, box: Boxes }, 'editor/changeEditor'> |
@@ -178,7 +179,20 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
     
     case 'editor/deleteCard':
       {
-        if (state.deck && action.payload >= 0 && 
+        if (state.deck && action.payload >= 0 &&
+          action.payload === 0 && state.deck.cards.length === 1) 
+        {
+          return {
+            ...state,
+            deck: {
+              name: state.deck.name,
+              cards: [structuredClone(EMPTY_CARD)]
+            },
+            visibleCardIndex: 0,
+            appMode: AppMode.EDITING_DECK
+          }
+        } 
+        else if (state.deck && action.payload >= 0 && 
           action.payload < state.deck.cards.length)
         {
 
@@ -201,7 +215,9 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
 
           return {
             ...state,
-            deck: newDeck
+            deck: newDeck,
+            visibleCardIndex: newCardIndex,
+            appMode: AppMode.EDITING_DECK,
           }
         } else {
           return state
@@ -235,6 +251,20 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
         }
       }
 
+    case 'editor/renameDeck':
+      {
+        const deck: Deck = {
+          name: action.payload,
+          cards: (state.deck) ? state.deck.cards : [structuredClone(EMPTY_CARD)]
+        }
+
+        return {
+          ...state,
+          deck: deck,
+          visibleEditor: Editor.NONE,
+        }
+      }
+
     case 'editor/boxBeingEdited':
       {
         return {
@@ -256,7 +286,7 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
         return {
           ...state,
           boxBeingEdited: action.payload.box,
-          visibleEditor: action.payload.editor
+          visibleEditor: action.payload.editor,
         }
       }
       
@@ -408,6 +438,14 @@ export function newDeck(): Action<'editor/newDeck'> {
 export function deleteDeck(): Action<'editor/deleteDeck'> {
   return {
     type: 'editor/deleteDeck'
+  }
+}
+
+export function renameDeck(name: string): 
+PayloadAction<string, 'editor/renameDeck'> {
+  return {
+    type: 'editor/renameDeck',
+    payload: name
   }
 }
 

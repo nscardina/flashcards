@@ -8,6 +8,7 @@ import { Editor } from './app/Editor';
 import TextEditor from './ui/TextEditor';
 import Dialog from './app/Dialog';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
+import DeckNameEditor from './ui/DeckNameEditor';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <MenuBar/>
             <DeckInteractionArea />
             {visibleEditor === Editor.TEXT && <TextEditor />}
+            {visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
             
             {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE && 
             <NewDeckConfirmationMessage />
