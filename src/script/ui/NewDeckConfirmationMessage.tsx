@@ -1,6 +1,6 @@
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
 import { useDispatch } from "react-redux"
-import { changeDialog, deleteDeck } from "../state/Store"
+import { changeDialog, deleteDeckAndCreateNewDeck } from "../state/Store"
 import Dialog from "../app/Dialog"
 
 function NewDeckConfirmationMessage() {
@@ -34,7 +34,7 @@ function NewDeckConfirmationMessage() {
             <Col xs="auto"
               className="d-inline-block">
               <Button variant="danger" className="me-3"
-                onClick={() => dispatch(deleteDeck())}
+                onClick={() => dispatch(deleteDeckAndCreateNewDeck())}
               >Delete Deck</Button>
               <Button>Save Deck...</Button>
             </Col>

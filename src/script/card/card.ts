@@ -33,10 +33,10 @@ export function isSideOfCardData(object: unknown): object is SideOfCardData {
     return typeof(object) === "object" && !!object &&
         "layout" in object && 
         (Object.values(CardLayout) as unknown[]).includes(object.layout) &&
-        "box1" in object && isBox(object.box1) &&
-        "box2" in object && isBox(object.box2) &&
-        "box3" in object && isBox(object.box3) &&
-        "box4" in object && isBox(object.box4) 
+        "box1" in object && (isBox(object.box1) || object.box1 === null) &&
+        "box2" in object && (isBox(object.box2) || object.box2 === null) &&
+        "box3" in object && (isBox(object.box3) || object.box3 === null) &&
+        "box4" in object && (isBox(object.box4) || object.box4 === null) 
 }
 
 /**

@@ -62,11 +62,13 @@ type EditorActions =
   PayloadAction<number, 'editor/deleteCard'> |
   Action<'editor/newDeck'> |
   Action<'editor/deleteDeck'> |
+  PayloadAction<Deck, 'editor/setDeck'> |
+  Action<'editor/deleteDeckAndCreateNewDeck'> |
   PayloadAction<string, 'editor/renameDeck'> |
   PayloadAction<Boxes, 'editor/boxBeingEdited'> |
   PayloadAction<Dialog, 'editor/changeDialog'> |
   PayloadAction<{ editor: Editor, box: Boxes }, 'editor/changeEditor'> |
-  PayloadAction<CardLayout, 'editor/cardLayout'> | 
+  PayloadAction<CardLayout, 'editor/cardLayout'> |
   Action<'editor/viewPreviousCard'> |
   Action<'editor/viewNextCard'>
 
@@ -176,12 +178,11 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
           visibleEditor: Editor.NONE,
         }
       }
-    
+
     case 'editor/deleteCard':
       {
         if (state.deck && action.payload >= 0 &&
-          action.payload === 0 && state.deck.cards.length === 1) 
-        {
+          action.payload === 0 && state.deck.cards.length === 1) {
           return {
             ...state,
             deck: {
@@ -191,10 +192,9 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
             visibleCardIndex: 0,
             appMode: AppMode.EDITING_DECK
           }
-        } 
-        else if (state.deck && action.payload >= 0 && 
-          action.payload < state.deck.cards.length)
-        {
+        }
+        else if (state.deck && action.payload >= 0 &&
+          action.payload < state.deck.cards.length) {
 
           let newDeck = structuredClone(state.deck)
           newDeck.cards.splice(action.payload, 1)
@@ -224,12 +224,22 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
         }
       }
 
+    case 'editor/setDeck':
+      {
+        return {
+          ...state,
+          deck: action.payload,
+          visibleCardIndex: (action.payload.cards.length > 0) ? 0 : -1
+        }
+      }
+
     case 'editor/newDeck':
       {
         if (state.deck !== null) {
           return {
             ...state,
-            visibleDialog: Dialog.NEW_DECK_CONFIRMATION_MESSAGE
+            visibleDialog: Dialog.NEW_DECK_CONFIRMATION_MESSAGE,
+            appMode: AppMode.EDITING_DECK,
           }
         } else {
           return {
@@ -237,7 +247,9 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
             deck: {
               name: "Untitled",
               cards: [structuredClone(EMPTY_CARD)]
-            }
+            },
+            visibleCardIndex: 0,
+            appMode: AppMode.EDITING_DECK,
           }
         }
       }
@@ -247,7 +259,21 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
         return {
           ...state,
           deck: null,
-          visibleDialog: Dialog.NONE
+          visibleDialog: Dialog.NONE,
+          visibleCardIndex: -1,
+        }
+      }
+
+    case 'editor/deleteDeckAndCreateNewDeck':
+      {
+        return {
+          ...state,
+          deck: {
+            name: "Untitled",
+            cards: [structuredClone(EMPTY_CARD)]
+          },
+          visibleDialog: Dialog.NONE,
+          appMode: AppMode.EDITING_DECK
         }
       }
 
@@ -289,42 +315,40 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
           visibleEditor: action.payload.editor,
         }
       }
-      
+
 
     case 'editor/cardLayout':
       {
         const cards = state.deck ? [
           ...structuredClone(state.deck.cards)
         ] : []
-        
+
         if (cards.length > 0) {
-          cards[state.visibleCardIndex][state.visibleSide].layout = 
+          cards[state.visibleCardIndex][state.visibleSide].layout =
             action.payload
         }
-  
-  
+
+
         return {
           ...state,
           deck: {
             name: state.deck ? state.deck.name : "Untitled",
             cards: cards
+          }
         }
       }
-    }
 
     case 'editor/viewPreviousCard':
       {
-        if (state.deck && state.deck.cards.length > 1 && 
-          state.visibleCardIndex > 0)
-        {
+        if (state.deck && state.deck.cards.length > 1 &&
+          state.visibleCardIndex > 0) {
           return {
             ...state,
             visibleCardIndex: state.visibleCardIndex - 1
           }
         }
-        else if (state.deck && state.deck.cards.length > 1 && 
-          state.visibleCardIndex === 0)
-        {
+        else if (state.deck && state.deck.cards.length > 1 &&
+          state.visibleCardIndex === 0) {
           return {
             ...state,
             visibleCardIndex: state.deck.cards.length - 1
@@ -335,20 +359,18 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
         }
 
       }
-    
+
     case 'editor/viewNextCard':
       {
-        if (state.deck && state.deck.cards.length > 1 && 
-          state.visibleCardIndex < state.deck.cards.length - 1)
-        {
+        if (state.deck && state.deck.cards.length > 1 &&
+          state.visibleCardIndex < state.deck.cards.length - 1) {
           return {
             ...state,
             visibleCardIndex: state.visibleCardIndex + 1
           }
         }
-        else if (state.deck && state.deck.cards.length > 1 && 
-          state.visibleCardIndex === state.deck.cards.length - 1)
-        {
+        else if (state.deck && state.deck.cards.length > 1 &&
+          state.visibleCardIndex === state.deck.cards.length - 1) {
           return {
             ...state,
             visibleCardIndex: 0
@@ -359,7 +381,7 @@ function editorReducer(state = INITIAL_STATE, action: EditorActions):
         }
       }
 
-      
+
 
     default:
       return state
@@ -389,7 +411,7 @@ export const selectShowSideProviderName =
   (state: AppStoreDataType) => state.showSideProviderName
 export const selectVisibleCardIndex =
   (state: AppStoreDataType) => state.visibleCardIndex
-export const selectVisibleDialog = 
+export const selectVisibleDialog =
   (state: AppStoreDataType) => state.visibleDialog
 export const selectVisibleEditor =
   (state: AppStoreDataType) => state.visibleEditor
@@ -421,11 +443,18 @@ export function editCard<T extends CardContentType>(
   }
 }
 
-export function deleteCard(index: number): 
-PayloadAction<number, 'editor/deleteCard'> {
+export function deleteCard(index: number):
+  PayloadAction<number, 'editor/deleteCard'> {
   return {
     type: 'editor/deleteCard',
     payload: index
+  }
+}
+
+export function deleteDeckAndCreateNewDeck():
+  Action<'editor/deleteDeckAndCreateNewDeck'> {
+  return {
+    type: 'editor/deleteDeckAndCreateNewDeck'
   }
 }
 
@@ -441,8 +470,8 @@ export function deleteDeck(): Action<'editor/deleteDeck'> {
   }
 }
 
-export function renameDeck(name: string): 
-PayloadAction<string, 'editor/renameDeck'> {
+export function renameDeck(name: string):
+  PayloadAction<string, 'editor/renameDeck'> {
   return {
     type: 'editor/renameDeck',
     payload: name
@@ -462,6 +491,14 @@ export function setBoxBeingEdited(box: Boxes):
   return {
     type: 'editor/boxBeingEdited',
     payload: box
+  }
+}
+
+export function setDeck(deck: Deck):
+  PayloadAction<Deck, 'editor/setDeck'> {
+  return {
+    type: 'editor/setDeck',
+    payload: deck
   }
 }
 
@@ -489,8 +526,8 @@ export function setVisibleEditor(editor: Editor):
   }
 }
 
-export function changeDialog(dialog: Dialog): 
-PayloadAction<Dialog, 'editor/changeDialog'> {
+export function changeDialog(dialog: Dialog):
+  PayloadAction<Dialog, 'editor/changeDialog'> {
   return {
     type: 'editor/changeDialog',
     payload: dialog

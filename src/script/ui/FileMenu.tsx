@@ -1,13 +1,15 @@
 import { Dropdown } from "react-bootstrap"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useRef } from "react"
-import { addCard, newDeck } from "../state/Store"
+import { addCard, newDeck, selectDeck, setDeck } from "../state/Store"
+import { downloadDeck, uploadDeck } from "../file/CardFile"
 
 function FileMenu() {
 
     const dispatch = useDispatch()
 
     const openDeckFileElement = useRef<HTMLInputElement>(null)
+    const deck = useSelector(selectDeck)
 
     return (
         <Dropdown className="d-inline-block">
@@ -27,7 +29,14 @@ function FileMenu() {
                   <label style={{position: 'absolute'}} htmlFor="deck_display" className="ps-3 pe-3 d-flex align-items-center">
                     <span className="material-symbols-outlined" aria-hidden="true">file_open</span> &nbsp;Open Deck...
                   </label>
-                  <input ref={openDeckFileElement} type="file" id="deck_display" className="w-100 h-100 d-flex" style={{opacity: 0}} 
+                  <input ref={openDeckFileElement} type="file" id="deck_display" 
+                  onChange={
+                    async() => {
+                      const deck = await uploadDeck(openDeckFileElement.current!.files as FileList)
+                      dispatch(setDeck(deck)) 
+                    }
+                  }
+                  className="w-100 h-100 d-flex" style={{opacity: 0}} 
                   
                   />
                 </Dropdown.Item>
@@ -41,8 +50,10 @@ function FileMenu() {
                 <Dropdown.Item className="d-flex align-items-center">
                   <span className="material-symbols-outlined" aria-hidden="true">close</span> &nbsp;Close Deck
                 </Dropdown.Item>
-                <Dropdown.Item className="d-flex align-items-center">
-                  <span className="material-symbols-outlined" aria-hidden="true">download</span> &nbsp;Save Deck As...
+                <Dropdown.Item
+                onClick={deck ? () => downloadDeck(deck) : () => {}}
+                className="d-flex align-items-center">
+                  <span className="material-symbols-outlined" aria-hidden="true">download</span> &nbsp;Download .deck file...
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex align-items-center">
                   <span className="material-symbols-outlined" aria-hidden="true">title</span> &nbsp;Rename Deck...

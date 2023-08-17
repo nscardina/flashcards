@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "react-bootstrap"
-import CardDisplay from "../card/card_display"
+import CardDisplay from "../card/CardDisplay"
 import { useDispatch, useSelector } from "react-redux"
 import { selectDeck, viewNextCard, viewPreviousCard } from "../state/Store"
 
