@@ -4,9 +4,10 @@ import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { changeEditor, editCard, selectBoxBeingEdited, selectVisibleSide } from "../state/Store";
+import { selectBoxBeingEdited, selectVisibleSide } from "../state/Store";
 import { Editor } from "../app/Editor";
 import { Boxes } from "../card/box";
+import { changeEditor, editCard } from "../state/deck_actions";
 
 
 

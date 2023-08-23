@@ -3,10 +3,10 @@ import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-import { changeEditor, editCard, renameDeck, selectBoxBeingEdited, selectVisibleSide } from "../state/Store";
+import { useDispatch } from "react-redux";
 import { Boxes } from "../card/box";
 import { Editor } from "../app/Editor";
+import { changeEditor, renameDeck } from "../state/deck_actions";
 
 
 

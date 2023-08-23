@@ -1,7 +1,9 @@
 import { Button } from "react-bootstrap";
 import AppMode from "../app/AppMode";
-import { addCard, deleteCard, selectDeck, selectVisibleCardIndex, setAppMode } from "../state/Store";
+import { selectDeck, selectVisibleCardIndex } from "../state/Store";
 import { useDispatch, useSelector } from "react-redux";
+import { createNewCard, deleteCard } from "../state/deck_actions";
+import { setAppMode } from "../state/setters";
 
 export type ButtonPropsType = {
   onClick: (event: React.MouseEvent | React.KeyboardEvent) => void
@@ -14,7 +16,7 @@ function AddCardButton() {
   return (
     <Button 
       onClick={() => {
-        dispatch(addCard())
+        dispatch(createNewCard())
       }} 
       className="d-flex align-items-center flashcard-button border-0"
     >

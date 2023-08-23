@@ -1,4 +1,4 @@
-import { Card, isCard } from "./card"
+import { Card, isCard, makeEmptyCard } from "./card"
 
 /**
  * Type representing a deck of cards.
@@ -24,4 +24,15 @@ export function isDeck(object: unknown): object is Deck {
         "name" in object && typeof(object.name) === "string" && 
         "cards" in object && Array.isArray(object.cards) && 
         object.cards.every(card => isCard(card))
+}
+
+/**
+ * Creates a default unique `Deck` object.
+ * @returns default `Deck` object
+ */
+export function makeEmptyDeck(): Deck {
+    return {
+        name: "Untitled",
+        cards: [makeEmptyCard()]
+    }
 }

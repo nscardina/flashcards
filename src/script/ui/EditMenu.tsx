@@ -1,7 +1,7 @@
 import { Dropdown } from "react-bootstrap"
 import { useDispatch } from "react-redux"
-import { changeLayout } from "../state/Store"
 import CardLayout from "../card/cardlayout"
+import { changeCardLayout } from "../state/deck_actions"
 
 function EditMenu() {
 
@@ -23,42 +23,42 @@ function EditMenu() {
 
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.ONE_BOX))
+                dispatch(changeCardLayout(CardLayout.ONE_BOX))
               }}>
                 One box
               </Dropdown.Item>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.TWO_BOXES_V))
+                dispatch(changeCardLayout(CardLayout.TWO_BOXES_V))
               }}>
                 Two vertical boxes
               </Dropdown.Item>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.TWO_BOXES_H))
+                dispatch(changeCardLayout(CardLayout.TWO_BOXES_H))
               }}>
                 Two horizontal boxes
               </Dropdown.Item>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.FOUR_BOXES))
+                dispatch(changeCardLayout(CardLayout.FOUR_BOXES))
               }}>
                 Four boxes
               </Dropdown.Item>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.ONE_BOX_LV_TWO_BOXES_RV))
+                dispatch(changeCardLayout(CardLayout.ONE_BOX_LV_TWO_BOXES_RV))
               }}>
                 One vertical box on left, two horizontal boxes on right
               </Dropdown.Item>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.ONE_BOX_RV_TWO_BOXES_LV))
+                dispatch(changeCardLayout(CardLayout.ONE_BOX_RV_TWO_BOXES_LV))
               }}>
                 One vertical box on right, two horizontal boxes on left
               </Dropdown.Item>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.ONE_BOX_TH_TWO_BOXES_BH))
+                dispatch(changeCardLayout(CardLayout.ONE_BOX_TH_TWO_BOXES_BH))
               }}>
                 One horizontal box on top, two vertical boxes on bottom
               </Dropdown.Item>
               <Dropdown.Item onClick={() => {
-                dispatch(changeLayout(CardLayout.ONE_BOX_BH_TWO_BOXES_TH))
+                dispatch(changeCardLayout(CardLayout.ONE_BOX_BH_TWO_BOXES_TH))
               }}>
                 One horizontal box on bottom, two vertical boxes on top
               </Dropdown.Item>

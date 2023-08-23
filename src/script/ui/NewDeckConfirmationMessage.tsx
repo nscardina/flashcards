@@ -1,7 +1,8 @@
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
 import { useDispatch } from "react-redux"
-import { changeDialog, deleteDeckAndCreateNewDeck } from "../state/Store"
+import { deleteDeckAndCreateNewDeck } from "../state/Store"
 import Dialog from "../app/Dialog"
+import { setVisibleDialog } from "../state/setters"
 
 function NewDeckConfirmationMessage() {
 
@@ -26,7 +27,7 @@ function NewDeckConfirmationMessage() {
             <Col className="d-inline-block me-auto">
               <Button
                 onClick={() =>
-                  dispatch(changeDialog(Dialog.NONE))}
+                  dispatch(setVisibleDialog(Dialog.NONE))}
               >
                 Cancel
               </Button>

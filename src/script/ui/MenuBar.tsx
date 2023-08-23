@@ -4,9 +4,10 @@ import EditMenu from "./EditMenu"
 import { AddCardButton, DeleteCardButton, EditCardButton, EditingDoneButton, ReviewDeckButton } from "./Buttons"
 import AppMode from "../app/AppMode"
 import { useDispatch, useSelector } from "react-redux"
-import { renameDeck, selectAppMode, selectDeck, setVisibleEditor } from "../state/Store"
+import { renameDeck, selectAppMode, selectDeck } from "../state/Store"
 import SettingsMenu from "./SettingsMenu"
 import { Editor } from "../app/Editor"
+import { setVisibleEditor } from "../state/setters"
 
 
 

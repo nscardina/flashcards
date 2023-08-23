@@ -57,6 +57,14 @@ export const EMPTY_CARD: Card = {
 }
 
 /**
+ * Creates a unique empty `Card` object.
+ * @returns empty `Card`.
+ */
+export function makeEmptyCard(): Card {
+    return structuredClone(EMPTY_CARD)
+}
+
+/**
  * Determines whether an object is a valid `Card` object.
  * @param object object to check.
  * @returns whether the object is a valid `Card`.

@@ -1,15 +1,60 @@
-import { Action, PayloadAction, configureStore } from "@reduxjs/toolkit";
+import { Action, configureStore } from "@reduxjs/toolkit";
 import { Deck } from "../card/deck";
 import { Side } from "../card/side";
-import { Card, EMPTY_CARD } from "../card/card";
+import { EMPTY_CARD } from "../card/card";
 import AppMode from "../app/AppMode";
 import { DeckHistory } from "../card/DeckHistory";
 import { ShowSideProviderName } from "../ShowSideProvider";
 import { ReviewOrder } from "../ReviewOrder";
 import { Editor } from "../app/Editor";
-import { Boxes, CardContentDataType, CardContentType } from "../card/box";
-import CardLayout from "../card/cardlayout";
+import { Boxes } from "../card/box";
 import Dialog from "../app/Dialog";
+import {
+  SetAppModeAction,
+  SetBoxBeingEditedAction,
+  SetDeckAction,
+  SetDeckHistoryAction,
+  SetReviewOrderAction,
+  SetShowSideProviderNameAction,
+  SetVisibleCardIndexAction,
+  SetVisibleDialogAction,
+  SetVisibleEditorAction,
+  SetVisibleSideAction,
+  setAppModeReducer,
+  setBoxBeingEditedReducer,
+  setDeckHistoryReducer,
+  setDeckReducer,
+  setReviewOrderReducer,
+  setShowSideProviderNameReducer,
+  setVisibleCardIndexReducer,
+  setVisibleDialogReducer,
+  setVisibleEditorReducer,
+  setVisibleSideReducer
+} from "./setters";
+import {
+  ChangeCardLayoutAction,
+  ChangeEditorAction,
+  CreateNewCardAction,
+  CreateNewDeckAction,
+  DeleteCardAction,
+  DeleteDeckAction,
+  DeleteDeckAndCreateNewDeckAction,
+  EditCardAction,
+  RenameDeckAction,
+  ViewNextCardAction,
+  ViewPreviousCardAction,
+  changeCardLayoutReducer,
+  changeEditorReducer,
+  createNewCardReducer,
+  createNewDeckReducer,
+  deleteCardReducer,
+  deleteDeckAndCreateNewDeckReducer,
+  deleteDeckReducer,
+  editCardReducer,
+  renameDeckReducer,
+  viewNextCardReducer,
+  viewPreviousCardReducer
+} from "./deck_actions";
 
 
 /**
@@ -57,331 +102,105 @@ const INITIAL_STATE: AppStoreDataType = {
 }
 
 type EditorActions =
-  Action<'editor/newCard'> |
-  PayloadAction<EditCardPayload<any>, 'editor/editCard'> |
-  PayloadAction<number, 'editor/deleteCard'> |
-  Action<'editor/newDeck'> |
-  Action<'editor/deleteDeck'> |
-  PayloadAction<Deck, 'editor/setDeck'> |
-  Action<'editor/deleteDeckAndCreateNewDeck'> |
-  PayloadAction<string, 'editor/renameDeck'> |
-  PayloadAction<Boxes, 'editor/boxBeingEdited'> |
-  PayloadAction<Dialog, 'editor/changeDialog'> |
-  PayloadAction<{ editor: Editor, box: Boxes }, 'editor/changeEditor'> |
-  PayloadAction<CardLayout, 'editor/cardLayout'> |
-  Action<'editor/viewPreviousCard'> |
-  Action<'editor/viewNextCard'>
+  CreateNewCardAction |
+  EditCardAction |
+  DeleteCardAction |
+  CreateNewDeckAction |
+  DeleteDeckAction |
+  DeleteDeckAndCreateNewDeckAction |
+  SetDeckAction |
+  SetDeckHistoryAction |
+  RenameDeckAction |
+  SetBoxBeingEditedAction |
+  SetVisibleDialogAction |
+  ChangeEditorAction |
+  ChangeCardLayoutAction |
+  ViewPreviousCardAction |
+  ViewNextCardAction |
+  SetVisibleCardIndexAction |
+  SetVisibleSideAction
 
 type AppActions =
-  PayloadAction<AppMode, 'app/appMode'> |
-  PayloadAction<ReviewOrder, 'app/reviewOrder'> |
-  PayloadAction<ShowSideProviderName, 'app/showSideProviderName'> |
-  PayloadAction<Editor, 'app/visibleEditor'>
+  SetAppModeAction |
+  SetReviewOrderAction |
+  SetShowSideProviderNameAction |
+  SetVisibleEditorAction
 
 
 function appReducer(state = INITIAL_STATE, action: AppActions):
   AppStoreDataType {
   switch (action.type) {
-    case 'app/appMode':
-      return {
-        ...state,
-        appMode: action.payload
-      }
-    case 'app/reviewOrder':
-      return {
-        ...state,
-        reviewOrder: action.payload
-      }
-    case 'app/showSideProviderName':
-      return {
-        ...state,
-        showSideProviderName: action.payload
-      }
-    case 'app/visibleEditor':
-      return {
-        ...state,
-        visibleEditor: action.payload
-      }
+    case 'app/setAppMode':
+      return setAppModeReducer(state, action)
+
+    case 'app/setReviewOrder':
+      return setReviewOrderReducer(state, action)
+
+    case 'app/setShowSideProviderAction':
+      return setShowSideProviderNameReducer(state, action)
+
+    case 'app/setVisibleEditor':
+      return setVisibleEditorReducer(state, action)
+
     default:
       return state
   }
 }
 
-
-
 function editorReducer(state = INITIAL_STATE, action: EditorActions):
   AppStoreDataType {
   switch (action.type) {
-    case 'editor/newCard':
-      {
-        // If no deck is loaded yet, create a new empty DeckHistory
-        if (state.deck === null) {
-          return {
-            ...state,
-            deck: {
-              name: "Untitled",
-              cards: [structuredClone(EMPTY_CARD)],
-            },
-            appMode: AppMode.EDITING_DECK,
-            visibleCardIndex: 0,
-          }
-        } else {
-          // If deck is loaded, create a new card and place it in the 
-          // deck after the current card
-          return {
-            ...state,
-            deck: {
-              name: state.deck.name,
-              cards: [
-                ...state.deck.cards.slice(
-                  0,
-                  state.visibleCardIndex + 1
-                ),
-                structuredClone(EMPTY_CARD),
-                ...state.deck.cards.slice(
-                  state.visibleCardIndex + 1,
-                  state.deck.cards.length
-                )
-              ]
-            }
-          }
-        }
-      }
+    case 'editor/createNewCard':
+      return createNewCardReducer(state, action)
 
     case 'editor/editCard':
-      {
-        const cards: Card[] = state.deck ? structuredClone(state.deck.cards)
-          : []
-        if (cards.length > 0) {
-          const cardBeingEdited = cards[state.visibleCardIndex]
-          const faceBeingEdited = cardBeingEdited[action.payload.face]
-
-          if (state.visibleEditor === Editor.TEXT) {
-            faceBeingEdited[action.payload.box] = {
-              type: CardContentType.TEXT,
-              data: {
-                text: (
-                  action.payload as
-                  EditCardPayload<CardContentType.TEXT>).text
-              }
-            }
-          }
-        }
-
-        return {
-          ...state,
-          deck: {
-            name: state.deck ? state.deck.name : "Untitled",
-            cards: cards
-          },
-          boxBeingEdited: null,
-          visibleEditor: Editor.NONE,
-        }
-      }
+      return editCardReducer(state, action)
 
     case 'editor/deleteCard':
-      {
-        if (state.deck && action.payload >= 0 &&
-          action.payload === 0 && state.deck.cards.length === 1) {
-          return {
-            ...state,
-            deck: {
-              name: state.deck.name,
-              cards: [structuredClone(EMPTY_CARD)]
-            },
-            visibleCardIndex: 0,
-            appMode: AppMode.EDITING_DECK
-          }
-        }
-        else if (state.deck && action.payload >= 0 &&
-          action.payload < state.deck.cards.length) {
-
-          let newDeck = structuredClone(state.deck)
-          newDeck.cards.splice(action.payload, 1)
-
-          let newCardIndex: number
-
-          if (action.payload === state.visibleCardIndex) {
-            if (state.visibleCardIndex === 0) {
-              newCardIndex = newDeck.cards.length - 1
-            } else {
-              newCardIndex = state.visibleCardIndex - 1
-            }
-          } else if (action.payload >= newDeck.cards.length) {
-            newCardIndex = newDeck.cards.length - 1
-          } else {
-            newCardIndex = state.visibleCardIndex
-          }
-
-          return {
-            ...state,
-            deck: newDeck,
-            visibleCardIndex: newCardIndex,
-            appMode: AppMode.EDITING_DECK,
-          }
-        } else {
-          return state
-        }
-      }
+      return deleteCardReducer(state, action)
 
     case 'editor/setDeck':
-      {
-        return {
-          ...state,
-          deck: action.payload,
-          visibleCardIndex: (action.payload.cards.length > 0) ? 0 : -1
-        }
-      }
+      return setDeckReducer(state, action)
+
+    case 'editor/setDeckHistory':
+      return setDeckHistoryReducer(state, action)
 
     case 'editor/newDeck':
-      {
-        if (state.deck !== null) {
-          return {
-            ...state,
-            visibleDialog: Dialog.NEW_DECK_CONFIRMATION_MESSAGE,
-            appMode: AppMode.EDITING_DECK,
-          }
-        } else {
-          return {
-            ...state,
-            deck: {
-              name: "Untitled",
-              cards: [structuredClone(EMPTY_CARD)]
-            },
-            visibleCardIndex: 0,
-            appMode: AppMode.EDITING_DECK,
-          }
-        }
-      }
+      return createNewDeckReducer(state, action)
 
     case 'editor/deleteDeck':
-      {
-        return {
-          ...state,
-          deck: null,
-          visibleDialog: Dialog.NONE,
-          visibleCardIndex: -1,
-        }
-      }
+      return deleteDeckReducer(state, action)
 
     case 'editor/deleteDeckAndCreateNewDeck':
-      {
-        return {
-          ...state,
-          deck: {
-            name: "Untitled",
-            cards: [structuredClone(EMPTY_CARD)]
-          },
-          visibleDialog: Dialog.NONE,
-          appMode: AppMode.EDITING_DECK
-        }
-      }
+      return deleteDeckAndCreateNewDeckReducer(state, action)
 
     case 'editor/renameDeck':
-      {
-        const deck: Deck = {
-          name: action.payload,
-          cards: (state.deck) ? state.deck.cards : [structuredClone(EMPTY_CARD)]
-        }
+      return renameDeckReducer(state, action)
 
-        return {
-          ...state,
-          deck: deck,
-          visibleEditor: Editor.NONE,
-        }
-      }
+    case 'editor/setBoxBeingEdited':
+      return setBoxBeingEditedReducer(state, action)
 
-    case 'editor/boxBeingEdited':
-      {
-        return {
-          ...state,
-          boxBeingEdited: action.payload
-        }
-      }
-
-    case 'editor/changeDialog':
-      {
-        return {
-          ...state,
-          visibleDialog: action.payload
-        }
-      }
+    case 'editor/setVisibleDialog':
+      return setVisibleDialogReducer(state, action)
 
     case 'editor/changeEditor':
-      {
-        return {
-          ...state,
-          boxBeingEdited: action.payload.box,
-          visibleEditor: action.payload.editor,
-        }
-      }
+      return changeEditorReducer(state, action)
 
-
-    case 'editor/cardLayout':
-      {
-        const cards = state.deck ? [
-          ...structuredClone(state.deck.cards)
-        ] : []
-
-        if (cards.length > 0) {
-          cards[state.visibleCardIndex][state.visibleSide].layout =
-            action.payload
-        }
-
-
-        return {
-          ...state,
-          deck: {
-            name: state.deck ? state.deck.name : "Untitled",
-            cards: cards
-          }
-        }
-      }
+    case 'editor/changeCardLayout':
+      return changeCardLayoutReducer(state, action)
 
     case 'editor/viewPreviousCard':
-      {
-        if (state.deck && state.deck.cards.length > 1 &&
-          state.visibleCardIndex > 0) {
-          return {
-            ...state,
-            visibleCardIndex: state.visibleCardIndex - 1
-          }
-        }
-        else if (state.deck && state.deck.cards.length > 1 &&
-          state.visibleCardIndex === 0) {
-          return {
-            ...state,
-            visibleCardIndex: state.deck.cards.length - 1
-          }
-        }
-        else {
-          return state
-        }
-
-      }
+      return viewPreviousCardReducer(state, action)
 
     case 'editor/viewNextCard':
-      {
-        if (state.deck && state.deck.cards.length > 1 &&
-          state.visibleCardIndex < state.deck.cards.length - 1) {
-          return {
-            ...state,
-            visibleCardIndex: state.visibleCardIndex + 1
-          }
-        }
-        else if (state.deck && state.deck.cards.length > 1 &&
-          state.visibleCardIndex === state.deck.cards.length - 1) {
-          return {
-            ...state,
-            visibleCardIndex: 0
-          }
-        }
-        else {
-          return state
-        }
-      }
+      return viewNextCardReducer(state, action)
+
+    case 'editor/setVisibleCardIndex':
+      return setVisibleCardIndexReducer(state, action)
 
 
+    case 'editor/setVisibleSide':
+      return setVisibleSideReducer(state, action)
 
     default:
       return state
@@ -419,149 +238,10 @@ export const selectVisibleSide =
   (state: AppStoreDataType) => state.visibleSide
 export const selectState = (state: AppStoreDataType) => state
 
-export function addCard(): Action<'editor/newCard'> {
-  return {
-    type: 'editor/newCard'
-  }
-}
-
-type EditCardPayload<T extends CardContentType> = {
-  face: Side,
-  box: Boxes
-} & CardContentDataType<T>
-
-export function editCard<T extends CardContentType>(
-  face: Side, box: Boxes, data: CardContentDataType<T>
-): PayloadAction<EditCardPayload<T>, 'editor/editCard'> {
-  return {
-    type: 'editor/editCard',
-    payload: {
-      face: face,
-      box: box,
-      ...data
-    }
-  }
-}
-
-export function deleteCard(index: number):
-  PayloadAction<number, 'editor/deleteCard'> {
-  return {
-    type: 'editor/deleteCard',
-    payload: index
-  }
-}
-
 export function deleteDeckAndCreateNewDeck():
   Action<'editor/deleteDeckAndCreateNewDeck'> {
   return {
     type: 'editor/deleteDeckAndCreateNewDeck'
-  }
-}
-
-export function newDeck(): Action<'editor/newDeck'> {
-  return {
-    type: 'editor/newDeck'
-  }
-}
-
-export function deleteDeck(): Action<'editor/deleteDeck'> {
-  return {
-    type: 'editor/deleteDeck'
-  }
-}
-
-export function renameDeck(name: string):
-  PayloadAction<string, 'editor/renameDeck'> {
-  return {
-    type: 'editor/renameDeck',
-    payload: name
-  }
-}
-
-export function setAppMode(appMode: AppMode):
-  PayloadAction<AppMode, 'app/appMode'> {
-  return {
-    type: 'app/appMode',
-    payload: appMode
-  }
-}
-
-export function setBoxBeingEdited(box: Boxes):
-  PayloadAction<Boxes, 'editor/boxBeingEdited'> {
-  return {
-    type: 'editor/boxBeingEdited',
-    payload: box
-  }
-}
-
-export function setDeck(deck: Deck):
-  PayloadAction<Deck, 'editor/setDeck'> {
-  return {
-    type: 'editor/setDeck',
-    payload: deck
-  }
-}
-
-export function setReviewOrder(order: ReviewOrder):
-  PayloadAction<ReviewOrder, 'app/reviewOrder'> {
-  return {
-    type: 'app/reviewOrder',
-    payload: order
-  }
-}
-
-export function setShowSideProviderName(provider: ShowSideProviderName):
-  PayloadAction<ShowSideProviderName, 'app/showSideProviderName'> {
-  return {
-    type: 'app/showSideProviderName',
-    payload: provider
-  }
-}
-
-export function setVisibleEditor(editor: Editor):
-  PayloadAction<Editor, 'app/visibleEditor'> {
-  return {
-    type: 'app/visibleEditor',
-    payload: editor
-  }
-}
-
-export function changeDialog(dialog: Dialog):
-  PayloadAction<Dialog, 'editor/changeDialog'> {
-  return {
-    type: 'editor/changeDialog',
-    payload: dialog
-  }
-}
-
-export function changeEditor(editor: Editor, box: Boxes):
-  PayloadAction<{ editor: Editor, box: Boxes }, 'editor/changeEditor'> {
-  return {
-    type: 'editor/changeEditor',
-    payload: {
-      editor: editor,
-      box: box,
-    }
-  }
-}
-
-export function changeLayout(newLayout: CardLayout):
-  PayloadAction<CardLayout, 'editor/cardLayout'> {
-  return {
-    type: "editor/cardLayout",
-    payload: newLayout
-  }
-}
-
-export function viewPreviousCard(): Action<'editor/viewPreviousCard'> {
-  return {
-    type: 'editor/viewPreviousCard'
-  }
-}
-
-export function viewNextCard(): Action<'editor/viewNextCard'> {
-  return {
-    type: 'editor/viewNextCard'
   }
 }
 

@@ -2,10 +2,11 @@ import { Col, Container, Dropdown, Row } from "react-bootstrap"
 import CardLayout from "./cardlayout"
 import { useDispatch, useSelector } from "react-redux"
 import { Side } from "./side"
-import { changeEditor, selectAppMode, selectDeck, selectVisibleCardIndex, selectVisibleSide } from "../state/Store"
+import { selectAppMode, selectDeck, selectVisibleCardIndex, selectVisibleSide } from "../state/Store"
 import AppMode from "../app/AppMode"
 import { Editor } from "../app/Editor"
 import { Box, Boxes, CardContentType,  TextBox, isImageBox, isTextBox, isVideoBox } from "./box"
+import { changeEditor } from "../state/deck_actions"
 
 /**
  * React component holding a message to display in the place where flashcards 

@@ -2,7 +2,8 @@ import { Dropdown } from "react-bootstrap";
 import { ReviewOrder } from "../ReviewOrder";
 import { ShowSideProviderNames } from "../ShowSideProvider";
 import { useDispatch, useSelector } from "react-redux";
-import { selectReviewOrder, selectShowSideProviderName, setReviewOrder, setShowSideProviderName } from "../state/Store";
+import { selectReviewOrder, selectShowSideProviderName } from "../state/Store";
+import { setReviewOrder, setShowSideProviderName } from "../state/setters";
 
 function SettingsMenu() {
 
