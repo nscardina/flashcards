@@ -3,20 +3,18 @@ import FileMenu from "./FileMenu"
 import EditMenu from "./EditMenu"
 import { AddCardButton, DeleteCardButton, EditCardButton, EditingDoneButton, ReviewDeckButton } from "./Buttons"
 import AppMode from "../app/AppMode"
-import { useDispatch, useSelector } from "react-redux"
-import { renameDeck, selectAppMode, selectDeck } from "../state/Store"
 import SettingsMenu from "./SettingsMenu"
 import { Editor } from "../app/Editor"
-import { setVisibleEditor } from "../state/setters"
+import { useContext } from "react"
+import { AppState } from "../App"
 
 
 
 function MenuBar() {
 
-  const appMode = useSelector(selectAppMode)
-  const deck = useSelector(selectDeck)
+  const appState = useContext(AppState)
 
-  const dispatch = useDispatch()
+  const appMode = appState.appMode
 
   return (
     <Container>
@@ -27,7 +25,6 @@ function MenuBar() {
           <Col style={{ width: "min-content" }}><FileMenu /></Col>
           {appMode === AppMode.EDITING_DECK && (
             <>
-              {/* <Col style={{ width: "min-content" }}><EditMenu /></Col> */}
               <Col style={{ width: "min-content" }}><EditMenu /></Col>
             </>
           )}
@@ -56,9 +53,9 @@ function MenuBar() {
           className="ms-auto d-flex justify-content-center align-items-center"
         >
           <span style={{userSelect: 'none'}} 
-            onClick={() => dispatch(setVisibleEditor(Editor.DECK_NAME))}
+            onClick={() => appState.setVisibleEditor(Editor.DECK_NAME)}
           >
-            {deck && deck.name}
+            {appState.deck && appState.deck.name}
           </span>
           
         </Col>

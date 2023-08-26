@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { useDispatch, useSelector } from "react-redux";
-import { selectBoxBeingEdited, selectVisibleSide } from "../state/Store";
 import { Editor } from "../app/Editor";
 import { Boxes } from "../card/box";
-import { changeEditor, editCard } from "../state/deck_actions";
+import { AppState } from "../App";
+import { changeEditor, editCard } from "../state/AppState";
 
 
 
@@ -22,14 +21,9 @@ export type TextEditorPayloadAction = PayloadAction<TextEditorPayload, 'deck/edi
 
 
 function TextEditor() {
-  const dispatch = useDispatch()
+  const appState = useContext(AppState)
 
-  const [inputText, setInputText] = useState<string>("")
-
-  const visibleSide = useSelector(selectVisibleSide)
-  const boxBeingEdited = useSelector(selectBoxBeingEdited)
-
-  if (!boxBeingEdited) {
+  if (!appState.boxBeingEdited) {
     throw new Error(
       "Error: Text editor opened while box being edited not set"
     )
@@ -59,18 +53,19 @@ function TextEditor() {
           </Row>
           <Row>
             <Col className="d-flex justify-content-end">
-            <Button className="ms-auto mt-3" onClick={() => dispatch(changeEditor(
-                Editor.NONE, Boxes.BOX_1))}
+            <Button className="ms-auto mt-3" onClick={
+              () => changeEditor(
+                appState, Editor.NONE, Boxes.BOX_1)}
               >
                 Cancel
               </Button>
               <Button className="ms-3 mt-3" onClick={() => {
 
                 //TODO fix Card face and Box
-                dispatch(editCard(visibleSide,
-                  boxBeingEdited,
+                editCard(appState, appState.visibleSide,
+                  appState.boxBeingEdited!,
                   { text: document.getElementById("inputBox")?.innerText ?? "" },
-                ))
+                )
 
               }}>
                 Submit

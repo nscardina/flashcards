@@ -1,16 +1,12 @@
 import { Dropdown } from "react-bootstrap";
 import { ReviewOrder } from "../ReviewOrder";
 import { ShowSideProviderNames } from "../ShowSideProvider";
-import { useDispatch, useSelector } from "react-redux";
-import { selectReviewOrder, selectShowSideProviderName } from "../state/Store";
-import { setReviewOrder, setShowSideProviderName } from "../state/setters";
+import { useContext } from "react";
+import { AppState } from "../App";
 
 function SettingsMenu() {
 
-  const reviewOrder = useSelector(selectReviewOrder)
-  const showSideProviderName = useSelector(selectShowSideProviderName)
-
-  const dispatch = useDispatch()
+  const appState = useContext(AppState)
 
   return (
     <Dropdown align="end">
@@ -55,13 +51,13 @@ function SettingsMenu() {
           Review order:
           <Dropdown>
             <Dropdown.Toggle className="flashcard-button border-0">
-              {reviewOrder}
+              {appState.reviewOrder}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {
                 Object.values(ReviewOrder).map(order => (
                   <Dropdown.Item key={order}
-                    onClick={() => dispatch(setReviewOrder(order))}
+                    onClick={() => appState.setReviewOrder(order)}
                   >
                     {order}
                   </Dropdown.Item>
@@ -74,15 +70,15 @@ function SettingsMenu() {
           Show side of card:
           <Dropdown>
             <Dropdown.Toggle className="flashcard-button border-0">
-              {showSideProviderName.charAt(0).toUpperCase() +
-                showSideProviderName.substring(1).toLowerCase()}
+              {appState.showSideProviderName.charAt(0).toUpperCase() +
+                appState.showSideProviderName.substring(1).toLowerCase()}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {
                 (ShowSideProviderNames).map(
                   providerName => (
                     <Dropdown.Item key={providerName} onClick={
-                      () => dispatch(setShowSideProviderName(providerName))
+                      () => appState.setShowSideProviderName(providerName)
                     }>
                       {providerName.charAt(0).toUpperCase() +
                         providerName.substring(1).toLowerCase()}

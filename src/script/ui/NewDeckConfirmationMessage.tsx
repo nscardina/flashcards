@@ -1,12 +1,12 @@
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
-import { useDispatch } from "react-redux"
-import { deleteDeckAndCreateNewDeck } from "../state/Store"
 import Dialog from "../app/Dialog"
-import { setVisibleDialog } from "../state/setters"
+import { useContext } from "react"
+import { AppState } from "../App"
+import { makeEmptyDeck } from "../card/deck"
 
 function NewDeckConfirmationMessage() {
 
-  const dispatch = useDispatch()
+  const appState = useContext(AppState)
 
   return (
     <Modal show={true}>
@@ -27,7 +27,7 @@ function NewDeckConfirmationMessage() {
             <Col className="d-inline-block me-auto">
               <Button
                 onClick={() =>
-                  dispatch(setVisibleDialog(Dialog.NONE))}
+                  appState.setVisibleDialog(Dialog.NONE)}
               >
                 Cancel
               </Button>
@@ -35,7 +35,10 @@ function NewDeckConfirmationMessage() {
             <Col xs="auto"
               className="d-inline-block">
               <Button variant="danger" className="me-3"
-                onClick={() => dispatch(deleteDeckAndCreateNewDeck())}
+                onClick={() => {
+                  appState.setDeck(makeEmptyDeck())
+                  appState.setVisibleDialog(Dialog.NONE)
+                }}
               >Delete Deck</Button>
               <Button>Save Deck...</Button>
             </Col>

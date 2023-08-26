@@ -1,100 +1,45 @@
-/**
- * Different types of content that can appear on a flashcard.
- */
-export enum CardContentType {
+import { CardContentData, CardContentDataType } from "./CardContentData"
 
-    /**
-     * Enum value representing the "text" type of content that can appear on a 
-     * flashcard.
-     */
-    TEXT,
 
-    /**
-     * Enum value representing the "image" type of content that can appear on a 
-     * flashcard.
-     */
-    IMAGE,
 
-    /**
-     * Enum value representing the "video link" type of content that can appear 
-     * on a flashcard.
-     */
-    VIDEO_LINK,
-
-}
-
-/**
- * Type representing the type of data that is contained in a {@linkcode Box}
- * object depending on the {@linkcode CardContentType} contained in its 
- * {@linkcode Box.type type} field. The possibilities are detailed below:
- * - `CardContentDataType<CardContentType.TEXT> = { text: string }`
- * - `CardContentDataType<CardContentType.IMAGE> = { imageBase64: string } `
- * - `CardContentDataType<CardContentType.VIDEO_LINK> = { link: string }`
- */
-export type CardContentDataType<T extends CardContentType> = 
-    T extends CardContentType.TEXT ? { text: string } :
-    T extends CardContentType.IMAGE ? { imageBase64: string } :
-    T extends CardContentType.VIDEO_LINK ? { link: string } : never
-
-/**
- * Type representing a `Box` object, which is a field on a flashcard which can 
- * contain either text, image, or video content.
- */
-export type Box<T extends CardContentType> = {
+export interface Box<T extends CardContentData.Type> {
     type: T,
     data: CardContentDataType<T> | null
 }
 
-/**
- * Type representing a field on a flashcard which holds text content.
- */
-export type TextBox = Box<CardContentType.TEXT>
+export class TextBox implements Box<CardContentData.Type.TEXT> {
 
-/**
- * Determines if an object is of type {@linkcode TextBox}.
- * @param object object to check.
- * @returns whether the object is a valid `TextBox` object.
- */
-export function isTextBox(object: unknown): object is TextBox {
-    return typeof(object) === "object" && !!object &&
-        "type" in object && object.type === CardContentType.TEXT &&
-        "data" in object && typeof(object.data) === "object" && !!object.data &&
-        "text" in object.data && typeof(object.data.text) === "string"
+    readonly type = CardContentData.Type.TEXT
+    data: CardContentDataType<CardContentData.Type.TEXT> | null
+
+    constructor(data?: CardContentDataType<CardContentData.Type.TEXT> | null) {
+        this.data = data ?? null
+    }
+
 }
 
-/**
- * Type representing a field on a flashcard which holds image content.
- */
-export type ImageBox = Box<CardContentType.IMAGE>
+export class ImageBox implements Box<CardContentData.Type.IMAGE> {
 
-/**
- * Determines if an object is of type {@linkcode ImageBox}.
- * @param object object to check.
- * @returns whether the object is a valid `ImageBox` object.
- */
-export function isImageBox(object: unknown): object is ImageBox {
-    return typeof(object) === "object" && !!object &&
-        "type" in object && object.type === CardContentType.IMAGE &&
-        "data" in object && typeof(object.data) === "object" && !!object.data &&
-        "imageBase64" in object.data && 
-        typeof(object.data.imageBase64) === "string"
+    readonly type = CardContentData.Type.IMAGE
+    data: CardContentDataType<CardContentData.Type.IMAGE> | null
+
+    constructor(data?: CardContentDataType<CardContentData.Type.IMAGE> | null) {
+        this.data = data ?? null
+    }
+
 }
 
-/**
- * Type representing a field on a flashcard which holds video content.
- */
-export type VideoBox = Box<CardContentType.VIDEO_LINK>
+export class VideoLinkBox implements Box<CardContentData.Type.VIDEO_LINK> {
 
-/**
- * Determines if an object is of type {@linkcode VideoBox}.
- * @param object object to check.
- * @returns whether the object is a valid `VideoBox`.
- */
-export function isVideoBox(object: unknown): object is VideoBox {
-    return typeof(object) === "object" && !!object &&
-        "type" in object && object.type === CardContentType.VIDEO_LINK && 
-        "data" in object && typeof(object.data) === "object" && !!object.data &&
-        "link" in object.data && typeof(object.data.link) === "string"
+    readonly type = CardContentData.Type.VIDEO_LINK
+    data: CardContentDataType<CardContentData.Type.VIDEO_LINK> | null
+
+    constructor(
+        data?: CardContentDataType<CardContentData.Type.VIDEO_LINK> | null
+    ) {
+        this.data = data ?? null
+    }
+
 }
 
 /**
@@ -105,7 +50,9 @@ export function isVideoBox(object: unknown): object is VideoBox {
  * @returns whether the object is a valid `Box`.
  */
 export function isBox(object: unknown): object is Box<any> {
-    return isTextBox(object) || isImageBox(object) || isVideoBox(object)
+    return object instanceof TextBox ||
+        object instanceof ImageBox ||
+        object instanceof VideoLinkBox
 }
 
 /**

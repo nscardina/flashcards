@@ -1,12 +1,15 @@
 import { Col, Container, Dropdown, Row } from "react-bootstrap"
 import CardLayout from "./cardlayout"
-import { useDispatch, useSelector } from "react-redux"
 import { Side } from "./side"
-import { selectAppMode, selectDeck, selectVisibleCardIndex, selectVisibleSide } from "../state/Store"
 import AppMode from "../app/AppMode"
 import { Editor } from "../app/Editor"
-import { Box, Boxes, CardContentType,  TextBox, isImageBox, isTextBox, isVideoBox } from "./box"
-import { changeEditor } from "../state/deck_actions"
+import { Box, Boxes, ImageBox, TextBox, VideoLinkBox } from "./box"
+import { useContext } from "react"
+import { AppState } from "../App"
+import { changeEditor } from "../state/AppState"
+import { CardContentData } from "./CardContentData"
+
+
 
 /**
  * React component holding a message to display in the place where flashcards 
@@ -27,11 +30,11 @@ function NoDeckOpenedMessage() {
 
 function getEditorTypeFromBoxType(box: Box<any> | null): Editor {
   if (box) {
-    if (isTextBox(box)) {
+    if (box instanceof TextBox) {
       return Editor.TEXT
-    } else if (isImageBox(box)) {
+    } else if (box instanceof ImageBox) {
       return Editor.IMAGE
-    } else if (isVideoBox(box)) {
+    } else if (box instanceof VideoLinkBox) {
       return Editor.VIDEO_LINK
     }
   }
@@ -39,14 +42,14 @@ function getEditorTypeFromBoxType(box: Box<any> | null): Editor {
 }
 
 function getOnClickFuncFromEditorType(type: Editor, box: Boxes): () => any {
-  const dispatch = useDispatch()
+  const appState = useContext(AppState)
   switch (type) {
     case Editor.TEXT:
-      return () => dispatch(changeEditor(Editor.TEXT, box))
+      return () => changeEditor(appState, Editor.TEXT, box)
     case Editor.IMAGE:
-      return () => dispatch(changeEditor(Editor.IMAGE, box))
+      return () => changeEditor(appState, Editor.IMAGE, box)
     case Editor.VIDEO_LINK:
-      return () => dispatch(changeEditor(Editor.VIDEO_LINK, box))
+      return () => changeEditor(appState, Editor.VIDEO_LINK, box)
     default:
       return () => {}
   }
@@ -70,14 +73,13 @@ function OneBox({ appMode, box }: {
   box: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let type: Editor = Editor.NONE
 
-  if (deck && visibleCardIndex >= 0) {
-    const box1 = deck.cards[visibleCardIndex][visibleSide].box1
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const box1 = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide].box1
     type = getEditorTypeFromBoxType(box1)
   }
 
@@ -115,14 +117,13 @@ function TwoBoxesVertical({ appMode, box1, box2 }: {
   box2: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let [type1, type2] = [Editor.NONE, Editor.NONE]
 
-  if (deck && visibleCardIndex >= 0) {
-    const side = deck.cards[visibleCardIndex][visibleSide]
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const side = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide]
     type1 = getEditorTypeFromBoxType(side.box1)
     type2 = getEditorTypeFromBoxType(side.box2)
   }
@@ -169,14 +170,13 @@ function TwoBoxesHorizontal({ appMode, box1, box2 }: {
   box2: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let [type1, type2] = [Editor.NONE, Editor.NONE]
 
-  if (deck && visibleCardIndex >= 0) {
-    const side = deck.cards[visibleCardIndex][visibleSide]
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const side = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide]
     type1 = getEditorTypeFromBoxType(side.box1)
     type2 = getEditorTypeFromBoxType(side.box2)
   }
@@ -226,14 +226,13 @@ function OneBoxLeftTwoBoxesRight({ appMode, box1, box2, box3 }: {
   box3: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
 
-  if (deck && visibleCardIndex >= 0) {
-    const side = deck.cards[visibleCardIndex][visibleSide]
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const side = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide]
     type1 = getEditorTypeFromBoxType(side.box1)
     type2 = getEditorTypeFromBoxType(side.box2)
     type3 = getEditorTypeFromBoxType(side.box3)
@@ -294,14 +293,13 @@ function OneBoxRightTwoBoxesLeft({ appMode, box1, box2, box3 }: {
   box3: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
 
-  if (deck && visibleCardIndex >= 0) {
-    const side = deck.cards[visibleCardIndex][visibleSide]
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const side = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide]
     type1 = getEditorTypeFromBoxType(side.box1)
     type2 = getEditorTypeFromBoxType(side.box2)
     type3 = getEditorTypeFromBoxType(side.box3)
@@ -362,14 +360,13 @@ function OneBoxTopTwoBoxesBottom({ appMode, box1, box2, box3 }: {
   box3: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
 
-  if (deck && visibleCardIndex >= 0) {
-    const side = deck.cards[visibleCardIndex][visibleSide]
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const side = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide]
     type1 = getEditorTypeFromBoxType(side.box1)
     type2 = getEditorTypeFromBoxType(side.box2)
     type3 = getEditorTypeFromBoxType(side.box3)
@@ -428,14 +425,13 @@ function OneBoxBottomTwoBoxesTop({ appMode, box1, box2, box3 }: {
   box3: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
 
-  if (deck && visibleCardIndex >= 0) {
-    const side = deck.cards[visibleCardIndex][visibleSide]
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const side = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide]
     type1 = getEditorTypeFromBoxType(side.box1)
     type2 = getEditorTypeFromBoxType(side.box2)
     type3 = getEditorTypeFromBoxType(side.box3)
@@ -498,15 +494,14 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
   box4: JSX.Element,
 }) {
 
-  const deck = useSelector(selectDeck)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
-  const visibleSide = useSelector(selectVisibleSide)
+  const appState = useContext(AppState)
 
   let [type1, type2, type3, type4] = 
   [Editor.NONE, Editor.NONE, Editor.NONE, Editor.NONE]
 
-  if (deck && visibleCardIndex >= 0) {
-    const side = deck.cards[visibleCardIndex][visibleSide]
+  if (appState.deck && appState.visibleCardIndex >= 0) {
+    const side = appState.deck.cards[
+      appState.visibleCardIndex][appState.visibleSide]
     type1 = getEditorTypeFromBoxType(side.box1)
     type2 = getEditorTypeFromBoxType(side.box2)
     type3 = getEditorTypeFromBoxType(side.box3)
@@ -558,7 +553,7 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
  */
 function EditModeBox({box}: {box: Boxes}) {
 
-  const dispatch = useDispatch()
+  const appState = useContext(AppState)
 
   return (
     <div className="d-flex w-100 h-100 align-items-center justify-content-center">
@@ -580,19 +575,19 @@ function EditModeBox({box}: {box: Boxes}) {
         <Dropdown.Menu>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
-              dispatch(changeEditor(Editor.TEXT, box))
+              changeEditor(appState, Editor.TEXT, box)
             }}>
             <span className="material-symbols-outlined">article</span>&nbsp;Text
           </Dropdown.Item>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
-              dispatch(changeEditor(Editor.IMAGE, box))
+              changeEditor(appState, Editor.IMAGE, box)
             }}>
             <span className="material-symbols-outlined">image</span>&nbsp;Image
           </Dropdown.Item>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
-              dispatch(changeEditor(Editor.VIDEO_LINK, box))
+              changeEditor(appState, Editor.VIDEO_LINK, box)
             }}>
             <span className="material-symbols-outlined">play_arrow</span>&nbsp;Video
           </Dropdown.Item>
@@ -610,18 +605,16 @@ function EditModeBox({box}: {box: Boxes}) {
  */
 function CardDisplay() {
 
-  const appMode = useSelector(selectAppMode)
-  const deck = useSelector(selectDeck)
-  const visibleSide = useSelector(selectVisibleSide)
-  const visibleCardIndex = useSelector(selectVisibleCardIndex)
+  const appState = useContext(AppState)
+  const appMode = appState.appMode
 
-  if (!deck) {
+  if (!appState.deck) {
     return <NoDeckOpenedMessage />
   }
 
   
-  const visibleCard = deck.cards[visibleCardIndex]
-  const visibleFace = (visibleSide === Side.FRONT) ?
+  const visibleCard = appState.deck.cards[appState.visibleCardIndex]
+  const visibleFace = (appState.visibleSide === Side.FRONT) ?
     visibleCard.front : visibleCard.back
 
   const [box1, box2, box3, box4] = [
@@ -630,7 +623,7 @@ function CardDisplay() {
     visibleFace.box3,
     visibleFace.box4,
   ].map((box, index) => {
-    if (appMode === AppMode.EDITING_DECK && box === null) {
+    if (appState.appMode === AppMode.EDITING_DECK && box === null) {
       return <EditModeBox box={(() => {
         switch (index) {
           case 0: return Boxes.BOX_1
@@ -643,16 +636,16 @@ function CardDisplay() {
     } else if (box === null) {
       return <></>
     } else if (
-      box.type === CardContentType.TEXT && box.data && 
+      box.type === CardContentData.Type.TEXT && box.data && 
       (box as TextBox).data!.text
     ) {
       return <>{(box as TextBox).data!.text}</>
     } else if (
-      box.type === CardContentType.IMAGE
+      box.type === CardContentData.Type.IMAGE
     ) {
       return <>Image</>
     } else if (
-      box.type === CardContentType.VIDEO_LINK
+      box.type === CardContentData.Type.VIDEO_LINK
     ) {
       return <>Video</>
     } else {

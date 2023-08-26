@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
 import { Boxes } from "../card/box";
 import { Editor } from "../app/Editor";
-import { changeEditor, renameDeck } from "../state/deck_actions";
+import { changeEditor } from "../state/AppState";
+import { AppState } from "../App";
 
 
 
@@ -21,9 +21,7 @@ export type DeckEditorPayloadAction = PayloadAction<DeckEditorPayload, 'deck/edi
 
 
 function DeckNameEditor() {
-  const dispatch = useDispatch()
-
-  const [inputText, setInputText] = useState<string>("")
+  const appState = useContext(AppState)
 
   const [editor] = useState(() => withReact(createEditor()))
 
@@ -49,17 +47,20 @@ function DeckNameEditor() {
           </Row>
           <Row>
             <Col className="d-flex justify-content-end">
-            <Button className="ms-auto mt-3" onClick={() => dispatch(changeEditor(
-                Editor.NONE, Boxes.BOX_1))}
+            <Button className="ms-auto mt-3" onClick={() => changeEditor(
+                appState, Editor.NONE, Boxes.BOX_1)
+              }
               >
                 Cancel
               </Button>
               <Button className="ms-3 mt-3" onClick={() => {
 
                 //TODO fix Card face and Box
-                dispatch(renameDeck(
+                if (!!appState.deck) {
+                  appState.deck.name = 
                   document.getElementById("deckNameEditorBox")?.innerText ?? ""
-                ))
+                  appState.setVisibleEditor(Editor.NONE)
+                }
 
               }}>
                 Submit
