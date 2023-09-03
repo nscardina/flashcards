@@ -37,26 +37,26 @@ export type Card = {
     readonly back: CardFace
 }
 
-const DEFAULT_CARD: Card = {
-    front: {
+const DEFAULT_CARD: Card = Object.freeze({
+    front: Object.freeze({
         layout: CardLayout.ONE_BOX,
-        box: {
+        box: Object.freeze({
             "1": null,
             "2": null,
             "3": null,
             "4": null,
-        }
-    },
-    back: {
+        })
+    }),
+    back: Object.freeze({
         layout: CardLayout.ONE_BOX,
-        box: {
+        box: Object.freeze({
             "1": null,
             "2": null,
             "3": null,
             "4": null,
-        }
-    }
-}
+        })
+    })
+})
 
 export namespace Card {
     export function isCard(variable: unknown): variable is Card {

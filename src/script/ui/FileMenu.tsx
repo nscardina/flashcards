@@ -80,7 +80,25 @@ function FileMenu() {
         </Dropdown.Item>
 
         <Dropdown drop="end" className="dropdown-item ps-1 pe-1 pt-0 pb-0">
-          <Dropdown.Toggle style={{ border: "0px black" }} className="d-flex align-items-center flashcard-button w-100 btn-block">
+
+          <style>
+            {`
+            #open-recent-toggle-id:disabled {
+              background-color: inherit;
+            }
+
+            .dropdown-item:has(> #open-recent-toggle-id):active {
+              background-color: rgba(0, 0, 0, 0);
+            }
+            `}
+          </style>
+          
+          <Dropdown.Toggle 
+            style={{ border: "0px black" }} 
+            className="d-flex align-items-center flashcard-button w-100 btn-block"
+            disabled={appState.recentFiles.length === 0}
+            id="open-recent-toggle-id"
+          >
             <span className="w-100 d-block align-items-center d-flex">
               <MSIcon name="menu_open" />
               &nbsp;Open Recent...
@@ -114,6 +132,7 @@ function FileMenu() {
               appState.setVisibleDialog(Dialog.NEW_DECK_CONFIRMATION_MESSAGE)
             }
           }
+          disabled={appState.deck === null}
         >
           <span className="material-symbols-outlined" aria-hidden="true">close</span> &nbsp;Close Deck
         </Dropdown.Item>
@@ -121,10 +140,11 @@ function FileMenu() {
           onClick={appState.deck !== null ? 
             () => downloadDeck(appState.deck!) : () => { }
           }
+          disabled={appState.deck === null}
           className="d-flex align-items-center">
           <span className="material-symbols-outlined" aria-hidden="true">download</span> &nbsp;Download .deck file...
         </Dropdown.Item>
-        <Dropdown.Item className="d-flex align-items-center"
+        <Dropdown.Item className="d-flex align-items-center" disabled={appState.deck === null}
           onClick={
             () => {
               appState.setVisibleEditor(Editor.DECK_NAME)

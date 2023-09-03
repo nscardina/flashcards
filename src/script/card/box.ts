@@ -19,10 +19,10 @@ export namespace TextBox {
     }
     
     export function of(text: string): TextBox {
-        return {
+        return Object.freeze({
             type: CardContentData.Type.TEXT,
             text: text
-        }
+        })
     }
 }
 
@@ -43,10 +43,10 @@ export namespace ImageBox {
     }
 
     export function of(base64ImageData: string): ImageBox {
-        return {
+        return Object.freeze({
             type: CardContentData.Type.IMAGE,
             base64ImageData: base64ImageData
-        }
+        })
     }
 }
 
@@ -68,10 +68,10 @@ export namespace VideoLinkBox {
     }
     
     export function of(link: string): VideoLinkBox {
-        return {
+        return Object.freeze({
             type: CardContentData.Type.VIDEO_LINK,
             link: link
-        }
+        })
     }
 }
 

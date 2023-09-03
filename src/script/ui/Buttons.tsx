@@ -19,11 +19,14 @@ function createNewCard(state: AppStateType) {
     // Create a deck containing all existing cards, and insert a new blank card 
     // after the currently visible card. Set the new card as the currently 
     // visible card.
-    state.deck.cards = [
-      ...state.deck.cards.slice(0, state.visibleCardIndex + 1),
-      Card.makeDefault(),
-      ...state.deck.cards.slice(state.visibleCardIndex + 1)
-    ],
+    state.setDeck({
+      ...state.deck,
+      cards: [
+        ...state.deck.cards.slice(0, state.visibleCardIndex + 1),
+        Card.makeDefault(),
+        ...state.deck.cards.slice(state.visibleCardIndex + 1)
+      ]
+    })
     state.setBoxBeingEdited(null),
     state.setVisibleEditor(Editor.NONE),
     state.setVisibleCardIndex(state.visibleCardIndex + 1)
@@ -36,7 +39,10 @@ function deleteCard(state: AppStateType, index: number) {
   // If the deck only contains one card, create a new deck with only one empty 
   // card in it. Set the app mode to EDITING_DECK.
   if (state.deck !== null && index === 0 && state.deck.cards.length === 1) {
-    state.deck.cards = [Card.makeDefault()]
+    state.setDeck({
+      ...state.deck,
+      cards: [Card.makeDefault()]
+    })
     state.setVisibleCardIndex(0)
     state.setAppMode(AppMode.EDITING_DECK)
   }
@@ -52,7 +58,7 @@ function deleteCard(state: AppStateType, index: number) {
       // visible card to the last card in the deck (which is guaranteed to 
       // exist, as the deck will always have at least two cards at this point).
       if (state.visibleCardIndex === 0) {
-        state.setVisibleCardIndex(state.visibleCardIndex - 1)
+        state.setVisibleCardIndex(state.deck.cards.length - 1)
       }
       // If the currently visible card is not the first one in the deck, then 
       // set the currently visible card to the previous one in the deck.

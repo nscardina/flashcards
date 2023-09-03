@@ -3,11 +3,25 @@ import CardLayout from "../card/cardlayout"
 import { AppStateType } from "../state/AppState"
 import { AppState } from "../App"
 import { useContext } from "react"
+import { Side } from "../card/side"
 
 function changeCardLayout(state: AppStateType, layout: CardLayout): void {
   if (state.deck !== null && state.deck.cards.length > 0) {
-    state.deck.cards[state.visibleCardIndex][state.visibleSide].layout = 
-      layout
+    const updatedCard = (state.visibleSide === Side.FRONT) ? {
+      front: {
+        ...state.deck.cards[state.visibleCardIndex].front,
+        layout: layout
+      },
+      back: state.deck.cards[state.visibleCardIndex].back,
+    } :  {
+      front: state.deck.cards[state.visibleCardIndex].front,
+      back: {
+        ...state.deck.cards[state.visibleCardIndex].back,
+        layout: layout
+      }
+    }
+
+    state.deck.cards[state.visibleCardIndex] = updatedCard
   }
 }
 
