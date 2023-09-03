@@ -1,4 +1,5 @@
-import { Deck } from "../card/deck";
+import { Deck } from "../card/deck"
+
 
 export function downloadDeck(deck: Deck) {
 
@@ -20,5 +21,6 @@ export async function uploadDeck(files: FileList): Promise<Deck> {
     }
 
     throw new Error("Unable to load deck")
-
 }
+
+

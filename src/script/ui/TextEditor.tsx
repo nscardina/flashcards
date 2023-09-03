@@ -2,21 +2,15 @@ import { useContext, useState } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
-import { PayloadAction } from "@reduxjs/toolkit";
 import { Editor } from "../app/Editor";
-import { Boxes } from "../card/box";
 import { AppState } from "../App";
 import { changeEditor, editCard } from "../state/AppState";
 
 
 
 export type TextEditorPayload = {
-
   text: string
 }
-export type TextEditorPayloadAction = PayloadAction<TextEditorPayload, 'deck/editCard'>
-
-
 
 
 
@@ -55,7 +49,7 @@ function TextEditor() {
             <Col className="d-flex justify-content-end">
             <Button className="ms-auto mt-3" onClick={
               () => changeEditor(
-                appState, Editor.NONE, Boxes.BOX_1)}
+                appState, Editor.NONE, 1)}
               >
                 Cancel
               </Button>

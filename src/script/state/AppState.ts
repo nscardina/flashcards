@@ -4,7 +4,7 @@ import AppMode from "../app/AppMode"
 import Dialog from "../app/Dialog"
 import { Editor } from "../app/Editor"
 import { CardContentData, CardContentDataType, getCardContentDataType } from "../card/CardContentData"
-import { Boxes, ImageBox, TextBox, VideoLinkBox } from "../card/box"
+import { BoxNumber, ImageBox, TextBox, VideoLinkBox } from "../card/box"
 import { Deck } from "../card/deck"
 import { Side } from "../card/side"
 
@@ -33,8 +33,8 @@ type ReactSetter<T> = React.Dispatch<React.SetStateAction<T>>
 export type AppStateType = {
     readonly appMode: AppMode,
     readonly setAppMode: ReactSetter<AppMode>
-    readonly boxBeingEdited: Boxes | null,
-    readonly setBoxBeingEdited: ReactSetter<Boxes | null>
+    readonly boxBeingEdited: BoxNumber | null,
+    readonly setBoxBeingEdited: ReactSetter<BoxNumber | null>
     readonly deck: Deck | null,
     readonly setDeck: ReactSetter<Deck | null>,
     readonly recentFiles: FileSystemFileHandle[],
@@ -61,7 +61,7 @@ export const NO_CARD_FOCUSED: number = -1
 
 
 
-export function changeEditor(state: AppStateType, editor: Editor, box: Boxes) {
+export function changeEditor(state: AppStateType, editor: Editor, box: BoxNumber) {
     state.setBoxBeingEdited(box)
     state.setVisibleEditor(editor)
 }
@@ -69,7 +69,7 @@ export function changeEditor(state: AppStateType, editor: Editor, box: Boxes) {
 export function editCard<T extends CardContentData.Type>(
     state: AppStateType, 
     face: Side, 
-    box: Boxes, 
+    box: BoxNumber, 
     data: CardContentDataType<T>
   ) {
     // Copy old set of cards if they exist, and create an empty set of cards 
@@ -79,22 +79,28 @@ export function editCard<T extends CardContentData.Type>(
       switch (getCardContentDataType(data)) {
         case CardContentData.Type.TEXT:
           {
-            state.deck.cards[state.visibleCardIndex][face][box] = 
-              new TextBox(data as CardContentDataType<CardContentData.Type.TEXT>)
+            state.deck.cards[state.visibleCardIndex][face].box[box] = 
+              TextBox.of(
+                (data as CardContentDataType<CardContentData.Type.TEXT>).text
+              )
           }
           break
         case CardContentData.Type.IMAGE:
           {
-            state.deck.cards[state.visibleCardIndex][face][box] = 
-              new ImageBox(
-                data as CardContentDataType<CardContentData.Type.IMAGE>)
+            state.deck.cards[state.visibleCardIndex][face].box[box] =
+              ImageBox.of(
+                (data as CardContentDataType<CardContentData.Type.IMAGE>)
+                .imageBase64
+              )
           }
           break
         case CardContentData.Type.VIDEO_LINK:
           {
-            state.deck.cards[state.visibleCardIndex][face][box] =
-              new VideoLinkBox(
-                data as CardContentDataType<CardContentData.Type.VIDEO_LINK>)
+            state.deck.cards[state.visibleCardIndex][face].box[box] = 
+            VideoLinkBox.of(
+              (data as CardContentDataType<CardContentData.Type.VIDEO_LINK>)
+                .link
+            )
           }
       }
     }

@@ -3,7 +3,7 @@ import CardLayout from "./cardlayout"
 import { Side } from "./side"
 import AppMode from "../app/AppMode"
 import { Editor } from "../app/Editor"
-import { Box, Boxes, ImageBox, TextBox, VideoLinkBox } from "./box"
+import { Box, BoxNumber, TextBox, getEditorTypeFromBoxType } from "./box"
 import { useContext } from "react"
 import { AppState } from "../App"
 import { changeEditor } from "../state/AppState"
@@ -28,22 +28,18 @@ function NoDeckOpenedMessage() {
   )
 }
 
-function getEditorTypeFromBoxType(box: Box<any> | null): Editor {
-  if (box) {
-    if (box instanceof TextBox) {
-      return Editor.TEXT
-    } else if (box instanceof ImageBox) {
-      return Editor.IMAGE
-    } else if (box instanceof VideoLinkBox) {
-      return Editor.VIDEO_LINK
-    }
-  }
-  return Editor.NONE
-}
-
-function getOnClickFuncFromEditorType(type: Editor, box: Boxes): () => any {
+/**
+ * Returns the `onClick` function to be bound to a box to edit its contents. 
+ * This function will display an editor which can update the contents of a 
+ * specific box.
+ * @param editor {@linkcode Editor} to use.
+ * @param box box to edit.
+ * @returns `onClick` function which can be bound to a React `button`.
+ */
+function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber): 
+() => any {
   const appState = useContext(AppState)
-  switch (type) {
+  switch (editor) {
     case Editor.TEXT:
       return () => changeEditor(appState, Editor.TEXT, box)
     case Editor.IMAGE:
@@ -79,11 +75,11 @@ function OneBox({ appMode, box }: {
 
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const box1 = appState.deck.cards[
-      appState.visibleCardIndex][appState.visibleSide].box1
+      appState.visibleCardIndex][appState.visibleSide].box[1]
     type = getEditorTypeFromBoxType(box1)
   }
 
-  let func = getOnClickFuncFromEditorType(type, Boxes.BOX_1)
+  let func = getOnClickFuncFromEditorType(type, 1)
   
 
   return (
@@ -124,12 +120,12 @@ function TwoBoxesVertical({ appMode, box1, box2 }: {
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
       appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box1)
-    type2 = getEditorTypeFromBoxType(side.box2)
+    type1 = getEditorTypeFromBoxType(side.box[1])
+    type2 = getEditorTypeFromBoxType(side.box[2])
   }
 
-  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
-  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+  const func1 = getOnClickFuncFromEditorType(type1, 1)
+  const func2 = getOnClickFuncFromEditorType(type2, 2)
 
 
   return (
@@ -177,12 +173,12 @@ function TwoBoxesHorizontal({ appMode, box1, box2 }: {
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
       appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box1)
-    type2 = getEditorTypeFromBoxType(side.box2)
+    type1 = getEditorTypeFromBoxType(side.box[1])
+    type2 = getEditorTypeFromBoxType(side.box[2])
   }
 
-  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
-  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
+  const func1 = getOnClickFuncFromEditorType(type1, 1)
+  const func2 = getOnClickFuncFromEditorType(type2, 2)
 
   return (
     <Container className="h-100 d-flex flex-column">
@@ -233,14 +229,14 @@ function OneBoxLeftTwoBoxesRight({ appMode, box1, box2, box3 }: {
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
       appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box1)
-    type2 = getEditorTypeFromBoxType(side.box2)
-    type3 = getEditorTypeFromBoxType(side.box3)
+    type1 = getEditorTypeFromBoxType(side.box[1])
+    type2 = getEditorTypeFromBoxType(side.box[2])
+    type3 = getEditorTypeFromBoxType(side.box[3])
   }
 
-  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
-  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
-  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+  const func1 = getOnClickFuncFromEditorType(type1, 1)
+  const func2 = getOnClickFuncFromEditorType(type2, 2)
+  const func3 = getOnClickFuncFromEditorType(type3, 3)
 
   return (
     <Row className="h-100">
@@ -300,14 +296,14 @@ function OneBoxRightTwoBoxesLeft({ appMode, box1, box2, box3 }: {
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
       appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box1)
-    type2 = getEditorTypeFromBoxType(side.box2)
-    type3 = getEditorTypeFromBoxType(side.box3)
+    type1 = getEditorTypeFromBoxType(side.box[1])
+    type2 = getEditorTypeFromBoxType(side.box[2])
+    type3 = getEditorTypeFromBoxType(side.box[3])
   }
 
-  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
-  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
-  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+  const func1 = getOnClickFuncFromEditorType(type1, 1)
+  const func2 = getOnClickFuncFromEditorType(type2, 2)
+  const func3 = getOnClickFuncFromEditorType(type3, 3)
 
   return (
     <Row className="h-100">
@@ -367,14 +363,14 @@ function OneBoxTopTwoBoxesBottom({ appMode, box1, box2, box3 }: {
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
       appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box1)
-    type2 = getEditorTypeFromBoxType(side.box2)
-    type3 = getEditorTypeFromBoxType(side.box3)
+    type1 = getEditorTypeFromBoxType(side.box[1])
+    type2 = getEditorTypeFromBoxType(side.box[2])
+    type3 = getEditorTypeFromBoxType(side.box[3])
   }
 
-  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
-  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
-  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+  const func1 = getOnClickFuncFromEditorType(type1, 1)
+  const func2 = getOnClickFuncFromEditorType(type2, 2)
+  const func3 = getOnClickFuncFromEditorType(type3, 3)
 
   return (
     <Container className="h-100 d-flex flex-column">
@@ -432,14 +428,14 @@ function OneBoxBottomTwoBoxesTop({ appMode, box1, box2, box3 }: {
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
       appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box1)
-    type2 = getEditorTypeFromBoxType(side.box2)
-    type3 = getEditorTypeFromBoxType(side.box3)
+    type1 = getEditorTypeFromBoxType(side.box[1])
+    type2 = getEditorTypeFromBoxType(side.box[2])
+    type3 = getEditorTypeFromBoxType(side.box[3])
   }
 
-  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
-  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
-  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
+  const func1 = getOnClickFuncFromEditorType(type1, 1)
+  const func2 = getOnClickFuncFromEditorType(type2, 2)
+  const func3 = getOnClickFuncFromEditorType(type3, 3)
 
   return (
     <Container className="h-100 d-flex flex-column">
@@ -502,16 +498,16 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
       appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box1)
-    type2 = getEditorTypeFromBoxType(side.box2)
-    type3 = getEditorTypeFromBoxType(side.box3)
-    type4 = getEditorTypeFromBoxType(side.box4)
+    type1 = getEditorTypeFromBoxType(side.box[1])
+    type2 = getEditorTypeFromBoxType(side.box[2])
+    type3 = getEditorTypeFromBoxType(side.box[3])
+    type4 = getEditorTypeFromBoxType(side.box[4])
   }
 
-  const func1 = getOnClickFuncFromEditorType(type1, Boxes.BOX_1)
-  const func2 = getOnClickFuncFromEditorType(type2, Boxes.BOX_2)
-  const func3 = getOnClickFuncFromEditorType(type3, Boxes.BOX_3)
-  const func4 = getOnClickFuncFromEditorType(type4, Boxes.BOX_4)
+  const func1 = getOnClickFuncFromEditorType(type1, 1)
+  const func2 = getOnClickFuncFromEditorType(type2, 2)
+  const func3 = getOnClickFuncFromEditorType(type3, 3)
+  const func4 = getOnClickFuncFromEditorType(type4, 4)
 
   return (
     <div className="h-100 d-flex flex-column">
@@ -551,7 +547,7 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
  * @param param0 props.
  * @returns React component described above.
  */
-function EditModeBox({box}: {box: Boxes}) {
+function EditModeBox({box}: {box: BoxNumber}) {
 
   const appState = useContext(AppState)
 
@@ -611,35 +607,36 @@ function CardDisplay() {
   if (!appState.deck) {
     return <NoDeckOpenedMessage />
   }
-
   
   const visibleCard = appState.deck.cards[appState.visibleCardIndex]
+  if (visibleCard === undefined) {
+    return <NoDeckOpenedMessage />
+  }
   const visibleFace = (appState.visibleSide === Side.FRONT) ?
     visibleCard.front : visibleCard.back
 
   const [box1, box2, box3, box4] = [
-    visibleFace.box1,
-    visibleFace.box2,
-    visibleFace.box3,
-    visibleFace.box4,
+    visibleFace.box[1],
+    visibleFace.box[2],
+    visibleFace.box[3],
+    visibleFace.box[4],
   ].map((box, index) => {
     if (appState.appMode === AppMode.EDITING_DECK && box === null) {
       return <EditModeBox box={(() => {
         switch (index) {
-          case 0: return Boxes.BOX_1
-          case 1: return Boxes.BOX_2
-          case 2: return Boxes.BOX_3
-          case 3: return Boxes.BOX_4
+          case 0: return 1
+          case 1: return 2
+          case 2: return 3
+          case 3: return 4
           default: throw new Error("Invalid box index; should be impossible")
         }
       })()} />
     } else if (box === null) {
       return <></>
     } else if (
-      box.type === CardContentData.Type.TEXT && box.data && 
-      (box as TextBox).data!.text
+      box.type === CardContentData.Type.TEXT
     ) {
-      return <>{(box as TextBox).data!.text}</>
+      return <>{(box as TextBox).text}</>
     } else if (
       box.type === CardContentData.Type.IMAGE
     ) {

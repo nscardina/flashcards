@@ -1,66 +1,122 @@
-import { CardContentData, CardContentDataType } from "./CardContentData"
+import { Editor } from "../app/Editor"
+import { CardContentData } from "./CardContentData"
 
-
-
-export interface Box<T extends CardContentData.Type> {
-    type: T,
-    data: CardContentDataType<T> | null
+export type TextBox = {
+    readonly type: CardContentData.Type.TEXT,
+    readonly text: string,
 }
 
-export class TextBox implements Box<CardContentData.Type.TEXT> {
-
-    readonly type = CardContentData.Type.TEXT
-    data: CardContentDataType<CardContentData.Type.TEXT> | null
-
-    constructor(data?: CardContentDataType<CardContentData.Type.TEXT> | null) {
-        this.data = data ?? null
+export namespace TextBox {
+    export function isTextBox(variable: unknown): variable is TextBox {
+        return (
+            typeof (variable) === "object" &&
+            variable !== null && 
+            "type" in variable && 
+            variable.type === CardContentData.Type.TEXT && 
+            "text" in variable && 
+            typeof(variable.text) === "string"
+        )
     }
-
+    
+    export function of(text: string): TextBox {
+        return {
+            type: CardContentData.Type.TEXT,
+            text: text
+        }
+    }
 }
 
-export class ImageBox implements Box<CardContentData.Type.IMAGE> {
-
-    readonly type = CardContentData.Type.IMAGE
-    data: CardContentDataType<CardContentData.Type.IMAGE> | null
-
-    constructor(data?: CardContentDataType<CardContentData.Type.IMAGE> | null) {
-        this.data = data ?? null
-    }
-
+export type ImageBox = {
+    readonly type: CardContentData.Type.IMAGE,
+    readonly base64ImageData: string,
 }
 
-export class VideoLinkBox implements Box<CardContentData.Type.VIDEO_LINK> {
-
-    readonly type = CardContentData.Type.VIDEO_LINK
-    data: CardContentDataType<CardContentData.Type.VIDEO_LINK> | null
-
-    constructor(
-        data?: CardContentDataType<CardContentData.Type.VIDEO_LINK> | null
-    ) {
-        this.data = data ?? null
+export namespace ImageBox {
+    export function isImageBox(variable: unknown): variable is ImageBox {
+        return (
+            typeof (variable) === "object" &&
+            variable !== null &&
+            "type" in variable && variable.type === CardContentData.Type.IMAGE &&
+            "base64ImageData" in variable &&
+            typeof (variable.base64ImageData) === "string"
+        )
     }
 
+    export function of(base64ImageData: string): ImageBox {
+        return {
+            type: CardContentData.Type.IMAGE,
+            base64ImageData: base64ImageData
+        }
+    }
+}
+
+export type VideoLinkBox = {
+    readonly type: CardContentData.Type.VIDEO_LINK,
+    readonly link: string,
+}
+
+export namespace VideoLinkBox {
+    export function isVideoLinkBox(variable: unknown) {
+        return (
+            typeof (variable) === "object" &&
+            variable !== null &&
+            "type" in variable &&
+            variable.type === CardContentData.Type.VIDEO_LINK &&
+            "link" in variable &&
+            typeof (variable.link) === "string"
+        )
+    }
+    
+    export function of(link: string): VideoLinkBox {
+        return {
+            type: CardContentData.Type.VIDEO_LINK,
+            link: link
+        }
+    }
+}
+
+
+/**
+ * Interface representing a box, which is a field on a flashcard which can 
+ * contain one of several types of data.
+ */
+export type Box = TextBox | ImageBox | VideoLinkBox
+
+export namespace Box {
+    /**
+     * Function which determines whether an object is a {@linkcode Box} object; 
+     * that is, whether it is either a {@linkcode TextBox}, {@linkcode ImageBox}, 
+     * or {@linkcode VideoBox}.
+     * @param object object to check.
+     * @returns whether the object is a valid `Box`.
+     */
+    export const isBox = (variable: unknown) =>
+        TextBox.isTextBox(variable) ||
+        ImageBox.isImageBox(variable) ||
+        VideoLinkBox.isVideoLinkBox(variable)
 }
 
 /**
- * Function which determines whether an object is a {@linkcode Box} object; 
- * that is, whether it is either a {@linkcode TextBox}, {@linkcode ImageBox}, 
- * or {@linkcode VideoBox}.
- * @param object object to check.
- * @returns whether the object is a valid `Box`.
+ * Returns the corresponding {@linkcode Editor} used to edit {@linkcode Box}es 
+ * which contain a specific type of data.
+ * @param box `Box` to process.
+ * @returns `Editor` used to edit the type of data contained in the `box`.
  */
-export function isBox(object: unknown): object is Box<any> {
-    return object instanceof TextBox ||
-        object instanceof ImageBox ||
-        object instanceof VideoLinkBox
+export function getEditorTypeFromBoxType(box: Box | null): Editor {
+    if (box) {
+        if (TextBox.isTextBox(box)) {
+            return Editor.TEXT
+        } else if (ImageBox.isImageBox(box)) {
+            return Editor.IMAGE
+        } else if (VideoLinkBox.isVideoLinkBox(box)) {
+            return Editor.VIDEO_LINK
+        }
+    }
+    return Editor.NONE
 }
 
+
 /**
- * Enum holding the different boxes that can appear on a flashcard.
+ * Type holding the different boxes that can appear on a flashcard.
  */
-export enum Boxes {
-    BOX_1 = "box1",
-    BOX_2 = "box2",
-    BOX_3 = "box3",
-    BOX_4 = "box4"
-}
+export type BoxNumber = 1 | "1" | 2 | "2" | 3 | "3" | 4 | "4"

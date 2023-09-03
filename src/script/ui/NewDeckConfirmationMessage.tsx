@@ -2,7 +2,8 @@ import { Button, Col, Container, Modal, Row } from "react-bootstrap"
 import Dialog from "../app/Dialog"
 import { useContext } from "react"
 import { AppState } from "../App"
-import { makeEmptyDeck } from "../card/deck"
+import { downloadDeck } from "../file/CardFile"
+import { Deck } from "../card/deck"
 
 function NewDeckConfirmationMessage() {
 
@@ -36,11 +37,21 @@ function NewDeckConfirmationMessage() {
               className="d-inline-block">
               <Button variant="danger" className="me-3"
                 onClick={() => {
-                  appState.setDeck(makeEmptyDeck())
+                  appState.setDeck(Deck.makeDefault())
+                  appState.setVisibleCardIndex(0)
                   appState.setVisibleDialog(Dialog.NONE)
                 }}
               >Delete Deck</Button>
-              <Button>Save Deck...</Button>
+              <Button
+                onClick={appState.deck !== null ?
+                  () => {
+                    downloadDeck(appState.deck!)
+                    appState.setVisibleDialog(Dialog.NONE)
+                  } :
+                  () => { }}
+              >
+                Save Deck...
+              </Button>
             </Col>
           </Row>
 

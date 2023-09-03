@@ -4,7 +4,6 @@ import { createContext, useState } from 'react';
 import AppMode from './app/AppMode';
 import { Boxes } from './card/box';
 import { AppStateType, NO_CARD_FOCUSED } from './state/AppState';
-import { Deck } from './card/deck';
 import { ReviewOrder } from './ReviewOrder';
 import { ShowSideProviderName } from './ShowSideProvider';
 import Dialog from './app/Dialog';
@@ -15,6 +14,7 @@ import DeckInteractionArea from './ui/DeckInteractionArea';
 import TextEditor from './ui/TextEditor';
 import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
+import { Deck } from './card/deck';
 
 export const AppState = createContext<AppStateType>(undefined!)
 

@@ -3,16 +3,16 @@ import AppMode from "../app/AppMode";
 import { useContext } from "react";
 import { AppState } from "../App";
 import { AppStateType } from "../state/AppState";
-import { makeEmptyDeck } from "../card/deck";
-import { makeEmptyCard } from "../card/card";
 import { Editor } from "../app/Editor";
+import { Deck } from "../card/deck";
+import { Card } from "../card/card";
 
 function createNewCard(state: AppStateType) {
   // If no deck is loaded yet, create a new empty deck
   if (state.deck === null) {
     // Create an empty deck, set the app mode to EDITING_DECK, set the only 
     // card in the deck to be visible.
-    state.setDeck(makeEmptyDeck())
+    state.setDeck(Deck.makeDefault())
     state.setAppMode(AppMode.EDITING_DECK)
     state.setVisibleCardIndex(0)
   } else {
@@ -21,7 +21,7 @@ function createNewCard(state: AppStateType) {
     // visible card.
     state.deck.cards = [
       ...state.deck.cards.slice(0, state.visibleCardIndex + 1),
-      makeEmptyCard(),
+      Card.makeDefault(),
       ...state.deck.cards.slice(state.visibleCardIndex + 1)
     ],
     state.setBoxBeingEdited(null),
@@ -36,7 +36,7 @@ function deleteCard(state: AppStateType, index: number) {
   // If the deck only contains one card, create a new deck with only one empty 
   // card in it. Set the app mode to EDITING_DECK.
   if (state.deck !== null && index === 0 && state.deck.cards.length === 1) {
-    state.deck.cards = [makeEmptyCard()]
+    state.deck.cards = [Card.makeDefault()]
     state.setVisibleCardIndex(0)
     state.setAppMode(AppMode.EDITING_DECK)
   }

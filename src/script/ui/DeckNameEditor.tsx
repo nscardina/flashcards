@@ -2,8 +2,6 @@ import { useContext, useState } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
 import { createEditor } from 'slate'
 import { Editable, Slate, withReact } from "slate-react";
-import { PayloadAction } from "@reduxjs/toolkit";
-import { Boxes } from "../card/box";
 import { Editor } from "../app/Editor";
 import { changeEditor } from "../state/AppState";
 import { AppState } from "../App";
@@ -14,7 +12,6 @@ export type DeckEditorPayload = {
 
   text: string
 }
-export type DeckEditorPayloadAction = PayloadAction<DeckEditorPayload, 'deck/editCard'>
 
 
 
@@ -48,7 +45,7 @@ function DeckNameEditor() {
           <Row>
             <Col className="d-flex justify-content-end">
             <Button className="ms-auto mt-3" onClick={() => changeEditor(
-                appState, Editor.NONE, Boxes.BOX_1)
+                appState, Editor.NONE, 1)
               }
               >
                 Cancel
@@ -57,8 +54,11 @@ function DeckNameEditor() {
 
                 //TODO fix Card face and Box
                 if (!!appState.deck) {
-                  appState.deck.name = 
-                  document.getElementById("deckNameEditorBox")?.innerText ?? ""
+                  appState.setDeck({
+                    ...appState.deck,
+                    name: document.getElementById("deckNameEditorBox")?.innerText ?? "",
+                  })
+                  
                   appState.setVisibleEditor(Editor.NONE)
                 }
 
