@@ -1,5 +1,5 @@
 import { Dropdown } from "react-bootstrap"
-import { useContext} from "react"
+import { useContext } from "react"
 import { downloadDeck } from "../file/CardFile"
 import { fileOpen } from "browser-fs-access"
 import { AppState } from "../App"
@@ -10,33 +10,48 @@ import { MSIcon } from "./Icons"
 import { Deck } from "../card/deck"
 import { Editor } from "../app/Editor"
 
-function createNewDeck(state: AppStateType): void {
-  // If a deck is already open, display the NEW_DECK_CONFIRMATION_MESSAGE 
-  // to make sure that the user doesn't lose data. Switch the app mode to 
-  // EDITING_DECK.
-  if (state.deck !== null) {
-    state.setVisibleDialog(Dialog.NEW_DECK_CONFIRMATION_MESSAGE)
-    state.setAppMode(AppMode.EDITING_DECK)
-  } 
-  
-  // Otherwise, create a new empty deck and switch to EDITING_DECK mode, and 
-  // set the only card in the new deck to be visible.
-  else {
-    state.setDeck(Deck.makeDefault())
-    state.setVisibleCardIndex(0)
-    state.setAppMode(AppMode.EDITING_DECK)
+function NewDeckButton() {
+
+  const appState = useContext(AppState)
+
+  const createNewDeck = () => {
+    // If a deck is already open, display the NEW_DECK_CONFIRMATION_MESSAGE 
+    // to make sure that the user doesn't lose data. Switch the app mode to 
+    // EDITING_DECK.
+    if (appState.deck !== null) {
+      appState.setVisibleDialog(Dialog.NEW_DECK_CONFIRMATION_MESSAGE)
+      appState.setAppMode(AppMode.EDITING_DECK)
+    }
+
+    // Otherwise, create a new empty deck and switch to EDITING_DECK mode, and 
+    // set the only card in the new deck to be visible.
+    else {
+      appState.setDeck(Deck.makeDefault())
+      appState.setVisibleCardIndex(0)
+      appState.setAppMode(AppMode.EDITING_DECK)
+    }
   }
+
+  return (
+    <Dropdown.Item
+      as="button"
+      className="d-flex align-items-center"
+      onClick={createNewDeck}
+    >
+      <MSIcon name="add" />&nbsp;New Deck
+    </Dropdown.Item>
+  )
 }
 
 async function loadDeckFile(
-  state: AppStateType, 
+  state: AppStateType,
   fileText: string,
   fileHandle?: FileSystemFileHandle
 ): Promise<void> {
   if (state.recentFiles.length > 9) {
     state.setRecentFiles(state.recentFiles.slice(state.recentFiles.length - 9))
   }
-  if (fileHandle !== undefined && 
+  if (fileHandle !== undefined &&
     state.recentFiles.every(value => !value.isSameEntry(fileHandle))) {
     state.recentFiles.push(fileHandle)
   }
@@ -44,6 +59,29 @@ async function loadDeckFile(
   state.setDeck(deck)
   state.setVisibleCardIndex(0)
 }
+
+function OpenDeckButton() {
+
+  const appState = useContext(AppState)
+
+  return (
+    <Dropdown.Item
+          as="div"
+          className="d-flex align-items-center"
+          onClick={async () => {
+            const file = await fileOpen({
+              extensions: [".deck"]
+            })
+            loadDeckFile(appState, await file.text(), file.handle)
+          }}
+        >
+          <MSIcon name="file_open" />&nbsp;Open Deck...
+        </Dropdown.Item>
+  )
+}
+
+
+
 
 
 function FileMenu() {
@@ -58,28 +96,10 @@ function FileMenu() {
 
       <Dropdown.Menu>
 
-        <Dropdown.Item
-          as="button"
-          className="d-flex align-items-center"
-          onClick={() => createNewDeck(appState)}
-        >
-          <MSIcon name="add" />&nbsp;New Deck
-        </Dropdown.Item>
+        <NewDeckButton />
+        <OpenDeckButton />
 
-        <Dropdown.Item
-          as="div"
-          className="d-flex align-items-center"
-          onClick={async () => {
-            const file = await fileOpen({
-              extensions: [".deck"]
-            })
-            loadDeckFile(appState, await file.text(), file.handle)
-          }}
-        >
-          <MSIcon name="file_open" />&nbsp;Open Deck...
-        </Dropdown.Item>
-
-        <Dropdown drop="end" className="dropdown-item ps-1 pe-1 pt-0 pb-0">
+        <Dropdown drop="end" className={`${appState.recentFiles.length !== 0 ? "dropdown-item" : ""} ps-1 pe-1 pt-0 pb-0`}>
 
           <style>
             {`
@@ -92,9 +112,9 @@ function FileMenu() {
             }
             `}
           </style>
-          
-          <Dropdown.Toggle 
-            style={{ border: "0px black" }} 
+
+          <Dropdown.Toggle
+            style={{ border: "0px black" }}
             className="d-flex align-items-center flashcard-button w-100 btn-block"
             disabled={appState.recentFiles.length === 0}
             id="open-recent-toggle-id"
@@ -109,8 +129,8 @@ function FileMenu() {
               appState.recentFiles.map(file => (
                 <Dropdown.Item
                   key={`loadFile${file.name}`}
-                  onClick={async() => {
-                    const text = await file.getFile().then(file => 
+                  onClick={async () => {
+                    const text = await file.getFile().then(file =>
                       file.text()
                     )
                     loadDeckFile(appState, text, file)
@@ -125,7 +145,8 @@ function FileMenu() {
 
         <Dropdown.Divider />
 
-        <Dropdown.Item 
+        <Dropdown.Item
+          as="button"
           className="d-flex align-items-center"
           onClick={
             () => {
@@ -137,14 +158,18 @@ function FileMenu() {
           <span className="material-symbols-outlined" aria-hidden="true">close</span> &nbsp;Close Deck
         </Dropdown.Item>
         <Dropdown.Item
-          onClick={appState.deck !== null ? 
+          as="button"
+          onClick={appState.deck !== null ?
             () => downloadDeck(appState.deck!) : () => { }
           }
           disabled={appState.deck === null}
           className="d-flex align-items-center">
           <span className="material-symbols-outlined" aria-hidden="true">download</span> &nbsp;Download .deck file...
         </Dropdown.Item>
-        <Dropdown.Item className="d-flex align-items-center" disabled={appState.deck === null}
+        <Dropdown.Item
+          as="button"
+          className="d-flex align-items-center"
+          disabled={appState.deck === null}
           onClick={
             () => {
               appState.setVisibleEditor(Editor.DECK_NAME)

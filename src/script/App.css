@@ -5,6 +5,7 @@
     margin-right: auto;
 
     --flashcard-light: rgb(220, 220, 220);
+    --flashcard-light-disabled: rgb(180, 180, 180);
     --flashcard-dark: rgb(70, 70, 70);
 }
 
@@ -71,6 +72,7 @@
         --bs-dropdown-divider-bg: var(--bs-light);
         --bs-dropdown-link-hover-bg: var(--flashcard-dark);
         --bs-dropdown-link-active-bg: var(--flashcard-dark);
+        --bs-dropdown-link-disabled-color: var(--flashcard-light-disabled);
     }
 
     .flashcard-button {
@@ -92,6 +94,11 @@
 
     .flashcard-display {
         border-color: var(--flashcard-light);
+    }
+
+    .modal-content {
+        color: var(--bs-light);
+        background-color: var(--bs-dark);
     }
 }
 
