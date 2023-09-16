@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css'
 import { createContext, useState } from 'react';
 import AppMode from './app/AppMode';
-import { Boxes } from './card/box';
 import { AppStateType, NO_CARD_FOCUSED } from './state/AppState';
 import { ReviewOrder } from './ReviewOrder';
 import { ShowSideProviderName } from './ShowSideProvider';
@@ -15,13 +14,14 @@ import TextEditor from './ui/TextEditor';
 import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
 import { Deck } from './card/deck';
+import { BoxNumber } from './card/box';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
 function App() {
 
     const [appMode, setAppMode] = useState<AppMode>(AppMode.MANAGING_FILES)
-    const [boxBeingEdited, setBoxBeingEdited] = useState<Boxes | null>(null)
+    const [boxBeingEdited, setBoxBeingEdited] = useState<BoxNumber | null>(null)
     const [deck, setDeck] = useState<Deck | null>(null)
     const [recentFiles, setRecentFiles] = useState<FileSystemFileHandle[]>([])
     const [reviewOrder, setReviewOrder] = 
