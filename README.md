@@ -4,7 +4,7 @@
 
 <p align="center">
 A user-friendly flashcard app for memorizing information.
-
+<br>
 <a href="https://github.com/nscardina/flashcards/actions/workflows/node.js.yml">
 <img src="https://github.com/nscardina/flashcards/actions/workflows/node.js.yml/badge.svg">
 </a>
