@@ -1,0 +1,26 @@
+import { CardContentData } from "./CardContentData";
+
+export type TextBox = {
+    readonly type: CardContentData.Type.TEXT
+    readonly text: string
+}
+
+export namespace TextBox {
+    export function isTextBox(variable: unknown): variable is TextBox {
+        return (
+            typeof (variable) === "object" &&
+            variable !== null &&
+            "type" in variable &&
+            variable.type === CardContentData.Type.TEXT &&
+            "text" in variable &&
+            typeof (variable.text) === "string"
+        )
+    }
+
+    export function of(text: string): TextBox {
+        return Object.freeze({
+            type: CardContentData.Type.TEXT,
+            text: text
+        })
+    }
+}

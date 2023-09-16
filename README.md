@@ -1,2 +1,2 @@
 # flashcards
-Flashcard app for memorizing information
+A user-friendly flashcard app for memorizing information.
