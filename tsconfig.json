@@ -7,6 +7,7 @@
     "skipLibCheck": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
+    "esModuleInterop": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
