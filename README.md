@@ -4,7 +4,8 @@
 
 <p align="center">
 A user-friendly flashcard app for memorizing information.
-<br>
+<br><br>
+
 <a href="https://github.com/nscardina/flashcards/actions/workflows/node.js.yml">
 <img src="https://github.com/nscardina/flashcards/actions/workflows/node.js.yml/badge.svg">
 </a>
@@ -14,7 +15,6 @@ A user-friendly flashcard app for memorizing information.
 </a>
 
 </p>
-
 Have you ever wanted to use flashcards as a study tool, but didn't have any on hand? This is the app for you!
 
 This app is currently in beta right now, and not all functionality is complete. See below.
