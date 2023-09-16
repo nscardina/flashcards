@@ -9,26 +9,6 @@ import { TextBox } from "../card/TextBox"
 import { Deck } from "../card/deck"
 import { Side } from "../card/side"
 
-/**
- * Detects whether local storage is available by testing if a dummy value can 
- * be inserted and removed from the local storage without throwing an 
- * exception.
- * @returns `true` if local storage is available, `false` otherwise.
- */
-function isLocalStorageAvailable(): boolean {
-    try {
-        const storage = window.localStorage
-        if (!!storage) {
-            const testValue = "_______Storage__Test__String________"
-            storage.setItem(testValue, testValue)
-            storage.removeItem(testValue)
-            return true
-        }
-    } finally {
-        return false
-    }
-}
-
 type ReactSetter<T> = React.Dispatch<React.SetStateAction<T>>
 
 export type AppStateType = {
