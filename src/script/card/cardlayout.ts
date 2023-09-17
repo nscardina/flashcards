@@ -1,4 +1,4 @@
-import { Box } from "./box"
+import { Box } from "./Box"
 
 /**
  * Enumeration of the eight possible layouts of {@linkcode Box} objects on a 

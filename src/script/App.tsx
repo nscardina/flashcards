@@ -14,7 +14,7 @@ import TextEditor from './ui/TextEditor';
 import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
 import { Deck } from './card/deck';
-import { BoxNumber } from './card/box';
+import { BoxNumber } from './card/Box';
 
 export const AppState = createContext<AppStateType>(undefined!)
 

@@ -1,20 +1,20 @@
 import { CardContentData } from "./CardContentData"
 import { TextBox } from "./TextBox"
 
+const incompleteTextBox1 = {
+    type: CardContentData.Type.TEXT
+}
+
+const incompleteTextBox2 = {
+    text: "Test Text"
+}
+
+const completeTextBox = {
+    type: CardContentData.Type.TEXT,
+    text: "Test Text"
+}
+
 describe("TextBox.isTextBox() function", () => {
-
-    const incompleteTextBox1 = {
-        type: CardContentData.Type.TEXT
-    }
-
-    const incompleteTextBox2 = {
-        text: "Test Text"
-    }
-
-    const completeTextBox = {
-        type: CardContentData.Type.TEXT,
-        text: "Test Text"
-    }
 
     test("isTextBox(undefined) returns false", () => {
         expect(TextBox.isTextBox(undefined)).toBe(false)
@@ -38,5 +38,12 @@ describe("TextBox.isTextBox() function", () => {
 
     test("isTextBox(completeTextBox) returns true", () => {
         expect(TextBox.isTextBox(completeTextBox)).toBe(true)
+    })
+})
+
+describe("TextBox.of() function", () => {
+    test(`TextBox.of("Test Text") is the same as completeTextBox`, () => {
+        const newTextBox = TextBox.of("Test Text")
+        expect(newTextBox).toMatchObject(completeTextBox)
     })
 })

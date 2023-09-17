@@ -5,7 +5,7 @@ import { AppState } from "../App";
 import { AppStateType } from "../state/AppState";
 import { Editor } from "../app/Editor";
 import { Deck } from "../card/deck";
-import { Card } from "../card/card";
+import { Card } from "../card/Card";
 
 function createNewCard(state: AppStateType) {
   // If no deck is loaded yet, create a new empty deck
