@@ -30,3 +30,7 @@ jobs:
       with: 
         name: "built-site"
         path: "dist"
+
+  run-ci:
+    needs: "build"
+    uses: nscardina/flashcards/.github/workflows/node.js.yml@v1
