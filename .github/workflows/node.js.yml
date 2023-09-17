@@ -7,13 +7,23 @@ on: workflow_call
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: "ubuntu-latest"
     steps:
+    
+    - name: "Checkout Git repository"
+      uses: "actions/checkout@v3"
+      
+    - name: "Set up latest Node.js version"
+      uses: "actions/setup-node@v3"
+      with:
+        node-version: "latest"
+        cache: "npm"
 
-    - name: "Download artifacts"
-      uses: actions/download-artifact@v3
+    - name: "Install NPM dependencies"
+      run: "npm ci"
+
+    - name: "Build site statically"
+      run: "npm run build --if-present"
 
     - name: "Run Jest tests"
       run: npm test
