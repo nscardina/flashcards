@@ -15,8 +15,8 @@ jobs:
         run: npm ci
       - name: Build site
         run: npm run build
-      - name: Create .tar.gz file with website contents
-        run: tar -czvf github-pages ./dist
+      # - name: Create .tar.gz file with website contents
+      #   run: tar -czvf github-pages ./dist
       - name: Fix permissions
         run: |
           chmod -v -R +rX "dist/" | while read line; do
@@ -24,6 +24,9 @@ jobs:
           done
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v2
+        env:
+          INPUT_PATH: "dist/"
+
   Deploy:
     needs: Build
     permissions:
