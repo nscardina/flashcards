@@ -27,11 +27,11 @@ jobs:
     - name: "Build site statically"
       run: "npm run build --if-present"
 
-    - name: "Upload the artifacts from the built site"
+    - name: "Upload the entire built site as artifacts"
       uses: "actions/upload-artifact@v3"
       with: 
         name: "built-site"
-        path: "dist"
+        path: "./"
 
   run-ci:
     needs: "build"
