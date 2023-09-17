@@ -26,6 +26,8 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         env:
           INPUT_PATH: "dist/"
+        with: 
+          path: "dist/"
 
   Deploy:
     needs: Build
