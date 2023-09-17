@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+on: [push]
+jobs:
+  Build: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Build site
+        run: npm run build
+      - name: Create .tar.gz file with website contents
+        run: tar -czvf github-pages ./dist
+      - name: Fix permissions
+        run: |
+          chmod -v -R +rX "dist/" | while read line; do
+            echo "::warning title=Invalid file permissions automatically fixed::$line"
+          done
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v2
+  Deploy:
+    needs: Build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
