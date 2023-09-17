@@ -1,0 +1,32 @@
+name: "Build Site"
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+    
+    - name: "Checkout Git repository"
+      uses: "actions/checkout@v3"
+      
+    - name: "Set up latest Node.js version"
+      uses: "actions/setup-node@v3"
+      with:
+        node-version: "latest"
+        cache: "npm"
+
+    - name: "Install NPM dependencies"
+      run: "npm ci"
+
+    - name: "Build site statically"
+      run: "npm run build --if-present"
+
+    - name: "Upload the artifacts from the built site"
+      uses: "actions/upload-artifact@v3"
+      with: 
+        name: "built-site"
+        path: "dist"
