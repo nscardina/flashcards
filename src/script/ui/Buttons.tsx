@@ -1,11 +1,12 @@
 import { Button } from "react-bootstrap";
 import AppMode from "../app/AppMode";
 import { useContext } from "react";
-import { AppState } from "../App";
+import App, { AppState } from "../App";
 import { AppStateType } from "../state/AppState";
 import { Editor } from "../app/Editor";
 import { Deck } from "../card/deck";
 import { Card } from "../card/Card";
+import { Side } from "../card/side";
 
 function createNewCard(state: AppStateType) {
   // If no deck is loaded yet, create a new empty deck
@@ -147,10 +148,30 @@ function EditingDoneButton() {
   )
 }
 
+function FlipCardButton() {
+  const appState = useContext(AppState)
+
+  return (
+    <Button onClick={() => {
+      if (appState.visibleSide === Side.FRONT) {
+        appState.setVisibleSide(Side.BACK)
+      } else {
+        appState.setVisibleSide(Side.FRONT)
+      }
+    }} disabled={!appState.deck}
+    className="d-flex align-items-center flashcard-button border-0 z-1">
+      <span className="material-symbols-outlined" aria-hidden="true">
+        flip
+      </span>
+    </Button>
+  )
+}
+
 export {
   AddCardButton,
   EditCardButton,
   DeleteCardButton,
   ReviewDeckButton,
   EditingDoneButton,
+  FlipCardButton
 }

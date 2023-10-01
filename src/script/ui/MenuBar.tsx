@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap"
 import FileMenu from "./FileMenu"
 import EditMenu from "./EditMenu"
-import { AddCardButton, DeleteCardButton, EditCardButton, EditingDoneButton, ReviewDeckButton } from "./Buttons"
+import { AddCardButton, DeleteCardButton, EditCardButton, EditingDoneButton, FlipCardButton, ReviewDeckButton } from "./Buttons"
 import AppMode from "../app/AppMode"
 import SettingsMenu from "./SettingsMenu"
 import { Editor } from "../app/Editor"
@@ -46,6 +46,11 @@ function MenuBar() {
             appMode === AppMode.MANAGING_FILES ||
             appMode === AppMode.EDITING_DECK
           ) && <DeleteCardButton /> }
+
+          {(
+            appMode === AppMode.MANAGING_FILES ||
+            appMode === AppMode.EDITING_DECK
+          ) && <FlipCardButton /> }
         </Col>
         <Col
           xs={{ span: 12, order: 3 }}
