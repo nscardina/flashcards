@@ -8,25 +8,7 @@ import { useContext } from "react"
 import { AppState } from "../App"
 import { changeEditor } from "../state/AppState"
 import { CardContentData } from "./CardContentData"
-
-
-
-/**
- * React component holding a message to display in the place where flashcards 
- * are normally displayed, which tells the user that no deck is opened and that 
- * they can click in that area to open a deck file.
- * @returns React component containing the message.
- */
-function NoDeckOpenedMessage() {
-  return (
-    <div className="flashcard-display p-0 d-flex align-items-center justify-content-center">
-      <label className="position-absolute" htmlFor="deck_display">
-        No deck opened. Click here to open a deck file...
-      </label>
-      <input type="file" id="deck_display" className="w-100 h-100 d-flex opacity-0" />
-    </div>
-  )
-}
+import { NoDeckOpenedMessage } from "./card_display/NoDeckOpenedMessage"
 
 /**
  * Returns the `onClick` function to be bound to a box to edit its contents. 
@@ -36,20 +18,26 @@ function NoDeckOpenedMessage() {
  * @param box box to edit.
  * @returns `onClick` function which can be bound to a React `button`.
  */
-function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber): 
-() => any {
+function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber) {
   const appState = useContext(AppState)
-  switch (editor) {
-    case Editor.TEXT:
-      return () => changeEditor(appState, Editor.TEXT, box)
-    case Editor.IMAGE:
-      return () => changeEditor(appState, Editor.IMAGE, box)
-    case Editor.VIDEO_LINK:
-      return () => changeEditor(appState, Editor.VIDEO_LINK, box)
-    default:
-      return () => {}
+  if (appState.appMode === AppMode.EDITING_DECK ||
+      appState.appMode === AppMode.MANAGING_FILES) {
+    switch (editor) {
+      case Editor.TEXT:
+        return () => changeEditor(appState, Editor.TEXT, box)
+      case Editor.IMAGE:
+        return () => changeEditor(appState, Editor.IMAGE, box)
+      case Editor.VIDEO_LINK:
+        return () => changeEditor(appState, Editor.VIDEO_LINK, box)
+      default:
+        return () => { }
+    }
+  } else {
+    return () => {}
   }
 }
+
+
 
 /**
  * React component used for rendering the {@linkcode CardDisplay} UI with the 
@@ -80,7 +68,7 @@ function OneBox({ appMode, box }: {
   }
 
   let func = getOnClickFuncFromEditorType(type, 1)
-  
+
 
   return (
     <div className={
@@ -184,7 +172,7 @@ function TwoBoxesHorizontal({ appMode, box1, box2 }: {
     <Container className="h-100 d-flex flex-column">
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      } onClick={func1} style={{maxHeight: "50%"}}>
+      } onClick={func1} style={{ maxHeight: "50%" }}>
         {box1}
       </Row>
       <Row className={
@@ -249,12 +237,12 @@ function OneBoxLeftTwoBoxesRight({ appMode, box1, box2, box3 }: {
         <Container className="h-100 d-flex flex-column">
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func2} style={{maxHeight: "50%"}}>
+          } onClick={func2} style={{ maxHeight: "50%" }}>
             {box2}
           </Row>
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func3} style={{maxHeight: "50%"}}>
+          } onClick={func3} style={{ maxHeight: "50%" }}>
             {box3}
           </Row>
         </Container>
@@ -311,12 +299,12 @@ function OneBoxRightTwoBoxesLeft({ appMode, box1, box2, box3 }: {
         <Container className="h-100 d-flex flex-column">
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func1} style={{maxHeight: "50%"}}>
+          } onClick={func1} style={{ maxHeight: "50%" }}>
             {box1}
           </Row>
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func2} style={{maxHeight: "50%"}}>
+          } onClick={func2} style={{ maxHeight: "50%" }}>
             {box2}
           </Row>
         </Container>
@@ -376,10 +364,10 @@ function OneBoxTopTwoBoxesBottom({ appMode, box1, box2, box3 }: {
     <Container className="h-100 d-flex flex-column">
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      } onClick={func1} style={{maxHeight: "50%"}}>
+      } onClick={func1} style={{ maxHeight: "50%" }}>
         {box1}
       </Row>
-      <Row className="flex-fill mt-2" style={{maxHeight: "50%"}}>
+      <Row className="flex-fill mt-2" style={{ maxHeight: "50%" }}>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
         } onClick={func2}>
@@ -439,15 +427,15 @@ function OneBoxBottomTwoBoxesTop({ appMode, box1, box2, box3 }: {
 
   return (
     <Container className="h-100 d-flex flex-column">
-      <Row className="flex-fill mt-2" style={{maxHeight: "50%"}}>
+      <Row className="flex-fill mt-2" style={{ maxHeight: "50%" }}>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func1} style={{maxHeight: "100%", overflow: "auto"}}>
+        } onClick={func1} style={{ maxHeight: "100%", overflow: "auto" }}>
           {box1}
         </Col>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func2} style={{maxHeight: "100%", overflow: "auto"}}>
+        } onClick={func2} style={{ maxHeight: "100%", overflow: "auto" }}>
           {box2}
         </Col>
       </Row>
@@ -466,7 +454,7 @@ function OneBoxBottomTwoBoxesTop({ appMode, box1, box2, box3 }: {
  * @param param0 props of this component.
  * @returns UI, as a JSX element.
  */
-function FourBoxes({appMode, box1, box2, box3, box4}: {
+function FourBoxes({ appMode, box1, box2, box3, box4 }: {
   /**
    * {@linkcode AppMode} to use to determine whether to draw the outline around 
    * the box in `EDITING_DECK` mode.
@@ -492,8 +480,8 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
 
   const appState = useContext(AppState)
 
-  let [type1, type2, type3, type4] = 
-  [Editor.NONE, Editor.NONE, Editor.NONE, Editor.NONE]
+  let [type1, type2, type3, type4] =
+    [Editor.NONE, Editor.NONE, Editor.NONE, Editor.NONE]
 
   if (appState.deck && appState.visibleCardIndex >= 0) {
     const side = appState.deck.cards[
@@ -511,27 +499,27 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
 
   return (
     <div className="h-100 d-flex flex-column">
-      <Row className="flex-fill mb-3" style={{maxHeight: "50%"}} >
+      <Row className="flex-fill mb-3" style={{ maxHeight: "50%" }} >
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func1} style={{overflow: "auto", maxHeight: "100%"}}>
+        } onClick={func1} style={{ overflow: "auto", maxHeight: "100%" }}>
           {box1}
         </Col>
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func2} style={{overflow: "auto", maxHeight: "100%"}}>
+        } onClick={func2} style={{ overflow: "auto", maxHeight: "100%" }}>
           {box2}
         </Col>
       </Row>
-      <Row className="flex-fill mb-3" style={{maxHeight: "50%"}} >
+      <Row className="flex-fill mb-3" style={{ maxHeight: "50%" }} >
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func3} style={{overflow: "auto", maxHeight: "100%"}}>
+        } onClick={func3} style={{ overflow: "auto", maxHeight: "100%" }}>
           {box3}
         </Col>
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func4} style={{overflow: "auto", maxHeight: "100%"}}>
+        } onClick={func4} style={{ overflow: "auto", maxHeight: "100%" }}>
           {box4}
         </Col>
       </Row>
@@ -547,14 +535,14 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
  * @param param0 props.
  * @returns React component described above.
  */
-function EditModeBox({box}: {box: BoxNumber}) {
+function EditModeBox({ box }: { box: BoxNumber }) {
 
   const appState = useContext(AppState)
 
   return (
     <div className="d-flex w-100 h-100 align-items-center justify-content-center">
       <Dropdown drop="down-centered">
-      <style>
+        <style>
           {
             `
             .dropdown-toggle.edit-mode-toggle::after {
@@ -567,7 +555,7 @@ function EditModeBox({box}: {box: BoxNumber}) {
         <Dropdown.Toggle className="edit-mode-toggle flashcard-button d-flex align-items-center">
           <span className="material-symbols-outlined">edit</span>
         </Dropdown.Toggle>
-        
+
         <Dropdown.Menu>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
@@ -607,7 +595,7 @@ function CardDisplay() {
   if (!appState.deck) {
     return <NoDeckOpenedMessage />
   }
-  
+
   const visibleCard = appState.deck.cards[appState.visibleCardIndex]
   if (visibleCard === undefined) {
     return <NoDeckOpenedMessage />
@@ -659,42 +647,42 @@ function CardDisplay() {
 
     case CardLayout.TWO_BOXES_V:
       jsx = box1 && box2 ?
-       <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} /> : 
-       <></>
+        <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} /> :
+        <></>
       break
     case CardLayout.TWO_BOXES_H:
       jsx = box1 && box2 ?
-       <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} /> :
-       <></>
+        <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} /> :
+        <></>
       break
     case CardLayout.ONE_BOX_LV_TWO_BOXES_RV:
       jsx = box1 && box2 && box3 ?
-       <OneBoxLeftTwoBoxesRight appMode={appMode} 
-       box1={box1} box2={box2} box3={box3} /> :
-       <></>
+        <OneBoxLeftTwoBoxesRight appMode={appMode}
+          box1={box1} box2={box2} box3={box3} /> :
+        <></>
       break
     case CardLayout.ONE_BOX_RV_TWO_BOXES_LV:
       jsx = box1 && box2 && box3 ?
-       <OneBoxRightTwoBoxesLeft appMode={appMode}
-        box1={box1} box2={box2} box3={box3} /> :
+        <OneBoxRightTwoBoxesLeft appMode={appMode}
+          box1={box1} box2={box2} box3={box3} /> :
         <></>
       break
     case CardLayout.ONE_BOX_TH_TWO_BOXES_BH:
       jsx = box1 && box2 && box3 ?
-       <OneBoxTopTwoBoxesBottom appMode={appMode}
-        box1={box1} box2={box2} box3={box3} /> :
+        <OneBoxTopTwoBoxesBottom appMode={appMode}
+          box1={box1} box2={box2} box3={box3} /> :
         <></>
       break
     case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
       jsx = box1 && box2 && box3 ?
-       <OneBoxBottomTwoBoxesTop appMode={appMode}
-        box1={box1} box2={box2} box3={box3} /> : 
+        <OneBoxBottomTwoBoxesTop appMode={appMode}
+          box1={box1} box2={box2} box3={box3} /> :
         <></>
       break
     case CardLayout.FOUR_BOXES:
       jsx = box1 && box2 && box3 && box4 ?
-       <FourBoxes appMode={appMode} 
-        box1={box1} box2={box2} box3={box3} box4={box4} /> :
+        <FourBoxes appMode={appMode}
+          box1={box1} box2={box2} box3={box3} box4={box4} /> :
         <></>
       break
   }

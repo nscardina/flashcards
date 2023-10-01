@@ -137,7 +137,7 @@ function ReviewDeckButton({ onClick }: ButtonPropsType) {
   )
 }
 
-function EditingDoneButton() {
+function DoneButton() {
 
   const appState = useContext(AppState)
 
@@ -172,6 +172,6 @@ export {
   EditCardButton,
   DeleteCardButton,
   ReviewDeckButton,
-  EditingDoneButton,
+  DoneButton,
   FlipCardButton
 }
