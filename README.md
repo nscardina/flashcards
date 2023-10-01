@@ -25,7 +25,9 @@ This app is currently in beta right now, and not all functionality is complete. 
 
 ✅ Add text to flashcards
 
-❌ Add images to flashcards **(not implemented yet)**
+❌ Add $\LaTeX$ mathematics rendering to flashcards **(not implemented yet)**
+
+✅ Add images to flashcards
 
 ❌ Add video embeds to flashcards **(not implemented yet)**
 
