@@ -21,7 +21,15 @@ function changeCardLayout(state: AppStateType, layout: CardLayout): void {
       }
     }
 
-    state.deck.cards[state.visibleCardIndex] = updatedCard
+    state.setDeck({
+      name: state.deck.name,
+      cards: [
+        ...state.deck.cards.slice(0, state.visibleCardIndex),
+        updatedCard,
+        ...state.deck.cards.slice(state.visibleCardIndex + 1)
+      ]
+    })
+    
   }
 }
 

@@ -637,11 +637,11 @@ function CardDisplay() {
     } else if (
       box.type === CardContentData.Type.TEXT
     ) {
-      return <>{(box as TextBox).text}</>
+      return <>{box.text}</>
     } else if (
       box.type === CardContentData.Type.IMAGE
     ) {
-      return <>Image</>
+      return <img style={{ width: "100%", height: "100%", objectFit: "contain" }} src={box.base64ImageData} />
     } else if (
       box.type === CardContentData.Type.VIDEO_LINK
     ) {
