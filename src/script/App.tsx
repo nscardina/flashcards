@@ -15,6 +15,7 @@ import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
 import { Deck } from './card/deck';
 import { BoxNumber } from './card/Box';
+import { ImageEditor } from './ui/ImageEditor';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -61,6 +62,7 @@ function App() {
                 <MenuBar />
                 <DeckInteractionArea />
                 {visibleEditor === Editor.TEXT && <TextEditor />}
+                {visibleEditor === Editor.IMAGE && <ImageEditor />}
                 {visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
 
                 {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE && 

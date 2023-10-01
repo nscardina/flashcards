@@ -29,6 +29,7 @@ function NewDeckButton() {
       appState.setDeck(Deck.makeDefault())
       appState.setVisibleCardIndex(0)
       appState.setAppMode(AppMode.EDITING_DECK)
+      console.log(appState.visibleCardIndex)
     }
   }
 
