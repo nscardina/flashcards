@@ -4,7 +4,6 @@ import { Side } from "./side"
 import AppMode from "../app/AppMode"
 import { Editor } from "../app/Editor"
 import { Box, BoxNumber, getEditorTypeFromBoxType } from "./Box"
-import { TextBox } from "./TextBox"
 import { useContext } from "react"
 import { AppState } from "../App"
 import { changeEditor } from "../state/AppState"
@@ -185,7 +184,7 @@ function TwoBoxesHorizontal({ appMode, box1, box2 }: {
     <Container className="h-100 d-flex flex-column">
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      } onClick={func1}>
+      } onClick={func1} style={{maxHeight: "50%"}}>
         {box1}
       </Row>
       <Row className={
@@ -250,12 +249,12 @@ function OneBoxLeftTwoBoxesRight({ appMode, box1, box2, box3 }: {
         <Container className="h-100 d-flex flex-column">
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func2}>
+          } onClick={func2} style={{maxHeight: "50%"}}>
             {box2}
           </Row>
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func3}>
+          } onClick={func3} style={{maxHeight: "50%"}}>
             {box3}
           </Row>
         </Container>
@@ -312,12 +311,12 @@ function OneBoxRightTwoBoxesLeft({ appMode, box1, box2, box3 }: {
         <Container className="h-100 d-flex flex-column">
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func1}>
+          } onClick={func1} style={{maxHeight: "50%"}}>
             {box1}
           </Row>
           <Row className={
             `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func2}>
+          } onClick={func2} style={{maxHeight: "50%"}}>
             {box2}
           </Row>
         </Container>
@@ -377,10 +376,10 @@ function OneBoxTopTwoBoxesBottom({ appMode, box1, box2, box3 }: {
     <Container className="h-100 d-flex flex-column">
       <Row className={
         `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      } onClick={func1}>
+      } onClick={func1} style={{maxHeight: "50%"}}>
         {box1}
       </Row>
-      <Row className="flex-fill mt-2">
+      <Row className="flex-fill mt-2" style={{maxHeight: "50%"}}>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
         } onClick={func2}>
@@ -440,15 +439,15 @@ function OneBoxBottomTwoBoxesTop({ appMode, box1, box2, box3 }: {
 
   return (
     <Container className="h-100 d-flex flex-column">
-      <Row className="flex-fill mt-2">
+      <Row className="flex-fill mt-2" style={{maxHeight: "50%"}}>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func1}>
+        } onClick={func1} style={{maxHeight: "100%", overflow: "auto"}}>
           {box1}
         </Col>
         <Col className={
           `me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func2}>
+        } onClick={func2} style={{maxHeight: "100%", overflow: "auto"}}>
           {box2}
         </Col>
       </Row>
@@ -512,27 +511,27 @@ function FourBoxes({appMode, box1, box2, box3, box4}: {
 
   return (
     <div className="h-100 d-flex flex-column">
-      <Row className="flex-fill mb-3">
+      <Row className="flex-fill mb-3" style={{maxHeight: "50%"}} >
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func1}>
+        } onClick={func1} style={{overflow: "auto", maxHeight: "100%"}}>
           {box1}
         </Col>
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func2}>
+        } onClick={func2} style={{overflow: "auto", maxHeight: "100%"}}>
           {box2}
         </Col>
       </Row>
-      <Row className="flex-fill mb-3">
+      <Row className="flex-fill mb-3" style={{maxHeight: "50%"}} >
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func3}>
+        } onClick={func3} style={{overflow: "auto", maxHeight: "100%"}}>
           {box3}
         </Col>
         <Col className={
           `ms-2 me-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-        } onClick={func4}>
+        } onClick={func4} style={{overflow: "auto", maxHeight: "100%"}}>
           {box4}
         </Col>
       </Row>
