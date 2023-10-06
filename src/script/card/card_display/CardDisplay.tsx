@@ -1,14 +1,15 @@
 import { Col, Container, Dropdown, Row } from "react-bootstrap"
-import CardLayout from "./cardlayout"
-import { Side } from "./side"
-import AppMode from "../app/AppMode"
-import { Editor } from "../app/Editor"
-import { Box, BoxNumber, getEditorTypeFromBoxType } from "./Box"
+import CardLayout from "../cardlayout"
+import { Side } from "../side"
+import AppMode from "../../app/AppMode"
+import { Editor } from "../../app/Editor"
+import { Box, BoxNumber, getEditorTypeFromBoxType } from "../Box"
 import { useContext } from "react"
-import { AppState } from "../App"
-import { changeEditor } from "../state/AppState"
-import { CardContentData } from "./CardContentData"
-import { NoDeckOpenedMessage } from "./card_display/NoDeckOpenedMessage"
+import { AppState } from "../../App"
+import { changeEditor } from "../../state/AppState"
+import { CardContentData } from "../CardContentData"
+import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
+import "./CardDisplay.css"
 
 /**
  * Returns the `onClick` function to be bound to a box to edit its contents. 
@@ -582,6 +583,24 @@ function EditModeBox({ box }: { box: BoxNumber }) {
   )
 }
 
+function getCSSClassFromCardLayout(layout: CardLayout): string {
+  switch(layout) {
+    case CardLayout.ONE_BOX: return "card-layout-one-box"
+    case CardLayout.TWO_BOXES_V: return "card-layout-two-boxes-v"
+    case CardLayout.TWO_BOXES_H: return "card-layout-two-boxes-h"
+    case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
+      return "card-layout-one-box-bh-two-boxes-th"
+    case CardLayout.ONE_BOX_LV_TWO_BOXES_RV:
+      return "card-layout-one-box-lv-two-boxes-rv"
+    case CardLayout.ONE_BOX_RV_TWO_BOXES_LV:
+      return "card-layout-one-box-rv-two-boxes-lv"
+    case CardLayout.ONE_BOX_TH_TWO_BOXES_BH:
+      return "card-layout-one-box-th-two-boxes-bh"
+    case CardLayout.FOUR_BOXES:
+      return "card-layout-four-boxes"
+  }
+}
+
 /**
  * React component used to render the card display of the app. The card display 
  * renders the currently visible side of the currently visible flashcard.
@@ -600,98 +619,124 @@ function CardDisplay() {
   if (visibleCard === undefined) {
     return <NoDeckOpenedMessage />
   }
-  const visibleFace = (appState.visibleSide === Side.FRONT) ?
-    visibleCard.front : visibleCard.back
-
-  const [box1, box2, box3, box4] = [
-    visibleFace.box[1],
-    visibleFace.box[2],
-    visibleFace.box[3],
-    visibleFace.box[4],
-  ].map((box, index) => {
-    if (appState.appMode === AppMode.EDITING_DECK && box === null) {
-      return <EditModeBox box={(() => {
-        switch (index) {
-          case 0: return 1
-          case 1: return 2
-          case 2: return 3
-          case 3: return 4
-          default: throw new Error("Invalid box index; should be impossible")
-        }
-      })()} />
-    } else if (box === null) {
-      return <></>
-    } else if (
-      box.type === CardContentData.Type.TEXT
-    ) {
-      return <>{box.text}</>
-    } else if (
-      box.type === CardContentData.Type.IMAGE
-    ) {
-      return <img style={{ width: "100%", height: "100%", objectFit: "contain" }} src={box.base64ImageData} />
-    } else if (
-      box.type === CardContentData.Type.VIDEO_LINK
-    ) {
-      return <>Video</>
-    } else {
-      return <></>
-    }
-  })
-
-  let jsx = <>Test</>
-  switch (visibleFace.layout) {
-
-    case CardLayout.ONE_BOX:
-      jsx = box1 ? <OneBox appMode={appMode} box={box1} /> : <></>
-      break
-
-    case CardLayout.TWO_BOXES_V:
-      jsx = box1 && box2 ?
-        <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} /> :
-        <></>
-      break
-    case CardLayout.TWO_BOXES_H:
-      jsx = box1 && box2 ?
-        <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} /> :
-        <></>
-      break
-    case CardLayout.ONE_BOX_LV_TWO_BOXES_RV:
-      jsx = box1 && box2 && box3 ?
-        <OneBoxLeftTwoBoxesRight appMode={appMode}
-          box1={box1} box2={box2} box3={box3} /> :
-        <></>
-      break
-    case CardLayout.ONE_BOX_RV_TWO_BOXES_LV:
-      jsx = box1 && box2 && box3 ?
-        <OneBoxRightTwoBoxesLeft appMode={appMode}
-          box1={box1} box2={box2} box3={box3} /> :
-        <></>
-      break
-    case CardLayout.ONE_BOX_TH_TWO_BOXES_BH:
-      jsx = box1 && box2 && box3 ?
-        <OneBoxTopTwoBoxesBottom appMode={appMode}
-          box1={box1} box2={box2} box3={box3} /> :
-        <></>
-      break
-    case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
-      jsx = box1 && box2 && box3 ?
-        <OneBoxBottomTwoBoxesTop appMode={appMode}
-          box1={box1} box2={box2} box3={box3} /> :
-        <></>
-      break
-    case CardLayout.FOUR_BOXES:
-      jsx = box1 && box2 && box3 && box4 ?
-        <FourBoxes appMode={appMode}
-          box1={box1} box2={box2} box3={box3} box4={box4} /> :
-        <></>
-      break
-  }
+  
 
   return (
-    <div className="flashcard-display">
-      {jsx}
+    <div className="flashcard-display" style={{position: "relative"}}>
+      <div className={
+        `flashcard-face ${
+          appState.visibleSide === Side.BACK && "flashcard-front-face-rotated"
+      } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`}>
+        <div>test</div>
+        <div>test2</div>
+        <div>test</div>
+        <div>test2</div>
+      </div>
+      <div className={
+        `flashcard-face ${
+          appState.visibleSide === Side.FRONT && "flashcard-back-face-rotated"
+      }`}>
+        Test Text Back
+      </div>
     </div>
   )
+
+  // const visibleCard = appState.deck.cards[appState.visibleCardIndex]
+  // if (visibleCard === undefined) {
+  //   return <NoDeckOpenedMessage />
+  // }
+  // const visibleFace = (appState.visibleSide === Side.FRONT) ?
+  //   visibleCard.front : visibleCard.back
+
+  // const [box1, box2, box3, box4] = [
+  //   visibleFace.box[1],
+  //   visibleFace.box[2],
+  //   visibleFace.box[3],
+  //   visibleFace.box[4],
+  // ].map((box, index) => {
+  //   if (appState.appMode === AppMode.EDITING_DECK && box === null) {
+  //     return <EditModeBox box={(() => {
+  //       switch (index) {
+  //         case 0: return 1
+  //         case 1: return 2
+  //         case 2: return 3
+  //         case 3: return 4
+  //         default: throw new Error("Invalid box index; should be impossible")
+  //       }
+  //     })()} />
+  //   } else if (box === null) {
+  //     return <></>
+  //   } else if (
+  //     box.type === CardContentData.Type.TEXT
+  //   ) {
+  //     return <>{box.text}</>
+  //   } else if (
+  //     box.type === CardContentData.Type.IMAGE
+  //   ) {
+  //     return <img style={{ width: "100%", height: "100%", objectFit: "contain" }} src={box.base64ImageData} />
+  //   } else if (
+  //     box.type === CardContentData.Type.VIDEO_LINK
+  //   ) {
+  //     return <>Video</>
+  //   } else {
+  //     return <></>
+  //   }
+  // })
+
+  // let jsx = <>Test</>
+  // switch (visibleFace.layout) {
+
+  //   case CardLayout.ONE_BOX:
+  //     jsx = box1 ? <OneBox appMode={appMode} box={box1} /> : <></>
+  //     break
+
+  //   case CardLayout.TWO_BOXES_V:
+  //     jsx = box1 && box2 ?
+  //       <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} /> :
+  //       <></>
+  //     break
+  //   case CardLayout.TWO_BOXES_H:
+  //     jsx = box1 && box2 ?
+  //       <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} /> :
+  //       <></>
+  //     break
+  //   case CardLayout.ONE_BOX_LV_TWO_BOXES_RV:
+  //     jsx = box1 && box2 && box3 ?
+  //       <OneBoxLeftTwoBoxesRight appMode={appMode}
+  //         box1={box1} box2={box2} box3={box3} /> :
+  //       <></>
+  //     break
+  //   case CardLayout.ONE_BOX_RV_TWO_BOXES_LV:
+  //     jsx = box1 && box2 && box3 ?
+  //       <OneBoxRightTwoBoxesLeft appMode={appMode}
+  //         box1={box1} box2={box2} box3={box3} /> :
+  //       <></>
+  //     break
+  //   case CardLayout.ONE_BOX_TH_TWO_BOXES_BH:
+  //     jsx = box1 && box2 && box3 ?
+  //       <OneBoxTopTwoBoxesBottom appMode={appMode}
+  //         box1={box1} box2={box2} box3={box3} /> :
+  //       <></>
+  //     break
+  //   case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
+  //     jsx = box1 && box2 && box3 ?
+  //       <OneBoxBottomTwoBoxesTop appMode={appMode}
+  //         box1={box1} box2={box2} box3={box3} /> :
+  //       <></>
+  //     break
+  //   case CardLayout.FOUR_BOXES:
+  //     jsx = box1 && box2 && box3 && box4 ?
+  //       <FourBoxes appMode={appMode}
+  //         box1={box1} box2={box2} box3={box3} box4={box4} /> :
+  //       <></>
+  //     break
+  // }
+
+  // return (
+  //   <div className="flashcard-display">
+  //     {jsx}
+  //   </div>
+  // )
 
 }
 

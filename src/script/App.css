@@ -53,8 +53,6 @@
 .flashcard-display {
     min-width: calc(100vw / 3);
     aspect-ratio: 5 / 3;
-    border: solid var(--bs-border-width) var(--flashcard-dark);
-    border-radius: 1rem;
     padding: 1rem;
 }
 

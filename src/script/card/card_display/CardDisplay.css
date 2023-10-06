@@ -1,0 +1,80 @@
+.card-layout-one-box,
+.card-layout-two-boxes-v,
+.card-layout-two-boxes-h,
+.card-layout-one-box-bh-two-boxes-th {
+    display: grid;
+    gap: 1rem;
+}
+
+.card-layout-one-box *,
+.card-layout-two-boxes-v *,
+.card-layout-two-boxes-h *,
+.card-layout-one-box-bh-two-boxes-th * {
+    display: none;
+}
+
+.card-layout-one-box *:first-child,
+
+.card-layout-two-boxes-v *:nth-child(2),
+.card-layout-two-boxes-v *:nth-child(2),
+
+.card-layout-two-boxes-h *:nth-child(1),
+.card-layout-two-boxes-h *:nth-child(2),
+
+.card-layout-one-box-bh-two-boxes-th *:nth-child(1),
+.card-layout-one-box-bh-two-boxes-th *:nth-child(2),
+.card-layout-one-box-bh-two-boxes-th *:nth-child(3)
+{
+    display: inherit;
+}
+
+.card-layout-one-box {
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+.card-layout-two-boxes-v {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+}
+
+.card-layout-two-boxes-h {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto;
+}
+
+.card-layout-one-box-bh-two-boxes-th {
+    grid-template:
+        "a b"
+        "c c";
+    grid-template-rows: auto auto;
+    grid-template-columns: auto auto;    
+}
+
+.card-layout-four-boxes {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+}
+
+.flashcard-face {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: all 1s ease-in-out;
+    backface-visibility: hidden;
+    outline: solid var(--bs-border-width) var(--flashcard-dark);
+    border-radius: 25px;
+    padding: 1rem;
+}
+
+.flashcard-front-face-rotated {
+    transform: rotateY(180deg);
+}
+
+.flashcard-back-face-rotated {
+    transform: rotateY(-180deg);
+}

@@ -1,5 +1,5 @@
 import { Button, Col, ProgressBar, Row } from "react-bootstrap"
-import CardDisplay from "../card/CardDisplay"
+import CardDisplay from "../card/card_display/CardDisplay"
 import { useContext } from "react"
 import { AppState } from "../App"
 import { AppStateType } from "../state/AppState"
