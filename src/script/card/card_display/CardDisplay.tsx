@@ -1,16 +1,15 @@
-import { Col, Container, Dropdown, Row } from "react-bootstrap"
+import { Dropdown } from "react-bootstrap"
 import CardLayout from "../cardlayout"
 import { Side } from "../side"
 import AppMode from "../../app/AppMode"
 import { Editor } from "../../app/Editor"
-import { Box, BoxNumber, getEditorTypeFromBoxType } from "../Box"
+import { BoxNumber, getEditorTypeFromBoxType } from "../Box"
 import { useContext } from "react"
 import { AppState } from "../../App"
 import { changeEditor } from "../../state/AppState"
 import { CardContentData } from "../CardContentData"
 import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
 import "./CardDisplay.css"
-// import { Dropdown, DropdownMenu, DropdownToggle } from "../../ui/Dropdown/DropdownMenu"
 
 /**
  * Returns the `onClick` function to be bound to a box to edit its contents. 
@@ -19,7 +18,9 @@ import "./CardDisplay.css"
  * @param editor {@linkcode Editor} to use.
  * @param box box to edit.
  * @returns `onClick` function which can be bound to a React `button`.
+ * 
  */
+//@ts-expect-error
 function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber) {
   const appState = useContext(AppState)
   if (appState.appMode === AppMode.EDITING_DECK ||
@@ -37,77 +38,6 @@ function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber) {
   } else {
     return () => {}
   }
-}
-
-
-/**
-
-
-/**
- * React component used for rendering the {@linkcode CardDisplay} UI with the 
- * {@linkcode ONE_BOX_LV_TWO_BOXES_RV} layout.
- * @param param0 props of this component.
- * @returns UI, as a JSX element.
- */
-function OneBoxLeftTwoBoxesRight({ appMode, box1, box2, box3 }: {
-  /**
-   * {@linkcode AppMode} to use to determine whether to draw the outline around 
-   * the box in `EDITING_DECK` mode.
-   */
-  appMode: AppMode,
-  /**
-   * Left {@linkcode Box} to render.
-   */
-  box1: JSX.Element,
-  /**
-   * Right upper {@linkcode Box} to render.
-   */
-  box2: JSX.Element,
-  /**
-   * Right lower {@linkcode Box} to render.
-   */
-  box3: JSX.Element,
-}) {
-
-  const appState = useContext(AppState)
-
-  let [type1, type2, type3] = [Editor.NONE, Editor.NONE, Editor.NONE]
-
-  if (appState.deck && appState.visibleCardIndex >= 0) {
-    const side = appState.deck.cards[
-      appState.visibleCardIndex][appState.visibleSide]
-    type1 = getEditorTypeFromBoxType(side.box[1])
-    type2 = getEditorTypeFromBoxType(side.box[2])
-    type3 = getEditorTypeFromBoxType(side.box[3])
-  }
-
-  const func1 = getOnClickFuncFromEditorType(type1, 1)
-  const func2 = getOnClickFuncFromEditorType(type2, 2)
-  const func3 = getOnClickFuncFromEditorType(type3, 3)
-
-  return (
-    <Row className="h-100">
-      <Col className={
-        `h-100 ms-3 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-      } onClick={func1}>
-        {box1}
-      </Col>
-      <Col className="h-100 align-items-center">
-        <Container className="h-100 d-flex flex-column">
-          <Row className={
-            `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func2} style={{ maxHeight: "50%" }}>
-            {box2}
-          </Row>
-          <Row className={
-            `flex-fill mb-2 ${appMode === AppMode.EDITING_DECK && 'border rounded'}`
-          } onClick={func3} style={{ maxHeight: "50%" }}>
-            {box3}
-          </Row>
-        </Container>
-      </Col>
-    </Row>
-  )
 }
 
 
