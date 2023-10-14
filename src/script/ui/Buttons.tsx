@@ -1,7 +1,7 @@
 import { Button } from "react-bootstrap";
 import AppMode from "../app/AppMode";
 import { useContext } from "react";
-import App, { AppState } from "../App";
+import { AppState } from "../App";
 import { AppStateType } from "../state/AppState";
 import { Editor } from "../app/Editor";
 import { Deck } from "../card/deck";
