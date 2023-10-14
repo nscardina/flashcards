@@ -1,0 +1,8 @@
+@use "_utils";
+@use "./colors";
+
+button {
+    @include utils.standard-spacing();
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+}

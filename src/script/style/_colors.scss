@@ -1,0 +1,22 @@
+$flashcard-light-fg: rgb(30, 30, 30);
+$flashcard-light-bg: rgb(220, 220, 220);
+$flashcard-light-bg-disabled: darken($flashcard-light-bg, 10%);
+$flashcard-dark-fg: rgb(240, 240, 240);
+$flashcard-dark-bg: rgb(70, 70, 70);
+$flashcard-dark-bg-disabled: lighten($flashcard-dark-bg, 10%);
+
+:root {
+    --fg-color: var($flashcard-light-fg);
+    --bg-color: var($flashcard-light-bg);
+    --bg-color-disabled: var($flashcard-dark-bg-disabled);
+    color: var(--fg-color);
+    background-color: var(--bg-color);
+}
+
+@media screen and (prefers-color-scheme: dark) {
+    :root {
+        --fg-color: var($flashcard-dark-fg);
+        --bg-color: var($flashcard-dark-bg);
+        --bg-color-disabled: var($flashcard-dark-bg-disabled);
+    }
+}

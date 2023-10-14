@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'
+import './App.scss'
 import { createContext, useState } from 'react';
 import AppMode from './app/AppMode';
 import { AppStateType, NO_CARD_FOCUSED } from './state/AppState';

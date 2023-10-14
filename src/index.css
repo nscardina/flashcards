@@ -11,8 +11,11 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  color: var(--bs-dark);
-  background-color: var(--bs-light);
+  --fg-color: var(--bs-dark);
+  --bg-color: var(--bs-light);
+
+  color: var(--fg-color);
+  background-color: var(--bg-color);
 }
 
 body {
@@ -22,7 +25,7 @@ body {
 
 @media screen and (prefers-color-scheme: dark) {
   :root {
-    color: var(--bs-light);
-    background-color: var(--bs-dark);
+    --fg-color: var(--bs-light);
+    --bg-color: var(--bs-dark);
   }
 }
