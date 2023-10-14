@@ -9,7 +9,7 @@ import { AppState } from "../../App"
 import { changeEditor } from "../../state/AppState"
 import { CardContentData } from "../CardContentData"
 import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
-import "./CardDisplay.css"
+import "./CardDisplay.scss"
 
 /**
  * Returns the `onClick` function to be bound to a box to edit its contents. 
@@ -70,7 +70,7 @@ function EditModeBox({ box }: { box: BoxNumber }) {
 
         <Dropdown.Toggle className="edit-mode-toggle flashcard-button d-flex align-items-center"
         style={{display: "block"}}>
-          <span className="material-symbols-outlined">edit</span>test
+          <span className="material-symbols-outlined">edit</span>
         </Dropdown.Toggle>
 
         <Dropdown.Menu style={{flexDirection: "column"}}>

@@ -50,8 +50,8 @@ function DeckInteractionArea() {
   return (
     <>
       <Row className="mt-3 d-flex">
-        <Col xs={{ span: 6, order: 2 }} md={{ span: 1, order: 1 }}
-          className="d-flex align-items-center justify-content-center"
+        <Col xs={{ span: 6, order: 2 }} md={{ span: "auto", order: 1 }}
+          className="d-flex align-items-center justify-content-center ms-auto"
         >
           <Button
             disabled={appState.deck === null || appState.deck.cards.length <= 1}
@@ -68,10 +68,10 @@ function DeckInteractionArea() {
             </span>
           </Button>
         </Col>
-        <Col xs={{ span: 12, order: 1 }} md={{ span: 10, order: 2 }}>
+        <Col xs={{ span: 12, order: 1 }} md={{ span: "auto", order: 2 }}>
           <CardDisplay />
         </Col>
-        <Col xs={{ span: 6, order: 3 }} md={{ span: 1, order: 3 }} className="d-flex align-items-center justify-content-center">
+        <Col xs={{ span: 6, order: 3 }} md={{ span: "auto", order: 3 }} className="d-flex align-items-center justify-content-center me-auto">
           <Button
             className="d-flex align-items-center flashcard-button flashcard-round-button"
             disabled={appState.deck === null || appState.deck.cards.length <= 1}

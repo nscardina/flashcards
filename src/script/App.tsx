@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.scss'
 import { createContext, useState } from 'react';
 import AppMode from './app/AppMode';
 import { AppStateType, NO_CARD_FOCUSED } from './state/AppState';
@@ -16,6 +15,8 @@ import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
 import { Deck } from './card/deck';
 import { BoxNumber } from './card/Box';
 import { ImageEditor } from './ui/ImageEditor';
+
+import "../style/App.scss"
 
 export const AppState = createContext<AppStateType>(undefined!)
 

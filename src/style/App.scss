@@ -1,0 +1,103 @@
+:root {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flashcard-round-button {
+    border-radius: 50% !important;
+    aspect-ratio: 1;
+}
+
+.flashcard-button {
+    --bs-btn-color: var(--bs-dark);
+    --bs-btn-bg: rgba(0, 0, 0, 0);
+    --bs-btn-border-color: var(--bs-dark);
+    --bs-btn-hover-color: var(--bs-dark);
+    --bs-btn-hover-bg: var(--flashcard-light);
+    --bs-btn-hover-border-color: var(--bs-dark);
+    --bs-btn-focus-shadow-rgb: var(--flashcard-light);
+    --bs-btn-active-color: var(--bs-dark);
+    --bs-btn-active-bg: var(--flashcard-light);
+    --bs-btn-active-border-color: var(--bs-dark);
+    --bs-btn-active-shadow: inset 0 3px 5px var(--flashcard-light);
+    --bs-btn-disabled-color: var(--bs-dark);
+    --bs-btn-disabled-bg: var(--flashcard-light);
+    --bs-btn-disabled-border-color: var(--bs-dark);
+}
+
+.dropdown-menu {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(1rem);
+}
+
+.flashcard-menu-button {
+    min-width: calc(100vw / 3);
+}
+
+@media screen and (max-width: 576px) {
+    .flashcard-menu-button-sm {
+        width: calc(100vw / 3 - 0.5rem);
+    }
+}
+
+
+
+@media screen and (min-width: 30rem) {
+    .flashcard-menu-button {
+        min-width: 10rem;
+    }
+}
+
+.flashcard-display {
+    min-width: calc(100vw / 3);
+    aspect-ratio: 5 / 3;
+    padding: 1rem;
+    max-width: 960px;
+    margin: auto;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+
+    body {
+        color: var(--bs-light);
+        background-color: var(--bs-gray-700);
+    }
+
+    .dropdown-menu {
+        --bs-body-bg: rgb(255, 255, 255, 0.2);
+        --bs-body-color: var(--bs-light);
+        --bs-dropdown-border-color: var(--bs-light);
+        --bs-dropdown-divider-bg: var(--bs-light);
+        --bs-dropdown-link-hover-bg: var(--flashcard-dark);
+        --bs-dropdown-link-active-bg: var(--flashcard-dark);
+        --bs-dropdown-link-disabled-color: var(--flashcard-light-disabled);
+    }
+
+    .flashcard-button {
+        --bs-btn-color: var(--bs-light);
+        --bs-btn-bg: rgba(255, 255, 255, 0);
+        --bs-btn-border-color: var(--bs-light);
+        --bs-btn-hover-color: var(--bs-light);
+        --bs-btn-hover-bg: var(--flashcard-dark);
+        --bs-btn-hover-border-color: var(--bs-light);
+        --bs-btn-focus-shadow-rgb: var(--flashcard-dark);
+        --bs-btn-active-color: var(--bs-light);
+        --bs-btn-active-bg: var(--flashcard-dark);
+        --bs-btn-active-border-color: var(--bs-light);
+        --bs-btn-active-shadow: inset 0 3px 5px var(--flashcard-dark);
+        --bs-btn-disabled-color: var(--bs-light);
+        --bs-btn-disabled-bg: var(--flashcard-dark);
+        --bs-btn-disabled-border-color: var(--bs-light);
+    }
+
+    .flashcard-display {
+        border-color: var(--flashcard-light);
+    }
+
+    .modal-content {
+        color: var(--bs-light);
+        background-color: var(--bs-dark);
+    }
+}
+
