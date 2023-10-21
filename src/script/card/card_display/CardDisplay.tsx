@@ -3,8 +3,8 @@ import CardLayout from "../cardlayout"
 import { Side } from "../side"
 import AppMode from "../../app/AppMode"
 import { Editor } from "../../app/Editor"
-import { BoxNumber, getEditorTypeFromBoxType } from "../Box"
-import { useContext } from "react"
+import { Box, BoxNumber, getEditorTypeFromBoxType } from "../Box"
+import { useContext, useState } from "react"
 import { AppState } from "../../App"
 import { changeEditor } from "../../state/AppState"
 import { CardContentData } from "../CardContentData"
@@ -24,7 +24,7 @@ import "./CardDisplay.scss"
 function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber) {
   const appState = useContext(AppState)
   if (appState.appMode === AppMode.EDITING_DECK ||
-      appState.appMode === AppMode.MANAGING_FILES) {
+    appState.appMode === AppMode.MANAGING_FILES) {
     switch (editor) {
       case Editor.TEXT:
         return () => changeEditor(appState, Editor.TEXT, box)
@@ -36,8 +36,42 @@ function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber) {
         return () => { }
     }
   } else {
-    return () => {}
+    return () => { }
   }
+}
+
+function CardDisplayXButton({ side, boxNumber }: { boxNumber: BoxNumber, side: Side }) {
+
+  const appState = useContext(AppState)
+
+  return (
+    <svg className="flashcard-x-button" 
+      style={{width: "1rem", height: "1rem", position: "absolute"}}
+      onClick={(event) => {
+
+      // Don't trigger the editor popover
+      event.stopPropagation()
+      
+      if (appState.deck) {
+
+        const modifiedCard = structuredClone(appState.deck.cards[appState.visibleCardIndex])
+        modifiedCard[side].box[boxNumber] = null
+
+        appState.setDeck({
+          ...appState.deck,
+          cards: [
+            ...appState.deck.cards.slice(0, appState.visibleCardIndex),
+            modifiedCard,
+            ...appState.deck.cards.slice(appState.visibleCardIndex + 1)
+          ]
+        })
+      }
+    }}>
+      <circle cx="50%" cy="50%" r="45%" fill="var(--bs-body-bg)" stroke="var(--bs-body-color)" stroke-width="5%" />
+      <line x1="25%" y1="25%" x2="75%" y2="75%" stroke="var(--bs-body-color)" stroke-width="5%" />
+      <line x1="25%" y1="75%" x2="75%" y2="25%" stroke="var(--bs-body-color)" stroke-width="5%" />
+    </svg>
+  )
 }
 
 
@@ -56,9 +90,9 @@ function EditModeBox({ box }: { box: BoxNumber }) {
 
   return (
     <div className="d-flex w-100 h-100 align-items-center justify-content-center">
-      
+
       <Dropdown>
-        <style style={{display: "none"}}>
+        <style style={{ display: "none" }}>
           {
             `
             .dropdown-toggle.edit-mode-toggle::after {
@@ -69,11 +103,11 @@ function EditModeBox({ box }: { box: BoxNumber }) {
         </style>
 
         <Dropdown.Toggle className="edit-mode-toggle flashcard-button d-flex align-items-center"
-        style={{display: "block"}}>
+          style={{ display: "block" }}>
           <span className="material-symbols-outlined">edit</span>
         </Dropdown.Toggle>
 
-        <Dropdown.Menu style={{flexDirection: "column"}}>
+        <Dropdown.Menu style={{ flexDirection: "column" }}>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
               changeEditor(appState, Editor.TEXT, box)
@@ -100,7 +134,7 @@ function EditModeBox({ box }: { box: BoxNumber }) {
 }
 
 function getCSSClassFromCardLayout(layout: CardLayout): string {
-  switch(layout) {
+  switch (layout) {
     case CardLayout.ONE_BOX: return "card-layout-one-box"
     case CardLayout.TWO_BOXES_V: return "card-layout-two-boxes-v"
     case CardLayout.TWO_BOXES_H: return "card-layout-two-boxes-h"
@@ -134,14 +168,13 @@ function CardDisplay() {
   if (visibleCard === undefined) {
     return <NoDeckOpenedMessage />
   }
-  
+
 
   return (
-    <div className="flashcard-display" style={{position: "relative"}}>
+    <div className="flashcard-display" style={{ position: "relative" }}>
       <div className={
-        `flashcard-face ${
-          appState.visibleSide === Side.BACK ? "flashcard-front-face-rotated" : ""
-      } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`}>
+        `flashcard-face ${appState.visibleSide === Side.BACK ? "flashcard-front-face-rotated" : ""
+        } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`}>
         {
           Object.keys(visibleCard.front.box).map(key => {
             const value = visibleCard.front.box[key as BoxNumber]
@@ -152,21 +185,25 @@ function CardDisplay() {
                 </div>
               )
             }
-            switch(value.type) {
+            switch (value.type) {
               case CardContentData.Type.TEXT:
-                return <div onClick={() => {
-                  changeEditor(appState, 
-                    getEditorTypeFromBoxType(
-                      visibleCard.front.box[key as BoxNumber]), 
-                    key as BoxNumber)
-                }}>{value.text}</div>
+                return (
+                  <div className={appState.appMode === AppMode.EDITING_DECK ? "flashcard-edit-mode-box" : ""} 
+                  style={{position: "relative"}}
+                  onClick={() => {
+                    changeEditor(appState,
+                      getEditorTypeFromBoxType(
+                        visibleCard.front.box[key as BoxNumber]),
+                      key as BoxNumber)
+                  }}><CardDisplayXButton boxNumber={key as BoxNumber} side={Side.FRONT} />{value.text}</div>
+                )
               case CardContentData.Type.IMAGE:
-                return <img 
-                style={{ objectFit: "contain" }} 
-                src={value.base64ImageData} 
-                onClick={() => {
-                  changeEditor(appState, Editor.VIDEO_LINK, key as BoxNumber)
-                }}
+                return <img
+                  style={{ objectFit: "contain" }}
+                  src={value.base64ImageData}
+                  onClick={() => {
+                    changeEditor(appState, Editor.VIDEO_LINK, key as BoxNumber)
+                  }}
                 />
               default: return <></>
             }
@@ -174,110 +211,41 @@ function CardDisplay() {
         }
       </div>
       <div className={
-        `flashcard-face ${
-          appState.visibleSide === Side.FRONT ? "flashcard-back-face-rotated" : ""
-      }`}>
-        Test Text Back
+        `flashcard-face ${appState.visibleSide === Side.FRONT ? "flashcard-back-face-rotated" : ""
+        } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`}>
+        {
+          Object.keys(visibleCard.back.box).map(key => {
+            const value = visibleCard.back.box[key as BoxNumber]
+            if (value === null) {
+              return (
+                <div>
+                  <EditModeBox box={key as BoxNumber} />
+                </div>
+              )
+            }
+            switch (value.type) {
+              case CardContentData.Type.TEXT:
+                return <div onClick={() => {
+                  changeEditor(appState,
+                    getEditorTypeFromBoxType(
+                      visibleCard.back.box[key as BoxNumber]),
+                    key as BoxNumber)
+                }}>{value.text}</div>
+              case CardContentData.Type.IMAGE:
+                return <img
+                  style={{ objectFit: "contain" }}
+                  src={value.base64ImageData}
+                  onClick={() => {
+                    changeEditor(appState, Editor.VIDEO_LINK, key as BoxNumber)
+                  }}
+                />
+              default: return <></>
+            }
+          })
+        }
       </div>
     </div>
   )
-
-  // const visibleCard = appState.deck.cards[appState.visibleCardIndex]
-  // if (visibleCard === undefined) {
-  //   return <NoDeckOpenedMessage />
-  // }
-  // const visibleFace = (appState.visibleSide === Side.FRONT) ?
-  //   visibleCard.front : visibleCard.back
-
-  // const [box1, box2, box3, box4] = [
-  //   visibleFace.box[1],
-  //   visibleFace.box[2],
-  //   visibleFace.box[3],
-  //   visibleFace.box[4],
-  // ].map((box, index) => {
-  //   if (appState.appMode === AppMode.EDITING_DECK && box === null) {
-  //     return <EditModeBox box={(() => {
-  //       switch (index) {
-  //         case 0: return 1
-  //         case 1: return 2
-  //         case 2: return 3
-  //         case 3: return 4
-  //         default: throw new Error("Invalid box index; should be impossible")
-  //       }
-  //     })()} />
-  //   } else if (box === null) {
-  //     return <></>
-  //   } else if (
-  //     box.type === CardContentData.Type.TEXT
-  //   ) {
-  //     return <>{box.text}</>
-  //   } else if (
-  //     box.type === CardContentData.Type.IMAGE
-  //   ) {
-  //     return <img style={{ width: "100%", height: "100%", objectFit: "contain" }} src={box.base64ImageData} />
-  //   } else if (
-  //     box.type === CardContentData.Type.VIDEO_LINK
-  //   ) {
-  //     return <>Video</>
-  //   } else {
-  //     return <></>
-  //   }
-  // })
-
-  // let jsx = <>Test</>
-  // switch (visibleFace.layout) {
-
-  //   case CardLayout.ONE_BOX:
-  //     jsx = box1 ? <OneBox appMode={appMode} box={box1} /> : <></>
-  //     break
-
-  //   case CardLayout.TWO_BOXES_V:
-  //     jsx = box1 && box2 ?
-  //       <TwoBoxesVertical appMode={appMode} box1={box1} box2={box2} /> :
-  //       <></>
-  //     break
-  //   case CardLayout.TWO_BOXES_H:
-  //     jsx = box1 && box2 ?
-  //       <TwoBoxesHorizontal appMode={appMode} box1={box1} box2={box2} /> :
-  //       <></>
-  //     break
-  //   case CardLayout.ONE_BOX_LV_TWO_BOXES_RV:
-  //     jsx = box1 && box2 && box3 ?
-  //       <OneBoxLeftTwoBoxesRight appMode={appMode}
-  //         box1={box1} box2={box2} box3={box3} /> :
-  //       <></>
-  //     break
-  //   case CardLayout.ONE_BOX_RV_TWO_BOXES_LV:
-  //     jsx = box1 && box2 && box3 ?
-  //       <OneBoxRightTwoBoxesLeft appMode={appMode}
-  //         box1={box1} box2={box2} box3={box3} /> :
-  //       <></>
-  //     break
-  //   case CardLayout.ONE_BOX_TH_TWO_BOXES_BH:
-  //     jsx = box1 && box2 && box3 ?
-  //       <OneBoxTopTwoBoxesBottom appMode={appMode}
-  //         box1={box1} box2={box2} box3={box3} /> :
-  //       <></>
-  //     break
-  //   case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
-  //     jsx = box1 && box2 && box3 ?
-  //       <OneBoxBottomTwoBoxesTop appMode={appMode}
-  //         box1={box1} box2={box2} box3={box3} /> :
-  //       <></>
-  //     break
-  //   case CardLayout.FOUR_BOXES:
-  //     jsx = box1 && box2 && box3 && box4 ?
-  //       <FourBoxes appMode={appMode}
-  //         box1={box1} box2={box2} box3={box3} box4={box4} /> :
-  //       <></>
-  //     break
-  // }
-
-  // return (
-  //   <div className="flashcard-display">
-  //     {jsx}
-  //   </div>
-  // )
 
 }
 

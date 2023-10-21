@@ -8,6 +8,7 @@
 .card-layout-four-boxes {
     display: grid;
     gap: 1rem;
+    
 }
 
 .card-layout-one-box *,
@@ -19,6 +20,7 @@
 .card-layout-one-box-rv-two-boxes-lv *,
 .card-layout-four-boxes * {
     display: none;
+    overflow-wrap: anywhere;
 }
 
 .card-layout-one-box *:first-child,
@@ -104,10 +106,10 @@
 
 .card-layout-one-box-lv-two-boxes-rv {
     grid-template:
-        "a b" auto
-        "a c" auto;
-    grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
+        "a b"
+        "a c";
+    grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
+    grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
 }
 
 .card-layout-one-box-lv-two-boxes-rv *:nth-child(1) {
@@ -168,3 +170,19 @@
     transform: rotateY(-180deg);
 }
 
+.flashcard-x-button {
+    width: 1.5rem;
+    height: 1.5rem;
+    position: relative;
+    left: calc(100% - 0.75rem);
+    top: -0.75rem;
+}
+
+.flashcard-x-button * {
+    display:initial;
+}
+
+.flashcard-edit-mode-box {
+    outline: 0.5px dashed;
+    border-radius: 1rem;
+}
