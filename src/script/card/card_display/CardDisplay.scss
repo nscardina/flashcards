@@ -1,3 +1,35 @@
+@use "sass:list";
+@use "sass:map";
+
+@mixin -box-properties() {
+    display: grid;
+    gap: 1rem;
+
+    * {
+        overflow-wrap: anywhere;
+    }
+
+    .dropdown-menu.show {
+        display: block !important;
+    }
+
+    .flashcard-display-box-container {
+        overflow-y: auto;
+        display: relative;
+        max-width: 100%;
+        max-height: 100%;
+        
+    }
+
+    img.flashcard-display-box-container {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+$-half-area-dim: calc(50% - 0.5rem);
+$-whole-area-dim: calc(2 * $-half-area-dim);
+
 .card-layout-one-box,
 .card-layout-two-boxes-v,
 .card-layout-two-boxes-h,
@@ -6,148 +38,183 @@
 .card-layout-one-box-lv-two-boxes-rv,
 .card-layout-one-box-rv-two-boxes-lv,
 .card-layout-four-boxes {
-    display: grid;
-    gap: 1rem;
-    
+    @include -box-properties();
 }
 
-.card-layout-one-box *,
-.card-layout-two-boxes-v *,
-.card-layout-two-boxes-h *,
-.card-layout-one-box-bh-two-boxes-th *,
-.card-layout-one-box-th-two-boxes-bh *,
-.card-layout-one-box-lv-two-boxes-rv *,
-.card-layout-one-box-rv-two-boxes-lv *,
-.card-layout-four-boxes * {
-    display: none;
-    overflow-wrap: anywhere;
+@mixin -visibleBoxes($numBoxes) {
+    @for $i from calc(($numBoxes + 1)) to 5 {
+        *:nth-child(#{$i} of .flashcard-box),
+        .flashcard-x-button-#{$i} {
+            display: none !important;
+        }
+    }
 }
 
-.card-layout-one-box *:first-child,
+@mixin -box($number, $x, $y, $width, $height) {
+    .flashcard-x-button-#{$number} {
+        position: absolute;
+        left: calc($x + $width - 0.5rem);
+        top: calc($y + 0.5rem);
+    }
+}
 
-.card-layout-two-boxes-v *:nth-child(1),
-.card-layout-two-boxes-v *:nth-child(2),
+@mixin -assign-grid-areas($number) {
 
-.card-layout-two-boxes-h *:nth-child(1),
-.card-layout-two-boxes-h *:nth-child(2),
+    $letters: (a b c d);
 
-.card-layout-one-box-bh-two-boxes-th *:nth-child(1),
-.card-layout-one-box-bh-two-boxes-th *:nth-child(2),
-.card-layout-one-box-bh-two-boxes-th *:nth-child(3),
-
-.card-layout-one-box-th-two-boxes-bh *:nth-child(1),
-.card-layout-one-box-th-two-boxes-bh *:nth-child(2),
-.card-layout-one-box-th-two-boxes-bh *:nth-child(3),
-
-.card-layout-one-box-lv-two-boxes-rv *:nth-child(1),
-.card-layout-one-box-lv-two-boxes-rv *:nth-child(2),
-.card-layout-one-box-lv-two-boxes-rv *:nth-child(3),
-
-.card-layout-one-box-rv-two-boxes-lv *:nth-child(1),
-.card-layout-one-box-rv-two-boxes-lv *:nth-child(2),
-.card-layout-one-box-rv-two-boxes-lv *:nth-child(3),
-
-.card-layout-four-boxes *:nth-child(1),
-.card-layout-four-boxes *:nth-child(2),
-.card-layout-four-boxes *:nth-child(3),
-.card-layout-four-boxes *:nth-child(4)
-{
-    display: flex;
+    @for $i from 1 through $number {
+        *:nth-child(#{$i} of .flashcard-box) {
+            grid-area: list.nth($letters, $i);
+        }
+    }
 }
 
 .card-layout-one-box {
+    @include -visibleBoxes(1);
+
     grid-template-columns: 100%;
     grid-template-rows: 100%;
+
+    @include -box(1, 0rem, 0rem, $-whole-area-dim, $-whole-area-dim);
 }
 
 .card-layout-two-boxes-v {
-    grid-template-columns: auto auto;
-    grid-template-rows: auto;
+    @include -visibleBoxes(2);
+
+    grid-template-columns: $-half-area-dim $-half-area-dim;
+    grid-template-rows: calc($-whole-area-dim + 1rem);
+
+    @include -box(1, 0rem, 0rem, $-half-area-dim, $-whole-area-dim);
+    @include -box(2, 0rem, 0rem, $-whole-area-dim, $-whole-area-dim);
 }
 
 .card-layout-two-boxes-h {
-    grid-template-columns: auto;
-    grid-template-rows: auto auto;
-}
+    @include -visibleBoxes(2);
 
-.card-layout-one-box-bh-two-boxes-th {
-    grid-template:
-        "a b"
-        "c c";  
-}
+    grid-template-columns: calc($-whole-area-dim + 1rem);
+    grid-template-rows: $-half-area-dim $-half-area-dim;
 
-.card-layout-one-box-bh-two-boxes-th *:nth-child(1) {
-    grid-area: a;
-}
-.card-layout-one-box-bh-two-boxes-th *:nth-child(2) {
-    grid-area: b;
-}
-.card-layout-one-box-bh-two-boxes-th *:nth-child(3) {
-    grid-area: c;
-}
-
-.card-layout-one-box-th-two-boxes-bh {
-    grid-template:
-        "a a"
-        "b c";
-    grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
-}
-
-.card-layout-one-box-th-two-boxes-bh *:nth-child(1) {
-    grid-area: a;
-}
-.card-layout-one-box-th-two-boxes-bh *:nth-child(2) {
-    grid-area: b;
-}
-.card-layout-one-box-th-two-boxes-bh *:nth-child(3) {
-    grid-area: c;
-}
-
-.card-layout-one-box-lv-two-boxes-rv {
-    grid-template:
-        "a b"
-        "a c";
-    grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
-    grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
-}
-
-.card-layout-one-box-lv-two-boxes-rv *:nth-child(1) {
-    grid-area: a;
-
-}
-.card-layout-one-box-lv-two-boxes-rv *:nth-child(2) {
-    grid-area: b;
-}
-.card-layout-one-box-lv-two-boxes-rv *:nth-child(3) {
-    grid-area: c;
-}
-
-.card-layout-one-box-rv-two-boxes-lv {
-    grid-template:
-        "a b"
-        "c b";
-    grid-template-rows: auto auto;
-    grid-template-columns: auto auto;
-}
-
-.card-layout-one-box-rv-two-boxes-lv *:nth-child(1) {
-    grid-area: a;
-}
-.card-layout-one-box-rv-two-boxes-lv *:nth-child(2) {
-    grid-area: b;
-}
-.card-layout-one-box-rv-two-boxes-lv *:nth-child(3) {
-    grid-area: c;
+    @include -box(1, 0rem, 0rem, $-whole-area-dim, $-half-area-dim);
+    @include -box(2, 0rem, $-half-area-dim, $-whole-area-dim, $-whole-area-dim);
 }
 
 .card-layout-four-boxes {
+    @include -visibleBoxes(4);
+
     grid-template:
         "a b" 
         "c d";
     grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
     grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
+
+    @include -box(1, 0rem, 0rem, calc($-half-area-dim), calc($-half-area-dim));
+    @include -box(2, calc($-half-area-dim), 0rem, calc($-half-area-dim), calc($-half-area-dim));
+    @include -box(3, 0rem, calc($-half-area-dim), calc($-half-area-dim), calc($-half-area-dim));
+    @include -box(4, calc($-half-area-dim), calc($-half-area-dim), calc($-half-area-dim), calc($-half-area-dim));
 }
+
+.card-layout-one-box-lv-two-boxes-rv {
+    @include -visibleBoxes(3);
+
+    grid-template:
+        "a b"
+        "a c";
+    grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
+    grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
+
+    @include -assign-grid-areas(3);
+
+    @include -box(1, 0rem, 0rem, $-half-area-dim, $-whole-area-dim);
+    @include -box(2, $-half-area-dim, 0rem, $-half-area-dim, $-half-area-dim);
+    @include -box(3, $-half-area-dim, $-half-area-dim, $-half-area-dim, $-half-area-dim);
+}
+
+.card-layout-one-box-rv-two-boxes-lv {
+    @include -visibleBoxes(3);
+
+    grid-template:
+        "a b"
+        "c b";
+    grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
+    grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
+
+    @include -assign-grid-areas(3);
+
+    @include -box(1, 0rem, 0rem, $-half-area-dim, $-half-area-dim);
+    @include -box(2, $-half-area-dim, 0rem, $-half-area-dim, $-whole-area-dim);
+    @include -box(3, 0rem, $-half-area-dim, $-half-area-dim, $-half-area-dim);
+}
+
+.card-layout-one-box-th-two-boxes-bh {
+    @include -visibleBoxes(3);
+
+    grid-template:
+        "a a"
+        "b c";
+    grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
+    grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
+
+    @include -assign-grid-areas(3);
+
+    @include -box(1, 0rem, 0rem, $-whole-area-dim, $-half-area-dim);
+    @include -box(2, 0rem, $-half-area-dim, $-half-area-dim, $-half-area-dim);
+    @include -box(3, $-half-area-dim, $-half-area-dim, $-half-area-dim, $-half-area-dim);
+}
+
+.card-layout-one-box-bh-two-boxes-th {
+    @include -visibleBoxes(3);
+
+    grid-template:
+        "a b"
+        "c c";
+    grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
+    grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
+
+    @include -assign-grid-areas(3);
+
+    @include -box(1, 0rem, 0rem, $-half-area-dim, $-half-area-dim);
+    @include -box(2, $-half-area-dim, 0rem, $-half-area-dim, $-half-area-dim);
+    @include -box(3, 0rem, $-half-area-dim, $-whole-area-dim, $-half-area-dim);
+}
+
+
+
+// .card-layout-one-box-th-two-boxes-bh *:nth-child(1) {
+//     grid-area: a;
+// }
+// .card-layout-one-box-th-two-boxes-bh *:nth-child(2) {
+//     grid-area: b;
+// }
+// .card-layout-one-box-th-two-boxes-bh *:nth-child(3) {
+//     grid-area: c;
+// }
+
+
+
+// .card-layout-one-box-lv-two-boxes-rv *:nth-child(1) {
+//     grid-area: a;
+
+// }
+// .card-layout-one-box-lv-two-boxes-rv *:nth-child(2) {
+//     grid-area: b;
+// }
+// .card-layout-one-box-lv-two-boxes-rv *:nth-child(3) {
+//     grid-area: c;
+// }
+
+
+
+// .card-layout-one-box-rv-two-boxes-lv *:nth-child(1) {
+//     grid-area: a;
+// }
+// .card-layout-one-box-rv-two-boxes-lv *:nth-child(2) {
+//     grid-area: b;
+// }
+// .card-layout-one-box-rv-two-boxes-lv *:nth-child(3) {
+//     grid-area: c;
+// }
+
+
 
 .flashcard-face {
     position: absolute;

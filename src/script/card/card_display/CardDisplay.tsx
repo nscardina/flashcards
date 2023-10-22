@@ -45,28 +45,28 @@ function CardDisplayXButton({ side, boxNumber }: { boxNumber: BoxNumber, side: S
   const appState = useContext(AppState)
 
   return (
-    <svg className="flashcard-x-button" 
-      style={{width: "1rem", height: "1rem", position: "absolute"}}
+    <svg className={`flashcard-x-button-${boxNumber}`}
+      style={{ width: "1rem", height: "1rem" }}
       onClick={(event) => {
 
-      // Don't trigger the editor popover
-      event.stopPropagation()
-      
-      if (appState.deck) {
+        // Don't trigger the editor popover
+        event.stopPropagation()
 
-        const modifiedCard = structuredClone(appState.deck.cards[appState.visibleCardIndex])
-        modifiedCard[side].box[boxNumber] = null
+        if (appState.deck) {
 
-        appState.setDeck({
-          ...appState.deck,
-          cards: [
-            ...appState.deck.cards.slice(0, appState.visibleCardIndex),
-            modifiedCard,
-            ...appState.deck.cards.slice(appState.visibleCardIndex + 1)
-          ]
-        })
-      }
-    }}>
+          const modifiedCard = structuredClone(appState.deck.cards[appState.visibleCardIndex])
+          modifiedCard[side].box[boxNumber] = null
+
+          appState.setDeck({
+            ...appState.deck,
+            cards: [
+              ...appState.deck.cards.slice(0, appState.visibleCardIndex),
+              modifiedCard,
+              ...appState.deck.cards.slice(appState.visibleCardIndex + 1)
+            ]
+          })
+        }
+      }}>
       <circle cx="50%" cy="50%" r="45%" fill="var(--bs-body-bg)" stroke="var(--bs-body-color)" stroke-width="5%" />
       <line x1="25%" y1="25%" x2="75%" y2="75%" stroke="var(--bs-body-color)" stroke-width="5%" />
       <line x1="25%" y1="75%" x2="75%" y2="25%" stroke="var(--bs-body-color)" stroke-width="5%" />
@@ -180,7 +180,7 @@ function CardDisplay() {
             const value = visibleCard.front.box[key as BoxNumber]
             if (value === null) {
               return (
-                <div>
+                <div className="flashcard-box flashcard-edit-mode-box">
                   <EditModeBox box={key as BoxNumber} />
                 </div>
               )
@@ -188,23 +188,35 @@ function CardDisplay() {
             switch (value.type) {
               case CardContentData.Type.TEXT:
                 return (
-                  <div className={appState.appMode === AppMode.EDITING_DECK ? "flashcard-edit-mode-box" : ""} 
-                  style={{position: "relative"}}
-                  onClick={() => {
-                    changeEditor(appState,
-                      getEditorTypeFromBoxType(
-                        visibleCard.front.box[key as BoxNumber]),
-                      key as BoxNumber)
-                  }}><CardDisplayXButton boxNumber={key as BoxNumber} side={Side.FRONT} />{value.text}</div>
+                  <>
+                    <div className={`${appState.appMode === AppMode.EDITING_DECK ? "flashcard-edit-mode-box" : ""} flashcard-box flashcard-display-box-container`}
+                      style={{ position: "relative" }}
+                      onClick={() => {
+                        changeEditor(appState,
+                          getEditorTypeFromBoxType(
+                            visibleCard.front.box[key as BoxNumber]),
+                          key as BoxNumber)
+                      }}>{value.text}</div>
+                    <CardDisplayXButton boxNumber={key as BoxNumber} side={Side.FRONT} />
+                  </>
+
                 )
               case CardContentData.Type.IMAGE:
-                return <img
-                  style={{ objectFit: "contain" }}
-                  src={value.base64ImageData}
-                  onClick={() => {
-                    changeEditor(appState, Editor.VIDEO_LINK, key as BoxNumber)
-                  }}
-                />
+                return (
+                  <div className={`${appState.appMode === AppMode.EDITING_DECK ? "flashcard-edit-mode-box" : ""} flashcard-box`}
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <img
+                      style={{ objectFit: "contain" }}
+                      src={value.base64ImageData}
+                      className={`flashcard-display-box-container`}
+                      onClick={() => {
+                        changeEditor(appState, Editor.VIDEO_LINK, key as BoxNumber)
+                      }}
+                    />
+                    <CardDisplayXButton boxNumber={key as BoxNumber} side={Side.FRONT} />
+                  </div>
+                )
+
               default: return <></>
             }
           })
