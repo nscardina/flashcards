@@ -176,7 +176,7 @@ function CardDisplay() {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
           return (
-            <div className={
+            <div key={side} className={
               `flashcard-face ${appState.visibleSide !== side ?
                 `flashcard-${side}-face-rotated` : ""
               } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`
@@ -187,7 +187,7 @@ function CardDisplay() {
 
                   if (box === null) {
                     return (
-                      <div className="flashcard-box flashcard-edit-mode-box">
+                      <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
                         <EditModeBox box={boxNumber} />
                       </div>
                     )
@@ -197,7 +197,8 @@ function CardDisplay() {
                     case CardContentData.Type.TEXT:
                       return (
                         <>
-                          <div className={`${appState.appMode === AppMode.EDITING_DECK
+                          <div key={boxNumber}
+                           className={`${appState.appMode === AppMode.EDITING_DECK
                             ? "flashcard-edit-mode-box" : ""
                             } flashcard-box flashcard-display-box-container`}
                             style={{ position: "relative" }}
