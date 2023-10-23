@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+    <rect id="bg-rect" x="0" y="0" width="1000" height="1000" rx="100" ry="100" fill="deepskyblue" />
+    <rect id="card1" x="100" y="200" width="600" height="360" rx="20" fill="rgb(150, 150, 150)" stroke="black" stroke-width="15" />
+    <rect id="card1" x="300" y="450" width="600" height="360" rx="20" fill="rgb(150, 150, 150)" stroke="black" stroke-width="15" />
+</svg>
