@@ -172,90 +172,74 @@ function CardDisplay() {
 
   return (
     <div className="flashcard-display" style={{ position: "relative" }}>
-      <div className={
-        `flashcard-face ${appState.visibleSide === Side.BACK ? "flashcard-front-face-rotated" : ""
-        } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`}>
-        {
-          Object.keys(visibleCard.front.box).map(key => {
-            const value = visibleCard.front.box[key as BoxNumber]
-            if (value === null) {
-              return (
-                <div className="flashcard-box flashcard-edit-mode-box">
-                  <EditModeBox box={key as BoxNumber} />
-                </div>
-              )
-            }
-            switch (value.type) {
-              case CardContentData.Type.TEXT:
-                return (
-                  <>
-                    <div className={`${appState.appMode === AppMode.EDITING_DECK ? "flashcard-edit-mode-box" : ""} flashcard-box flashcard-display-box-container`}
-                      style={{ position: "relative" }}
-                      onClick={() => {
-                        changeEditor(appState,
-                          getEditorTypeFromBoxType(
-                            visibleCard.front.box[key as BoxNumber]),
-                          key as BoxNumber)
-                      }}>{value.text}</div>
-                    <CardDisplayXButton boxNumber={key as BoxNumber} side={Side.FRONT} />
-                  </>
+      {
+        Object.values(Side).map(side => {
+          const visibleSide = visibleCard[side]
+          return (
+            <div className={
+              `flashcard-face ${appState.visibleSide !== side ?
+                `flashcard-${side}-face-rotated` : ""
+              } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`
+            }>
+              {
+                (Object.keys(visibleSide.box) as BoxNumber[]).map(boxNumber => {
+                  const box = visibleSide.box[boxNumber]
 
-                )
-              case CardContentData.Type.IMAGE:
-                return (
-                  <div className={`${appState.appMode === AppMode.EDITING_DECK ? "flashcard-edit-mode-box" : ""} flashcard-box`}
-                    style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <img
-                      style={{ objectFit: "contain" }}
-                      src={value.base64ImageData}
-                      className={`flashcard-display-box-container`}
-                      onClick={() => {
-                        changeEditor(appState, Editor.VIDEO_LINK, key as BoxNumber)
-                      }}
-                    />
-                    <CardDisplayXButton boxNumber={key as BoxNumber} side={Side.FRONT} />
-                  </div>
-                )
+                  if (box === null) {
+                    return (
+                      <div className="flashcard-box flashcard-edit-mode-box">
+                        <EditModeBox box={boxNumber} />
+                      </div>
+                    )
+                  }
 
-              default: return <></>
-            }
-          })
-        }
-      </div>
-      <div className={
-        `flashcard-face ${appState.visibleSide === Side.FRONT ? "flashcard-back-face-rotated" : ""
-        } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`}>
-        {
-          Object.keys(visibleCard.back.box).map(key => {
-            const value = visibleCard.back.box[key as BoxNumber]
-            if (value === null) {
-              return (
-                <div>
-                  <EditModeBox box={key as BoxNumber} />
-                </div>
-              )
-            }
-            switch (value.type) {
-              case CardContentData.Type.TEXT:
-                return <div onClick={() => {
-                  changeEditor(appState,
-                    getEditorTypeFromBoxType(
-                      visibleCard.back.box[key as BoxNumber]),
-                    key as BoxNumber)
-                }}>{value.text}</div>
-              case CardContentData.Type.IMAGE:
-                return <img
-                  style={{ objectFit: "contain" }}
-                  src={value.base64ImageData}
-                  onClick={() => {
-                    changeEditor(appState, Editor.VIDEO_LINK, key as BoxNumber)
-                  }}
-                />
-              default: return <></>
-            }
-          })
-        }
-      </div>
+                  switch (box.type) {
+                    case CardContentData.Type.TEXT:
+                      return (
+                        <>
+                          <div className={`${appState.appMode === AppMode.EDITING_DECK
+                            ? "flashcard-edit-mode-box" : ""
+                            } flashcard-box flashcard-display-box-container`}
+                            style={{ position: "relative" }}
+                            onClick={() => {
+                              changeEditor(appState,
+                                getEditorTypeFromBoxType(
+                                  visibleSide.box[boxNumber]),
+                                boxNumber)
+                            }}>{box.text}</div>
+                          <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
+                        </>
+
+                      )
+                    case CardContentData.Type.IMAGE:
+                      return (
+                        <div className={`${appState.appMode === AppMode.EDITING_DECK
+                          ? "flashcard-edit-mode-box" : ""} flashcard-box`}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center"
+                          }}>
+                          <img
+                            style={{ objectFit: "contain" }}
+                            src={box.base64ImageData}
+                            className={`flashcard-display-box-container`}
+                            onClick={() => {
+                              changeEditor(appState, Editor.VIDEO_LINK, boxNumber)
+                            }}
+                          />
+                          <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
+                        </div>
+                      )
+
+                    default: return <></>
+                  }
+                })
+              }
+            </div>
+          )
+        })
+      }
     </div>
   )
 

@@ -177,45 +177,6 @@ $-whole-area-dim: calc(2 * $-half-area-dim);
     @include -box(3, 0rem, $-half-area-dim, $-whole-area-dim, $-half-area-dim);
 }
 
-
-
-// .card-layout-one-box-th-two-boxes-bh *:nth-child(1) {
-//     grid-area: a;
-// }
-// .card-layout-one-box-th-two-boxes-bh *:nth-child(2) {
-//     grid-area: b;
-// }
-// .card-layout-one-box-th-two-boxes-bh *:nth-child(3) {
-//     grid-area: c;
-// }
-
-
-
-// .card-layout-one-box-lv-two-boxes-rv *:nth-child(1) {
-//     grid-area: a;
-
-// }
-// .card-layout-one-box-lv-two-boxes-rv *:nth-child(2) {
-//     grid-area: b;
-// }
-// .card-layout-one-box-lv-two-boxes-rv *:nth-child(3) {
-//     grid-area: c;
-// }
-
-
-
-// .card-layout-one-box-rv-two-boxes-lv *:nth-child(1) {
-//     grid-area: a;
-// }
-// .card-layout-one-box-rv-two-boxes-lv *:nth-child(2) {
-//     grid-area: b;
-// }
-// .card-layout-one-box-rv-two-boxes-lv *:nth-child(3) {
-//     grid-area: c;
-// }
-
-
-
 .flashcard-face {
     position: absolute;
     top: 0;
