@@ -156,7 +156,11 @@ function getCSSClassFromCardLayout(layout: CardLayout): string {
  * renders the currently visible side of the currently visible flashcard.
  * @returns card display, as a JSX element.
  */
-function CardDisplay() {
+function CardDisplay({position, forceAspectRatio, fillAvailableSpace}: {
+  position?: "static" | "relative" | "absolute" | "sticky" | "fixed",
+  forceAspectRatio?: boolean,
+  fillAvailableSpace?: boolean,
+}) {
 
   const appState = useContext(AppState)
 
@@ -171,7 +175,11 @@ function CardDisplay() {
 
 
   return (
-    <div className="flashcard-display" style={{ position: "relative" }}>
+    <div className="flashcard-display" style={{ 
+      position: position ?? "relative", 
+      aspectRatio: forceAspectRatio ? "5 / 3" : "auto", 
+      display: "block", 
+      ...(fillAvailableSpace ? {} : {minWidth: "0%"})}}>
       {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
@@ -185,12 +193,14 @@ function CardDisplay() {
                 (Object.keys(visibleSide.box) as BoxNumber[]).map(boxNumber => {
                   const box = visibleSide.box[boxNumber]
 
-                  if (box === null) {
+                  if (box === null && appState.appMode === AppMode.EDITING_DECK) {
                     return (
                       <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
                         <EditModeBox box={boxNumber} />
                       </div>
                     )
+                  } else if (box === null) {
+                    return <></>
                   }
 
                   switch (box.type) {

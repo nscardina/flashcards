@@ -4,6 +4,7 @@ import { useContext } from "react"
 import { AppState } from "../App"
 import { AppStateType } from "../state/AppState"
 import AppMode from "../app/AppMode"
+import ReviewCardPopover from "./ReviewCardPopover"
 
 function viewPreviousCard(state: AppStateType) {
   // If there are multiple cards in the deck, and the currently visible card 
@@ -69,7 +70,7 @@ function DeckInteractionArea() {
           </Button>
         </Col>
         <Col xs={{ span: 12, order: 1 }} md={{ span: "auto", order: 2 }}>
-          <CardDisplay />
+          <CardDisplay forceAspectRatio={true} fillAvailableSpace={true}/>
         </Col>
         <Col xs={{ span: 6, order: 3 }} md={{ span: "auto", order: 3 }} className="d-flex align-items-center justify-content-center me-auto">
           <Button
@@ -95,8 +96,7 @@ function DeckInteractionArea() {
       </Row>
       <Row className="mt-3 d-flex">
         {appState.appMode === AppMode.REVIEWING_DECK && appState.deck && 
-        <ProgressBar now={(appState.visibleCardIndex + 1) / appState.deck.cards.length * 100} 
-        label={`Card ${appState.visibleCardIndex + 1} of ${appState.deck.cards.length}`} />
+          <ReviewCardPopover />
         }
       </Row>
     </>
