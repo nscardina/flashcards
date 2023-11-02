@@ -1,7 +1,5 @@
 import { useContext, useState } from "react"
 import { AppState } from "../App"
-import { withReact } from "slate-react"
-import { createEditor } from "slate"
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
 import CardDisplay from "../card/card_display/CardDisplay"
 import { Side } from "../card/side"
@@ -16,8 +14,6 @@ enum ReviewingCardState {
 
 function ReviewCardPopover() {
   const appState = useContext(AppState)
-
-  const [editor] = useState(() => withReact(createEditor()))
 
   const [reviewingCardState, setReviewingCardState] = useState(ReviewingCardState.VIEWING_QUESTION_SIDE)
 
