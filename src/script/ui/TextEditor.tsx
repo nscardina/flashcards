@@ -55,13 +55,43 @@ function TextEditor() {
               </Button>
               <Button className="ms-3 mt-3" onClick={() => {
 
+                const children = document.getElementById("inputBox")?.children
+                if (!children) return;
+                let text = "";
+                for (let i = 0; i < children?.length - 1; i++) {
+                  text += `${children.item(i)?.textContent}<br>`
+                }
+                if (children.length > 1) {
+                  text += `${children.item(children.length - 1)?.textContent}`
+                }
+
+
                 //TODO fix Card face and Box
                 editCard(appState, appState.visibleSide,
                   appState.boxBeingEdited!,
-                  { text: document.getElementById("inputBox")?.innerText ?? "" },
+                  { text: text ?? "" },
                 )
 
-              }}>
+              }}
+              disabled={
+                (document.getElementById("inputBox") !== null ? 
+                [...document.getElementById("inputBox")!.childNodes.entries()] : [])
+                .filter(entry => entry[1].nodeType === Node.ELEMENT_NODE)
+                .filter(entry => (entry[1] as Element).hasAttribute("data-slate-node"))
+                .some(entry => (entry[1] as Element).textContent !== null ? 
+                (entry[1] as Element).textContent!.match(/abcd/g) ?? 0 >= 0 : false)
+                  
+              
+
+
+
+                // if (!children) return;
+                // for (let i = 0; i < children?.length - 1; i++) {
+                  
+                // }
+                // return false
+              }
+              >
                 Submit
               </Button>
               

@@ -10,6 +10,7 @@ import { changeEditor } from "../../state/AppState"
 import { CardContentData } from "../CardContentData"
 import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
 import "./CardDisplay.scss"
+import Latex from "react-latex-next"
 
 /**
  * Returns the `onClick` function to be bound to a box to edit its contents. 
@@ -67,9 +68,9 @@ function CardDisplayXButton({ side, boxNumber }: { boxNumber: BoxNumber, side: S
           })
         }
       }}>
-      <circle cx="50%" cy="50%" r="45%" fill="var(--bs-body-bg)" stroke="var(--bs-body-color)" stroke-width="5%" />
-      <line x1="25%" y1="25%" x2="75%" y2="75%" stroke="var(--bs-body-color)" stroke-width="5%" />
-      <line x1="25%" y1="75%" x2="75%" y2="25%" stroke="var(--bs-body-color)" stroke-width="5%" />
+      <circle cx="50%" cy="50%" r="45%" fill="var(--bs-body-bg)" stroke="var(--bs-body-color)" strokeWidth="5%" />
+      <line x1="25%" y1="25%" x2="75%" y2="75%" stroke="var(--bs-body-color)" strokeWidth="5%" />
+      <line x1="25%" y1="75%" x2="75%" y2="25%" stroke="var(--bs-body-color)" strokeWidth="5%" />
     </svg>
   )
 }
@@ -217,7 +218,7 @@ function CardDisplay({position, forceAspectRatio, fillAvailableSpace}: {
                                 getEditorTypeFromBoxType(
                                   visibleSide.box[boxNumber]),
                                 boxNumber)
-                            }}>{box.text}</div>
+                            }}><Latex>{box.text}</Latex></div>
                           <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
                         </>
 

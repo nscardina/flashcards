@@ -7,6 +7,7 @@ import SettingsMenu from "./SettingsMenu"
 import { Editor } from "../app/Editor"
 import { useContext } from "react"
 import { AppState } from "../App"
+import Latex from "react-latex-next"
 
 
 
@@ -55,9 +56,9 @@ function MenuBar() {
           className="ms-auto d-flex justify-content-center align-items-center"
         >
           <span style={{userSelect: 'none'}} 
-            onClick={() => appState.setVisibleEditor(Editor.DECK_NAME)}
-          >
-            {appState.deck && appState.deck.name}
+            onClick={appState.deck ? () => appState.setVisibleEditor(Editor.DECK_NAME) : () => {}}
+          ><Latex>{appState.deck ? appState.deck.name : ""}</Latex>
+            
           </span>
           
         </Col>

@@ -29,7 +29,7 @@ This app is currently in beta right now, and not all functionality is complete. 
 
 ✅ Add images to flashcards
 
-❌ Preview flashcards **(not implemented yet)**
+✅ Preview flashcards **(not implemented yet)**
 
 ✅ Save flashcard decks as a `.deck` file
 
