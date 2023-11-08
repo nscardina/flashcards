@@ -217,13 +217,16 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                               ? "flashcard-edit-mode-box" : ""
                               } flashcard-box flashcard-display-box-container`}
                             style={{ position: "relative" }}
-                            onClick={() => {
+                            onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
                               changeEditor(appState,
                                 getEditorTypeFromBoxType(
                                   visibleSide.box[boxNumber]),
                                 boxNumber)
-                            }} dangerouslySetInnerHTML={{ __html: box.text }}></div>
-                          <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
+                            } : () => {}} dangerouslySetInnerHTML={{ __html: box.text }}></div>
+                          {
+                            appState.appMode === AppMode.EDITING_DECK ? 
+                            <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
+                          }
                         </>
 
                       )
