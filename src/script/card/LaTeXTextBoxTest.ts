@@ -1,8 +1,8 @@
 import { CardContentData } from "./CardContentData"
-import { VideoLinkBox } from "./VideoLinkBox"
+import { LaTeXTextBox } from "./LaTeXTextBox"
 
 const incompleteVideoLinkBox1 = {
-    type: CardContentData.Type.VIDEO_LINK
+    type: CardContentData.Type.LATEX
 }
 
 const incompleteVideoLinkBox2 = {
@@ -10,7 +10,7 @@ const incompleteVideoLinkBox2 = {
 }
 
 const completeVideoLinkBox = {
-    type: CardContentData.Type.VIDEO_LINK,
+    type: CardContentData.Type.LATEX,
     link: "Test Link Text"
 }
 

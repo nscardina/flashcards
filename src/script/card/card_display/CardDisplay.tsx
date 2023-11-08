@@ -9,8 +9,11 @@ import { AppState } from "../../App"
 import { changeEditor } from "../../state/AppState"
 import { CardContentData } from "../CardContentData"
 import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
+import ReactDOMServer from "react-dom/server"
 import "./CardDisplay.scss"
+import 'katex/dist/katex.min.css';
 import Latex from "react-latex-next"
+
 
 /**
  * Returns the `onClick` function to be bound to a box to edit its contents. 
@@ -27,12 +30,12 @@ function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber) {
   if (appState.appMode === AppMode.EDITING_DECK ||
     appState.appMode === AppMode.MANAGING_FILES) {
     switch (editor) {
-      case Editor.TEXT:
-        return () => changeEditor(appState, Editor.TEXT, box)
+      case Editor.PLAIN_TEXT:
+        return () => changeEditor(appState, Editor.PLAIN_TEXT, box)
       case Editor.IMAGE:
         return () => changeEditor(appState, Editor.IMAGE, box)
-      case Editor.VIDEO_LINK:
-        return () => changeEditor(appState, Editor.VIDEO_LINK, box)
+      case Editor.LATEX_TEST:
+        return () => changeEditor(appState, Editor.LATEX_TEST, box)
       default:
         return () => { }
     }
@@ -111,7 +114,7 @@ function EditModeBox({ box }: { box: BoxNumber }) {
         <Dropdown.Menu style={{ flexDirection: "column" }}>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
-              changeEditor(appState, Editor.TEXT, box)
+              changeEditor(appState, Editor.PLAIN_TEXT, box)
             }}>
             <span className="material-symbols-outlined">article</span>&nbsp;Text
           </Dropdown.Item>
@@ -123,9 +126,9 @@ function EditModeBox({ box }: { box: BoxNumber }) {
           </Dropdown.Item>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
-              changeEditor(appState, Editor.VIDEO_LINK, box)
+              changeEditor(appState, Editor.LATEX_TEST, box)
             }}>
-            <span className="material-symbols-outlined">play_arrow</span>&nbsp;Video
+            <span className="material-symbols-outlined">play_arrow</span>&nbsp;<Latex>$\LaTeX$</Latex>
           </Dropdown.Item>
         </Dropdown.Menu>
 
@@ -157,7 +160,7 @@ function getCSSClassFromCardLayout(layout: CardLayout): string {
  * renders the currently visible side of the currently visible flashcard.
  * @returns card display, as a JSX element.
  */
-function CardDisplay({position, forceAspectRatio, fillAvailableSpace}: {
+function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
   position?: "static" | "relative" | "absolute" | "sticky" | "fixed",
   forceAspectRatio?: boolean,
   fillAvailableSpace?: boolean,
@@ -176,11 +179,12 @@ function CardDisplay({position, forceAspectRatio, fillAvailableSpace}: {
 
 
   return (
-    <div className="flashcard-display" style={{ 
-      position: position ?? "relative", 
-      aspectRatio: forceAspectRatio ? "5 / 3" : "auto", 
-      display: "block", 
-      ...(fillAvailableSpace ? {} : {minWidth: "0%"})}}>
+    <div className="flashcard-display" style={{
+      position: position ?? "relative",
+      aspectRatio: forceAspectRatio ? "5 / 3" : "auto",
+      display: "block",
+      ...(fillAvailableSpace ? {} : { minWidth: "0%" })
+    }}>
       {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
@@ -205,20 +209,46 @@ function CardDisplay({position, forceAspectRatio, fillAvailableSpace}: {
                   }
 
                   switch (box.type) {
-                    case CardContentData.Type.TEXT:
+                    case CardContentData.Type.PLAIN_TEXT:
                       return (
                         <>
                           <div key={boxNumber}
-                           className={`${appState.appMode === AppMode.EDITING_DECK
-                            ? "flashcard-edit-mode-box" : ""
-                            } flashcard-box flashcard-display-box-container`}
+                            className={`${appState.appMode === AppMode.EDITING_DECK
+                              ? "flashcard-edit-mode-box" : ""
+                              } flashcard-box flashcard-display-box-container`}
                             style={{ position: "relative" }}
                             onClick={() => {
                               changeEditor(appState,
                                 getEditorTypeFromBoxType(
                                   visibleSide.box[boxNumber]),
                                 boxNumber)
-                            }}><Latex>{box.text}</Latex></div>
+                            }} dangerouslySetInnerHTML={{ __html: box.text }}></div>
+                          <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
+                        </>
+
+                      )
+                    case CardContentData.Type.LATEX:
+                      return (
+                        <>
+                          <div key={boxNumber}
+                            className={`${appState.appMode === AppMode.EDITING_DECK
+                              ? "flashcard-edit-mode-box" : ""
+                              } flashcard-box flashcard-display-box-container`}
+                            style={{ position: "relative" }}
+                            onClick={() => {
+                              changeEditor(appState,
+                                getEditorTypeFromBoxType(
+                                  visibleSide.box[boxNumber]),
+                                boxNumber)
+                            }}>
+                            <Latex>
+                              {
+                                ReactDOMServer.renderToString(<span dangerouslySetInnerHTML={{ __html: box.latex_text }}>
+
+                                </span>)
+                              }
+                            </Latex>
+                          </div>
                           <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
                         </>
 
@@ -237,7 +267,7 @@ function CardDisplay({position, forceAspectRatio, fillAvailableSpace}: {
                             src={box.base64ImageData}
                             className={`flashcard-display-box-container`}
                             onClick={() => {
-                              changeEditor(appState, Editor.VIDEO_LINK, boxNumber)
+                              changeEditor(appState, Editor.LATEX_TEST, boxNumber)
                             }}
                           />
                           <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />

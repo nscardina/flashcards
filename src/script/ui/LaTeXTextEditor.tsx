@@ -5,16 +5,17 @@ import { Editable, Slate, withReact } from "slate-react";
 import { Editor } from "../app/Editor";
 import { AppState } from "../App";
 import { changeEditor, editCard } from "../state/AppState";
+import Latex from "react-latex-next";
 
 
 
-export type TextEditorPayload = {
-  text: string
+export type LaTeXTextEditorPayload = {
+  latex_text: string
 }
 
 
 
-function TextEditor() {
+function LaTeXTextEditor() {
   const appState = useContext(AppState)
 
   if (!appState.boxBeingEdited) {
@@ -28,7 +29,7 @@ function TextEditor() {
   return (
     <Modal show={true}>
       <Modal.Header>
-        <Modal.Title>Text Editor</Modal.Title>
+        <Modal.Title><Latex>$\LaTeX$</Latex> Text Editor</Modal.Title>
       </Modal.Header>
       <Modal.Body >
         <Container>
@@ -57,7 +58,7 @@ function TextEditor() {
 
                 editCard(appState, appState.visibleSide,
                   appState.boxBeingEdited!,
-                  { text: document.getElementById("inputBox")?.innerHTML ?? "" },
+                  { latex_text: document.getElementById("inputBox")?.innerHTML ?? "" },
                 )
               }}
               >
@@ -72,4 +73,4 @@ function TextEditor() {
   )
 }
 
-export default TextEditor
+export default LaTeXTextEditor

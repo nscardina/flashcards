@@ -5,7 +5,7 @@ import Dialog from "../app/Dialog"
 import { Editor } from "../app/Editor"
 import { CardContentData, CardContentDataType, getCardContentDataType } from "../card/CardContentData"
 import { BoxNumber } from "../card/Box"
-import { VideoLinkBox } from "../card/VideoLinkBox"
+import { LaTeXTextBox } from "../card/LaTeXTextBox"
 import { ImageBox } from "../card/ImageBox"
 import { TextBox } from "../card/TextBox"
 import { Deck } from "../card/deck"
@@ -60,11 +60,11 @@ export function editCard<T extends CardContentData.Type>(
     // behavior if the situation does occur.)
     if (state.deck !== null && state.deck.cards.length > 0) {
       switch (getCardContentDataType(data)) {
-        case CardContentData.Type.TEXT:
+        case CardContentData.Type.PLAIN_TEXT:
           {
             state.deck.cards[state.visibleCardIndex][face].box[box] = 
               TextBox.of(
-                (data as CardContentDataType<CardContentData.Type.TEXT>).text
+                (data as CardContentDataType<CardContentData.Type.PLAIN_TEXT>).text
               )
           }
           break
@@ -77,12 +77,12 @@ export function editCard<T extends CardContentData.Type>(
               )
           }
           break
-        case CardContentData.Type.VIDEO_LINK:
+        case CardContentData.Type.LATEX:
           {
             state.deck.cards[state.visibleCardIndex][face].box[box] = 
-            VideoLinkBox.of(
-              (data as CardContentDataType<CardContentData.Type.VIDEO_LINK>)
-                .link
+            LaTeXTextBox.of(
+              (data as CardContentDataType<CardContentData.Type.LATEX>)
+                .latex_text
             )
           }
       }
