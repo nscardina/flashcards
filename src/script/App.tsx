@@ -17,7 +17,6 @@ import { BoxNumber } from './card/Box';
 import { ImageEditor } from './ui/ImageEditor';
 
 import "../style/App.scss"
-import { LaTeXTextBox } from './card/LaTeXTextBox';
 import LaTeXTextEditor from './ui/LaTeXTextEditor';
 
 export const AppState = createContext<AppStateType>(undefined!)

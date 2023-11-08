@@ -22,7 +22,7 @@ describe("Box.isBox() method", () => {
     })
 
     test("Box.isBox(a VideoLinkBox) returns true", () => {
-        expect(Box.isBox(VideoLinkBox.of("Test Video Link"))).toBe(true)
+        expect(Box.isBox(LaTeXTextBox.of("Test Video Link"))).toBe(true)
     })
 })
 
@@ -43,7 +43,7 @@ describe("getEditorTypeFromBoxType() method", () => {
     })
 
     test("getEditorTypeFromBoxType(a VideoLinkBox) returns true", () => {
-        expect(getEditorTypeFromBoxType(VideoLinkBox.of("Test Link")))
+        expect(getEditorTypeFromBoxType(LaTeXTextBox.of("Test Link")))
         .toBe(Editor.LATEX_TEST)
     })
 })
