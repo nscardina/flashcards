@@ -2,7 +2,7 @@ import { Box, getEditorTypeFromBoxType } from "./Box"
 import { ImageBox } from "./ImageBox"
 import { TextBox } from "./TextBox"
 import fs from "fs"
-import { VideoLinkBox } from "./VideoLinkBox"
+import { LaTeXTextBox } from "./LaTeXTextBox"
 import { Editor } from "../app/Editor"
 
 describe("Box.isBox() method", () => {
@@ -32,7 +32,7 @@ describe("getEditorTypeFromBoxType() method", () => {
     })
 
     test("getEditorTypeFromBoxType(a TextBox) returns true", () => {
-        expect(getEditorTypeFromBoxType(TextBox.of("Test"))).toBe(Editor.TEXT)
+        expect(getEditorTypeFromBoxType(TextBox.of("Test"))).toBe(Editor.PLAIN_TEXT)
     })
 
     test("getEditorTypeFromBoxType(an ImageBox) returns true", () => {
@@ -44,6 +44,6 @@ describe("getEditorTypeFromBoxType() method", () => {
 
     test("getEditorTypeFromBoxType(a VideoLinkBox) returns true", () => {
         expect(getEditorTypeFromBoxType(VideoLinkBox.of("Test Link")))
-        .toBe(Editor.VIDEO_LINK)
+        .toBe(Editor.LATEX_TEST)
     })
 })

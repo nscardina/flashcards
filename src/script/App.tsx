@@ -17,6 +17,8 @@ import { BoxNumber } from './card/Box';
 import { ImageEditor } from './ui/ImageEditor';
 
 import "../style/App.scss"
+import { LaTeXTextBox } from './card/LaTeXTextBox';
+import LaTeXTextEditor from './ui/LaTeXTextEditor';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -62,8 +64,9 @@ function App() {
             }}>
                 <MenuBar />
                 <DeckInteractionArea />
-                {visibleEditor === Editor.TEXT && <TextEditor />}
+                {visibleEditor === Editor.PLAIN_TEXT && <TextEditor />}
                 {visibleEditor === Editor.IMAGE && <ImageEditor />}
+                {visibleEditor === Editor.LATEX_TEST && <LaTeXTextEditor />}
                 {visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
 
                 {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE && 

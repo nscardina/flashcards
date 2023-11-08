@@ -55,13 +55,12 @@ function TextEditor() {
               </Button>
               <Button className="ms-3 mt-3" onClick={() => {
 
-                //TODO fix Card face and Box
                 editCard(appState, appState.visibleSide,
                   appState.boxBeingEdited!,
-                  { text: document.getElementById("inputBox")?.innerText ?? "" },
+                  { text: document.getElementById("inputBox")?.innerHTML ?? "" },
                 )
-
-              }}>
+              }}
+              >
                 Submit
               </Button>
               

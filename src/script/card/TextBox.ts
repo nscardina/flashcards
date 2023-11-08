@@ -1,7 +1,7 @@
 import { CardContentData } from "./CardContentData";
 
 export type TextBox = {
-    readonly type: CardContentData.Type.TEXT
+    readonly type: CardContentData.Type.PLAIN_TEXT
     readonly text: string
 }
 
@@ -11,7 +11,7 @@ export namespace TextBox {
             typeof (variable) === "object" &&
             variable !== null &&
             "type" in variable &&
-            variable.type === CardContentData.Type.TEXT &&
+            variable.type === CardContentData.Type.PLAIN_TEXT &&
             "text" in variable &&
             typeof (variable.text) === "string"
         )
@@ -19,7 +19,7 @@ export namespace TextBox {
 
     export function of(text: string): TextBox {
         return Object.freeze({
-            type: CardContentData.Type.TEXT,
+            type: CardContentData.Type.PLAIN_TEXT,
             text: text
         })
     }

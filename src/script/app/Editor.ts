@@ -11,7 +11,7 @@ export enum Editor {
     /**
      * Value indicating that the text editor is currently visible.
      */
-    TEXT = "Text",
+    PLAIN_TEXT = "Plain Text",
 
     /**
      * Value indicating that the image editor is currently visible.
@@ -21,7 +21,7 @@ export enum Editor {
     /**
      * Value indicating that the video link editor is currently visible.
      */
-    VIDEO_LINK = "Video Link",
+    LATEX_TEST = "$\\LaTeX$",
 
     /**
      * Value indicating that the deck name editor is currently visible.
