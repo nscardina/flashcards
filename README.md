@@ -14,23 +14,18 @@ A user-friendly flashcard app for memorizing information.
 <img display="inline" src="https://img.shields.io/badge/license-MIT-blue">
 </a>
 
+<a href="https://nscardina.github.io/flashcards">
+<img display="inline" src="https://img.shields.io/badge/GitHub Pages-blue">
+</a>
+
 </p>
-Have you ever wanted to use flashcards as a study tool, but didn't have any on hand? This is the app for you!
 
-This app is currently in beta right now, and not all functionality is complete. See below.
+Do you like using flashcards as a study tool? This is the app for you! Create decks of flashcards, with support for plain text, images, and mathematics rendering using $\LaTeX$. You can save the decks to your computer as a `.deck` file, and send them to your friends. Anyone can then open the `.deck` file in the Flashcards app later!
 
-## Features
+You can review your flashcards in order, in reverse order, or in random order. Also, when reviewing, you can have the Flashcards app show you the front of the card, the back of the card, or a random side of the card. This can help you learn information both ways - for example, if you're memorizing definitions of words, you can learn the definitions of each word and the word corresponding to each definition.
 
-✅ Create decks of flashcards
+This app is almost out of beta! Bug fixes are currently being implemented. Visit the app on GitHub Pages [here](https://nscardina.github.io/flashcards).
 
-✅ Add text to flashcards
+## License
 
-❌ Add $\LaTeX$ mathematics rendering to flashcards **(not implemented yet)**
-
-✅ Add images to flashcards
-
-✅ Preview flashcards **(not implemented yet)**
-
-✅ Save flashcard decks as a `.deck` file
-
-✅ Open flashcard decks from a `.deck` file
+The Flashcards app is free software, and its code is licensed under the [MIT License](./LICENSE). Third-party code and graphics may fall under other licenses. See their respective licenses for more information. 
