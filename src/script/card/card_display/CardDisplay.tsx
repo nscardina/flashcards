@@ -238,12 +238,12 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                               ? "flashcard-edit-mode-box" : ""
                               } flashcard-box flashcard-display-box-container`}
                             style={{ position: "relative" }}
-                            onClick={() => {
+                            onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
                               changeEditor(appState,
                                 getEditorTypeFromBoxType(
                                   visibleSide.box[boxNumber]),
                                 boxNumber)
-                            }}>
+                            } : () => {}}>
                             <Latex>
                               {
                                 ReactDOMServer.renderToString(<span dangerouslySetInnerHTML={{ __html: box.latex_text }}>
@@ -252,7 +252,10 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                               }
                             </Latex>
                           </div>
-                          <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
+                          {
+                            appState.appMode === AppMode.EDITING_DECK ? 
+                            <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
+                          }
                         </>
 
                       )
@@ -269,11 +272,14 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                             style={{ objectFit: "contain" }}
                             src={box.base64ImageData}
                             className={`flashcard-display-box-container`}
-                            onClick={() => {
+                            onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
                               changeEditor(appState, Editor.LATEX_TEST, boxNumber)
-                            }}
+                            } : () => {}}
                           />
-                          <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} />
+                          {
+                            appState.appMode === AppMode.EDITING_DECK ? 
+                            <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
+                          }
                         </div>
                       )
 
