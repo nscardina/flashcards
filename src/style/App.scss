@@ -13,6 +13,7 @@ $flashcard-dark: rgb(65, 65, 65);
 $flashcard-light: rgb(220, 220, 220);
 
 .flashcard-button {
+    border-radius: var(--bs-border-radius);
     --bs-btn-color: var(--bs-dark);
     --bs-btn-bg: rgba(0, 0, 0, 0);
     --bs-btn-border-color: var(--bs-dark);
@@ -31,11 +32,23 @@ $flashcard-light: rgb(220, 220, 220);
 
 .flashcard-button:disabled {
     background-color: $flashcard-light;
+    
 }
 
 .dropdown-menu {
-    background-color: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(1rem);
+    border-radius: var(--bs-border-radius);
+    background-color: rgba(0, 0, 0, 0);   
+}
+
+.dropdown-menu::before {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=");
+    border-radius: var(--bs-border-radius);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: -1;
 }
 
 .flashcard-menu-button {
