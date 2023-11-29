@@ -34,8 +34,7 @@ $flashcard-light: rgb(220, 220, 220);
 }
 
 .dropdown-menu {
-    background-color: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(1rem);
+    background-color: var(--bs-body-bg);
 }
 
 .flashcard-menu-button {
@@ -72,7 +71,7 @@ $flashcard-light: rgb(220, 220, 220);
     }
 
     .dropdown-menu {
-        --bs-body-bg: rgb(255, 255, 255, 0.2);
+        --bs-body-bg: rgb(110, 110, 120);
         --bs-body-color: var(--bs-light);
         --bs-dropdown-border-color: var(--bs-light);
         --bs-dropdown-divider-bg: var(--bs-light);
