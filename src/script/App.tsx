@@ -8,7 +8,7 @@ import Dialog from './app/Dialog';
 import { Editor } from './app/Editor';
 import { Side } from './card/side';
 import MenuBar from './ui/MenuBar';
-import DeckInteractionArea from './ui/DeckInteractionArea';
+import DeckInteractionArea from './ui/DeckDisplay/DeckInteractionArea';
 import TextEditor from './ui/TextEditor';
 import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
@@ -70,7 +70,8 @@ function App() {
                 {visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
 
                 {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
-                    <NewDeckConfirmationMessage />}
+                    <NewDeckConfirmationMessage />
+                }
                 {
                     visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
                     <DeleteDeckConfirmationMessage />

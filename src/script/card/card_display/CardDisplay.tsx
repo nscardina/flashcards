@@ -189,11 +189,11 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
           return (
-            <div key={`side-${side}`} className={
-              `flashcard-face ${appState.visibleSide !== side ?
-                `flashcard-${side}-face-rotated` : ""
+            <div key={side} className={`flashcard-face ${
+              appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
               } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`
             }>
+
               {
                 (Object.keys(visibleSide.box) as BoxNumber[]).map(boxNumber => {
                   const box = visibleSide.box[boxNumber]

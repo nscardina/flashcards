@@ -1,13 +1,10 @@
-import { Box } from "./Box"
+import { Box, BoxNumber } from "./Box"
 import CardLayout from "./cardlayout"
 
 export type CardFace = {
     readonly layout: CardLayout
     readonly box: {
-        "1": Box | null
-        "2": Box | null
-        "3": Box | null
-        "4": Box | null
+        [key in BoxNumber]: Box | null
     }
 }
 

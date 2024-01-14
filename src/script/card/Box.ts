@@ -46,4 +46,4 @@ export function getEditorTypeFromBoxType(box: Box | null): Editor {
 /**
  * Type holding the different boxes that can appear on a flashcard.
  */
-export type BoxNumber = 1 | "1" | 2 | "2" | 3 | "3" | 4 | "4"
+export type BoxNumber = "1" | "2" | "3" | "4"
