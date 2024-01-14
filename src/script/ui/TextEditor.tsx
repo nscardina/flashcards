@@ -49,7 +49,7 @@ function TextEditor() {
             <Col className="d-flex justify-content-end">
             <Button className="ms-auto mt-3" onClick={
               () => changeEditor(
-                appState, Editor.NONE, 1)}
+                appState, Editor.NONE, "1")}
               >
                 Cancel
               </Button>
