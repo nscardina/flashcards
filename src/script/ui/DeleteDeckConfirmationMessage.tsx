@@ -3,7 +3,6 @@ import Dialog from "../app/Dialog"
 import { useContext } from "react"
 import { AppState } from "../App"
 import { downloadDeck } from "../file/CardFile"
-import { Deck } from "../card/deck"
 
 function DeleteDeckConfirmationMessage() {
 
