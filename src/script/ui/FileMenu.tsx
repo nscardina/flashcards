@@ -71,8 +71,11 @@ function OpenDeckButton() {
           onClick={async () => {
             const file = await fileOpen({
               extensions: [".deck"]
-            })
-            loadDeckFile(appState, await file.text(), file.handle)
+            }).catch(_ => null)
+
+            if (file !== null) {
+              loadDeckFile(appState, await file.text(), file.handle)
+            }
           }}
         >
           <MSIcon name="file_open" />&nbsp;Open Deck...
