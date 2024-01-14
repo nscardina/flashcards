@@ -130,8 +130,10 @@ function DeleteCardButton() {
 }
 
 function ReviewDeckButton({ onClick }: ButtonPropsType) {
+  const appState = useContext(AppState)
+
   return (
-    <Button onClick={onClick}>
+    <Button onClick={onClick} disabled={appState.deck === null}>
       Review
     </Button>
   )

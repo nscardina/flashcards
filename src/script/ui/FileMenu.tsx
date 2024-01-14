@@ -29,7 +29,6 @@ function NewDeckButton() {
       appState.setDeck(Deck.makeDefault())
       appState.setVisibleCardIndex(0)
       appState.setAppMode(AppMode.EDITING_DECK)
-      console.log(appState.visibleCardIndex)
     }
   }
 
@@ -151,7 +150,7 @@ function FileMenu() {
           className="d-flex align-items-center"
           onClick={
             () => {
-              appState.setVisibleDialog(Dialog.NEW_DECK_CONFIRMATION_MESSAGE)
+              appState.setVisibleDialog(Dialog.DELETE_DECK_CONFIRMATION_MESSAGE)
             }
           }
           disabled={appState.deck === null}

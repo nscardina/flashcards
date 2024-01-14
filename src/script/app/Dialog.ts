@@ -14,6 +14,12 @@ enum Dialog {
      * a deck is already open.
      */
     NEW_DECK_CONFIRMATION_MESSAGE,
+
+    /**
+     * Value indicating that the "delete deck confirmation message" is visible,
+     * which is a message that is triggered by closing the currently open deck.
+     */
+    DELETE_DECK_CONFIRMATION_MESSAGE,
 }
 
 export default Dialog

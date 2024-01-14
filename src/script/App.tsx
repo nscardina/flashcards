@@ -18,6 +18,7 @@ import { ImageEditor } from './ui/ImageEditor';
 
 import "../style/App.scss"
 import LaTeXTextEditor from './ui/LaTeXTextEditor';
+import DeleteDeckConfirmationMessage from './ui/DeleteDeckConfirmationMessage';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -27,13 +28,13 @@ function App() {
     const [boxBeingEdited, setBoxBeingEdited] = useState<BoxNumber | null>(null)
     const [deck, setDeck] = useState<Deck | null>(null)
     const [recentFiles, setRecentFiles] = useState<FileSystemFileHandle[]>([])
-    const [reviewOrder, setReviewOrder] = 
+    const [reviewOrder, setReviewOrder] =
         useState<ReviewOrder>(ReviewOrder.IN_ORDER)
-    const [showSideProviderName, setShowSideProviderName] = 
+    const [showSideProviderName, setShowSideProviderName] =
         useState<ShowSideProviderName>("FRONT")
     const [visibleDialog, setVisibleDialog] = useState<Dialog>(Dialog.NONE)
     const [visibleEditor, setVisibleEditor] = useState<Editor>(Editor.NONE)
-    const [visibleCardIndex, setVisibleCardIndex] = 
+    const [visibleCardIndex, setVisibleCardIndex] =
         useState<number>(NO_CARD_FOCUSED)
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
 
@@ -68,8 +69,13 @@ function App() {
                 {visibleEditor === Editor.LATEX_TEST && <LaTeXTextEditor />}
                 {visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
 
-                {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE && 
-            <NewDeckConfirmationMessage />}
+                {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
+                    <NewDeckConfirmationMessage />}
+                {
+                    visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
+                    <DeleteDeckConfirmationMessage />
+                }
+
             </AppState.Provider>
         </>
     )
