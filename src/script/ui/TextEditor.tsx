@@ -5,6 +5,7 @@ import { Editable, Slate, withReact } from "slate-react";
 import { Editor } from "../app/Editor";
 import { AppState } from "../App";
 import { changeEditor, editCard } from "../state/AppState";
+import { withHistory } from "slate-history";
 
 
 
@@ -23,7 +24,7 @@ function TextEditor() {
     )
   }
 
-  const [editor] = useState(() => withReact(createEditor()))
+  const [editor] = useState(() => withReact(withHistory(createEditor())))
 
   return (
     <Modal show={true}>

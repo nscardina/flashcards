@@ -1,14 +1,15 @@
 import { Dropdown } from "react-bootstrap"
 import { useContext } from "react"
-import { downloadDeck } from "../file/CardFile"
+import { downloadDeck } from "../../file/CardFile"
 import { fileOpen } from "browser-fs-access"
-import { AppState } from "../App"
-import { AppStateType } from "../state/AppState"
-import Dialog from "../app/Dialog"
-import AppMode from "../app/AppMode"
-import { MSIcon } from "./Icons"
-import { Deck } from "../card/deck"
-import { Editor } from "../app/Editor"
+import { AppState } from "../../App"
+import { AppStateType } from "../../state/AppState"
+import Dialog from "../../app/Dialog"
+import AppMode from "../../app/AppMode"
+import { MSIcon } from "../Icons"
+import { Deck } from "../../card/deck"
+import { Editor } from "../../app/Editor"
+import { MenuDropdownToggle } from "./MenuBar"
 
 function NewDeckButton() {
 
@@ -92,17 +93,17 @@ function FileMenu() {
   const appState = useContext(AppState)
 
   return (
-    <Dropdown className="d-inline-block">
-      <Dropdown.Toggle className="flashcard-button border-0">
+    <Dropdown>
+      <MenuDropdownToggle className="flashcard-button border-0">
         File
-      </Dropdown.Toggle>
+      </MenuDropdownToggle>
 
       <Dropdown.Menu>
 
         <NewDeckButton />
         <OpenDeckButton />
 
-        <Dropdown drop="end" className={`${appState.recentFiles.length !== 0 ? "dropdown-item" : ""} ps-1 pe-1 pt-0 pb-0`}>
+        <Dropdown className={`${appState.recentFiles.length !== 0 ? "dropdown-item" : ""}`}>
 
           <style>
             {`

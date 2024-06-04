@@ -1,9 +1,10 @@
 import { Dropdown } from "react-bootstrap"
-import CardLayout from "../card/cardlayout"
-import { AppStateType } from "../state/AppState"
-import { AppState } from "../App"
+import CardLayout from "../../card/cardlayout"
+import { AppStateType } from "../../state/AppState"
+import { AppState } from "../../App"
 import { useContext } from "react"
-import { Side } from "../card/side"
+import { Side } from "../../card/side"
+import { MenuDropdownToggle } from "./MenuBar"
 
 function changeCardLayout(state: AppStateType, layout: CardLayout): void {
   if (state.deck !== null && state.deck.cards.length > 0) {
@@ -33,15 +34,15 @@ function changeCardLayout(state: AppStateType, layout: CardLayout): void {
   }
 }
 
-function EditMenu() {
+function EditMenu({ disabled }: { disabled: boolean }) {
 
   const appState = useContext(AppState)
 
   return (
-    <Dropdown className="d-inline-block">
-      <Dropdown.Toggle className="flashcard-button border-0">
+    <Dropdown>
+      <MenuDropdownToggle disabled={disabled} className="flashcard-button border-0">
         Edit
-      </Dropdown.Toggle>
+      </MenuDropdownToggle>
 
       <Dropdown.Menu>
         <Dropdown drop="end">
@@ -95,6 +96,12 @@ function EditMenu() {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+
+        <Dropdown.Item onClick={() => {
+          
+        }}>
+          Undo
+        </Dropdown.Item>
 
       </Dropdown.Menu>
     </Dropdown>

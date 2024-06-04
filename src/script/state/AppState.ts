@@ -10,6 +10,9 @@ import { ImageBox } from "../card/ImageBox"
 import { TextBox } from "../card/TextBox"
 import { Deck } from "../card/deck"
 import { Side } from "../card/side"
+import { BaseEditor } from "slate"
+import { ReactEditor } from "slate-react"
+import { HistoryEditor } from "slate-history"
 
 type ReactSetter<T> = React.Dispatch<React.SetStateAction<T>>
 
@@ -34,6 +37,7 @@ export type AppStateType = {
     readonly setVisibleCardIndex: ReactSetter<number>,
     readonly visibleSide: Side,
     readonly setVisibleSide: ReactSetter<Side>,
+    readonly textEditor: BaseEditor & ReactEditor & HistoryEditor
 }
 
 /**

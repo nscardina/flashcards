@@ -7,18 +7,19 @@ import { ShowSideProviderName } from './ShowSideProvider';
 import Dialog from './app/Dialog';
 import { Editor } from './app/Editor';
 import { Side } from './card/side';
-import MenuBar from './ui/MenuBar';
+import MenuBar from './ui/MenuBar/MenuBar';
 import DeckInteractionArea from './ui/DeckDisplay/DeckInteractionArea';
-import TextEditor from './ui/TextEditor';
-import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
 import { Deck } from './card/deck';
 import { BoxNumber } from './card/Box';
-import { ImageEditor } from './ui/ImageEditor';
 
 import "../style/App.scss"
-import LaTeXTextEditor from './ui/LaTeXTextEditor';
 import DeleteDeckConfirmationMessage from './ui/DeleteDeckConfirmationMessage';
+import { Editable, Slate, withReact } from 'slate-react';
+import { withHistory } from 'slate-history';
+import { createEditor } from 'slate';
+import TextEditorBar from './ui/TextEditorBar/TextEditorBar';
+import BoldLeaf from './ui/Editor/BoldLeaf';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -37,6 +38,9 @@ function App() {
     const [visibleCardIndex, setVisibleCardIndex] =
         useState<number>(NO_CARD_FOCUSED)
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
+    const [textEditor] = useState(() => withReact(withHistory(createEditor())))
+
+
 
     return (
         <>
@@ -61,13 +65,30 @@ function App() {
                 setVisibleCardIndex: setVisibleCardIndex,
                 visibleSide: visibleSide,
                 setVisibleSide: setVisibleSide,
+                textEditor: textEditor
             }}>
                 <MenuBar />
+                <TextEditorBar />
                 <DeckInteractionArea />
-                {visibleEditor === Editor.PLAIN_TEXT && <TextEditor />}
-                {visibleEditor === Editor.IMAGE && <ImageEditor />}
-                {visibleEditor === Editor.LATEX_TEST && <LaTeXTextEditor />}
-                {visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
+
+                <Slate editor={textEditor} initialValue={[{
+                    type: 'paragraph',
+                    children: [
+                        {
+                            text: 'A line of text!',
+                        },
+                    ],
+                }]}>
+                    <Editable
+                    renderLeaf={BoldLeaf}
+                    // renderElement={(props: RenderElementProps) => {
+                    //     switch (props.element.type) {
+                    //         case 'paragraph':
+                    //             return <p {...props.attributes}>{props.children}</p>
+                    //     }
+                    // }} 
+                    />
+                </Slate>
 
                 {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
                     <NewDeckConfirmationMessage />
