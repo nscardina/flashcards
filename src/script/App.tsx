@@ -19,7 +19,7 @@ import { Editable, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { createEditor } from 'slate';
 import TextEditorBar from './ui/TextEditorBar/TextEditorBar';
-import BoldLeaf from './ui/Editor/BoldLeaf';
+import BoldLeaf from './ui/Editor/Leaf';
 
 export const AppState = createContext<AppStateType>(undefined!)
 

@@ -1,29 +1,29 @@
-import { Button } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
 import { useContext } from "react";
 import { AppState } from "../../App";
 import { Editor } from "slate";
+import NonUserSelectableButton from "./NonUserSelectableButton";
 
 export default function BoldButton() {
 
-    const appState = useContext(AppState)
+    const textEditor = useContext(AppState).textEditor
 
     // const [selection, setSelection] = useState<RangeRef | null>(null)
 
     return (
-        <Button style={{userSelect: "none"}} className="flashcard-button" onClick={event => {
+        <NonUserSelectableButton className="flashcard-button" onClick={event => {
         
             event.preventDefault()
             // const selection = structuredClone(appState.textEditor.selection)
 
-            const marks = Editor.marks(appState.textEditor)
+            const marks = Editor.marks(textEditor)
 
             if (marks !== null) {
                 //@ts-expect-error
                 if (marks.bold) {
-                    Editor.removeMark(appState.textEditor, 'bold')
+                    Editor.removeMark(textEditor, 'bold')
                 } else {
-                    Editor.addMark(appState.textEditor, 'bold', true)
+                    Editor.addMark(textEditor, 'bold', true)
                 }
             }   
 
@@ -33,6 +33,6 @@ export default function BoldButton() {
             
         }}>
             <MaterialSymbol>format_bold</MaterialSymbol>
-        </Button>
+        </NonUserSelectableButton>
     )
 }
