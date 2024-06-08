@@ -36,7 +36,7 @@ export default function FontSizeSelectButton() {
                 12 pt
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                {FONT_SIZES.map(size => <Dropdown.Item>{size} pt</Dropdown.Item>)}
+                {FONT_SIZES.map(size => <Dropdown.Item key={size}>{size} pt</Dropdown.Item>)}
             </Dropdown.Menu>
         </Dropdown>
     )

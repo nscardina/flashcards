@@ -14,7 +14,7 @@ export default function SuperscriptButton() {
             const marks = Editor.marks(textEditor)
 
             if (marks !== null) {
-                //@ts-expect-error
+                Editor.removeMark(textEditor, "subscript")
                 if (marks.superscript) {
                     Editor.removeMark(textEditor, 'superscript')
                 } else {

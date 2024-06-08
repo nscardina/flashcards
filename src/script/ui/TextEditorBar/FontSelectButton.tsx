@@ -22,10 +22,10 @@ export default function FontSelectButton({currentFont}: { currentFont: string })
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <Dropdown.Header>Web Safe Fonts</Dropdown.Header>
-                {WEB_SAFE_FONTS.map(font => <Dropdown.Item>{font}</Dropdown.Item>)}
+                {WEB_SAFE_FONTS.map(font => <Dropdown.Item key={font}>{font}</Dropdown.Item>)}
 
                 <Dropdown.Header>Other Fonts</Dropdown.Header>
-                {OTHER_FONTS.map(font => <Dropdown.Item>{font}</Dropdown.Item>)}
+                {OTHER_FONTS.map(font => <Dropdown.Item key={font}>{font}</Dropdown.Item>)}
             </Dropdown.Menu>
         </Dropdown>
     )

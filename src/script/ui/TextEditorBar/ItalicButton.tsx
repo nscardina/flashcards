@@ -15,8 +15,7 @@ export default function ItalicButton() {
             const marks = Editor.marks(appState.textEditor)
 
             if (marks !== null) {
-                //@ts-expect-error
-                if (marks.bold) {
+                if (marks.italic) {
                     Editor.removeMark(appState.textEditor, 'italic')
                 } else {
                     Editor.addMark(appState.textEditor, 'italic', true)

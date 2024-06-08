@@ -20,6 +20,7 @@ import { withHistory } from 'slate-history';
 import { createEditor } from 'slate';
 import TextEditorBar from './ui/TextEditorBar/TextEditorBar';
 import BoldLeaf from './ui/Editor/Leaf';
+import blockRenderer from './ui/Editor/BlockRenderer';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -76,17 +77,14 @@ function App() {
                     children: [
                         {
                             text: 'A line of text!',
+                            
                         },
                     ],
+                    alignment: "left",
                 }]}>
                     <Editable
                     renderLeaf={BoldLeaf}
-                    // renderElement={(props: RenderElementProps) => {
-                    //     switch (props.element.type) {
-                    //         case 'paragraph':
-                    //             return <p {...props.attributes}>{props.children}</p>
-                    //     }
-                    // }} 
+                    renderElement={blockRenderer}
                     />
                 </Slate>
 

@@ -15,7 +15,6 @@ export default function StrikethroughButton() {
             const marks = Editor.marks(textEditor)
 
             if (marks !== null) {
-                //@ts-expect-error
                 if (marks.strikethrough) {
                     Editor.removeMark(textEditor, 'strikethrough')
                 } else {

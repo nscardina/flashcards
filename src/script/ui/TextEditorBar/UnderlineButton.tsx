@@ -13,7 +13,6 @@ export default function UnderlineButton() {
             event.preventDefault()
             const marks = Editor.marks(textEditor)
             if (marks !== null) {
-                //@ts-expect-error
                 if (marks.underlined) {
                     Editor.removeMark(textEditor, 'underlined')
                 } else {
