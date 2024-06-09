@@ -1,4 +1,4 @@
-import { Dropdown } from "react-bootstrap"
+import { Container, Dropdown, Image, Nav, Navbar } from "react-bootstrap"
 import FileMenu from "./FileMenu"
 import EditMenu from "./EditMenu"
 import AppMode from "../../app/AppMode"
@@ -6,6 +6,7 @@ import { useContext } from "react"
 import { AppState } from "../../App"
 import styled from "styled-components"
 import ViewMenu from "./ViewMenu"
+import favicon from "../../../favicon/favicon.svg"
 
 // https://github.com/react-bootstrap/react-bootstrap/issues/341
 export const MenuDropdownToggle = styled(Dropdown.Toggle)`
@@ -20,13 +21,30 @@ function MenuBar() {
   const appMode = appState.appMode
 
   return (
-    <div className="d-flex flex-row">
-        <FileMenu />
-        <EditMenu disabled={appMode !== AppMode.EDITING_DECK} />
-        <ViewMenu />
-
-    </div>
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand>
+          <Image src={favicon} alt="Flashcards Logo" fluid />
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Collapse id="navbar-nav">
+          <Nav className="me-auto">
+            <FileMenu />
+            <EditMenu disabled={false} />
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   )
+
+  // return (
+  //   <div className="d-flex flex-row">
+  //       <FileMenu />
+  //       <EditMenu disabled={appMode !== AppMode.EDITING_DECK} />
+  //       <ViewMenu />
+
+  //   </div>
+  // )
 
   // return (
   //   <Container>

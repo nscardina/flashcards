@@ -1,0 +1,22 @@
+@use "./Color";
+
+.dropdown-menu {
+    background-color: var(--bs-body-bg);
+}
+
+.flashcard-menu-button {
+    min-width: calc(100vw / 3);
+}
+
+@media screen and (max-width: 576px) {
+    .flashcard-menu-button-sm {
+        width: calc(100vw / 3 - 0.5rem);
+    }
+}
+
+
+@media screen and (min-width: 30rem) {
+    .flashcard-menu-button {
+        min-width: 10rem;
+    }
+}

@@ -1,8 +1,11 @@
 import { Button } from "react-bootstrap";
-import styled from "styled-components";
 
-const NonUserSelectableButton = styled(Button)`
-    user-select: none;
-`
+function NonUserSelectableButton(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+    return (
+        <Button as="button" className="user-select-none" {...props} />
+    )
+}
+
+
 
 export default NonUserSelectableButton

@@ -12,9 +12,8 @@ import UnderlineButton from "./UnderlineButton";
 
 export default function TextEditorBar() {
 
-
     return (
-        <div className="d-flex flex-row">
+        <div className="d-flex flex-row text-editor-bar">
             <FontSelectButton currentFont={"Roboto"}/>
             <FontSizeSelectButton />
             <BoldButton />
