@@ -1,10 +1,12 @@
 import { useContext, useRef } from "react";
-import { NavDropdown, Overlay, OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
+import { NavDropdown, OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { AppState } from "../../../App";
 import { MSIcon } from "../../Icons";
 import OpenFileByHandleWorker from "./OpenFileByHandleWorker?worker"
 import { Err, isOk } from "../../../misc/Result";
 import { AppStateType } from "../../../state/AppState";
+import { Deck } from "../../../card/deck";
+import { UnableToOpenFileErrorDialog } from "./UnableToOpenFileErrorDialog";
 
 
 function isFileSystemAPISupported(): boolean {
@@ -38,15 +40,16 @@ export async function loadDeckFileFromLocalFile(state: AppStateType) {
 
     if (fileHandle !== undefined &&
       state.recentFiles.every(value => !value.isSameEntry(fileHandle))) {
-        state.setRecentFiles([
-          ...oldRecentFiles,
-          fileHandle
-        ])
+      state.setRecentFiles([
+        ...oldRecentFiles,
+        fileHandle
+      ])
     }
 
-    
+
 
     const fileWorker = new OpenFileByHandleWorker()
+
     await new Promise<string>((resolve, reject) => {
       fileWorker.onmessage = (event: MessageEvent) => {
         if (isOk<string, string>(event.data, isString)) {
@@ -56,17 +59,28 @@ export async function loadDeckFileFromLocalFile(state: AppStateType) {
         }
       }
       fileWorker.postMessage(fileHandle)
-    }).then(message => {
-      const deck = JSON.parse(message)
-      state.setDeck(deck)
-      state.setVisibleCardIndex(0)
-    }).catch(message => console.log(message))
+    })
+      .then(message => {
+        const deck = JSON.parse(message)
+        if (Deck.isDeck(deck)) {
+          state.setDeck(deck)
+          state.setVisibleCardIndex(0)
+        } else {
+          state.setCurrentDialog(
+            <UnableToOpenFileErrorDialog errMessage="Selected file is not a valid deck file." />
+          )
+        }
+      })
+      .catch(message => {
+        state.setCurrentDialog(
+          <UnableToOpenFileErrorDialog errMessage="Selected file is not a valid deck file." />
+        )
+        console.log(message)
+      })
 
-  } else {
-    return "Unimplemented"
   }
 
-  
+
 
 }
 
@@ -93,7 +107,7 @@ export function OpenDeckLocallyButton() {
       >
         {({ ref, ...triggerHandler }) => (
           <NavDropdown.Item
-            
+
             as="div"
             {...triggerHandler}
             className="d-flex align-items-center"

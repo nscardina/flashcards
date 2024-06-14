@@ -11,7 +11,7 @@ const DEFAULT_DECK = {
 }
 
 export namespace Deck {
-    export function isDeck(object: unknown) {
+    export function isDeck(object: unknown): object is Deck {
         return (
             typeof(object) === "object" && 
             object !== null && 
