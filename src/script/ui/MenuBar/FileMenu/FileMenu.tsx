@@ -1,103 +1,20 @@
 import { Dropdown, NavDropdown } from "react-bootstrap"
 import { useContext } from "react"
-import { downloadDeck } from "../../file/CardFile"
-import { fileOpen } from "browser-fs-access"
-import { AppState } from "../../App"
-import { AppStateType } from "../../state/AppState"
-import Dialog from "../../app/Dialog"
-import AppMode from "../../app/AppMode"
-import { MSIcon } from "../Icons"
-import { Deck } from "../../card/deck"
-import { Editor } from "../../app/Editor"
-import { MenuDropdownToggle } from "./MenuBar"
-
-function NewDeckButton() {
-
-  const appState = useContext(AppState)
-
-  const createNewDeck = () => {
-    // If a deck is already open, display the NEW_DECK_CONFIRMATION_MESSAGE 
-    // to make sure that the user doesn't lose data. Switch the app mode to 
-    // EDITING_DECK.
-    if (appState.deck !== null) {
-      appState.setVisibleDialog(Dialog.NEW_DECK_CONFIRMATION_MESSAGE)
-      appState.setAppMode(AppMode.EDITING_DECK)
-    }
-
-    // Otherwise, create a new empty deck and switch to EDITING_DECK mode, and 
-    // set the only card in the new deck to be visible.
-    else {
-      appState.setDeck(Deck.makeDefault())
-      appState.setVisibleCardIndex(0)
-      appState.setAppMode(AppMode.EDITING_DECK)
-    }
-  }
-
-  return (
-    <NavDropdown.Item
-      as="button"
-      className="d-flex align-items-center"
-      onClick={createNewDeck}
-    >
-      <MSIcon name="add" />&nbsp;New Deck
-    </NavDropdown.Item>
-  )
-}
-
-async function loadDeckFile(
-  state: AppStateType,
-  fileText: string,
-  fileHandle?: FileSystemFileHandle
-): Promise<void> {
-  if (state.recentFiles.length > 9) {
-    state.setRecentFiles(state.recentFiles.slice(state.recentFiles.length - 9))
-  }
-  if (fileHandle !== undefined &&
-    state.recentFiles.every(value => !value.isSameEntry(fileHandle))) {
-    state.recentFiles.push(fileHandle)
-  }
-  const deck = JSON.parse(await fileText)
-  state.setDeck(deck)
-  state.setVisibleCardIndex(0)
-}
-
-function OpenDeckButton() {
-
-  const appState = useContext(AppState)
-
-  return (
-    <NavDropdown.Item
-          as="div"
-          className="d-flex align-items-center"
-          onClick={async () => {
-            const file = await fileOpen({
-              extensions: [".deck"]
-            }).catch(_ => null)
-
-            if (file !== null) {
-              loadDeckFile(appState, await file.text(), file.handle)
-            }
-          }}
-          style={{
-            cursor: "pointer"
-          }}
-        >
-          <MSIcon name="file_open" />&nbsp;Open Deck...
-        </NavDropdown.Item>
-  )
-}
-
-
+import { AppState } from "../../../App"
+import { NewDeckButton } from "./NewDeckButton"
+import { OpenDeckLocallyButton } from "./OpenDeckLocallyButton"
+import UploadDeckFileButton from "./UploadDeckFileButton"
 
 export default function FileMenu() {
 
   const appState = useContext(AppState)
 
   return (
-    <NavDropdown title="File" className="navbar-menu-item" style={{cursor: "pointer"}}>
+    <NavDropdown title="File" className="navbar-menu-item" style={{ cursor: "pointer" }}>
 
       <NewDeckButton />
-      <OpenDeckButton />
+      <OpenDeckLocallyButton />
+      <UploadDeckFileButton />
 
     </NavDropdown>
   )

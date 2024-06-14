@@ -37,7 +37,10 @@ export type AppStateType = {
     readonly setVisibleCardIndex: ReactSetter<number>,
     readonly visibleSide: Side,
     readonly setVisibleSide: ReactSetter<Side>,
-    readonly textEditor: BaseEditor & ReactEditor & HistoryEditor
+    readonly textEditor: BaseEditor & ReactEditor & HistoryEditor,
+
+    readonly currentDialog: JSX.Element,
+    readonly setCurrentDialog: ReactSetter<JSX.Element>
 }
 
 /**

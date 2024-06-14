@@ -1,5 +1,5 @@
 import { Container, Dropdown, Image, Nav, Navbar } from "react-bootstrap"
-import FileMenu from "./FileMenu"
+import FileMenu from "./FileMenu/FileMenu"
 import EditMenu from "./EditMenu"
 import AppMode from "../../app/AppMode"
 import { useContext } from "react"
@@ -24,7 +24,7 @@ function MenuBar() {
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
         <Navbar.Brand>
-          <Image src={favicon} alt="Flashcards Logo" fluid />
+          <Image src={favicon} alt="Flashcards Logo" height="32px" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">

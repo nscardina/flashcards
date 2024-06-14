@@ -41,6 +41,8 @@ function App() {
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
     const [textEditor] = useState(() => withReact(withHistory(createEditor())))
 
+    const [currentDialog, setCurrentDialog] = useState<JSX.Element>(<></>)
+
 
 
     return (
@@ -66,7 +68,10 @@ function App() {
                 setVisibleCardIndex: setVisibleCardIndex,
                 visibleSide: visibleSide,
                 setVisibleSide: setVisibleSide,
-                textEditor: textEditor
+                textEditor: textEditor,
+
+                currentDialog: currentDialog,
+                setCurrentDialog: setCurrentDialog,
             }}>
                 <MenuBar />
                 <TextEditorBar />
@@ -87,6 +92,8 @@ function App() {
                     renderElement={blockRenderer}
                     />
                 </Slate>
+
+                {currentDialog}
 
                 {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
                     <NewDeckConfirmationMessage />

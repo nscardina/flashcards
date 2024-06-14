@@ -13,6 +13,7 @@
   "dependencies": {
     "@fontsource/roboto": "^5.0.8",
     "@types/node": "^20.4.5",
+    "@types/wicg-file-system-access": "^2023.10.5",
     "bootstrap": "^5.3.0",
     "browser-fs-access": "^0.34.1",
     "material-symbols": "^0.9.0",
