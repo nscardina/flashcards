@@ -1,4 +1,4 @@
-function MSIcon({ name }: { name: string }) {
+function MSIcon({ name }: React.HTMLProps<HTMLSpanElement> & { name: string }) {
     return (
         <span
             className="material-symbols-outlined"

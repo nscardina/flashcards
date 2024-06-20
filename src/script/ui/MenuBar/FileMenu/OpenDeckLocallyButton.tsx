@@ -1,12 +1,13 @@
 import { useContext, useRef } from "react";
-import { NavDropdown, OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
+import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
 import { AppState } from "../../../App";
-import { MSIcon } from "../../Icons";
 import OpenFileByHandleWorker from "./OpenFileByHandleWorker?worker"
 import { Err, isOk } from "../../../misc/Result";
 import { AppStateType } from "../../../state/AppState";
 import { Deck } from "../../../card/deck";
 import { UnableToOpenFileErrorDialog } from "./UnableToOpenFileErrorDialog";
+import CustomMenuItem from "../CustomMenuItem";
+import { KeyboardShortcuts } from "../../KeyboardShortcuts";
 
 
 function isFileSystemAPISupported(): boolean {
@@ -78,14 +79,8 @@ export async function loadDeckFileFromLocalFile(state: AppStateType) {
         console.log(message)
       })
 
-  }
-
-
-
+    }
 }
-
-
-
 
 export function OpenDeckLocallyButton() {
 
@@ -93,6 +88,7 @@ export function OpenDeckLocallyButton() {
   const dropdownItemRef = useRef(null)
 
   if (!isFileSystemAPISupported()) {
+
     const tooltip = (props: TooltipProps) => (
       <Tooltip {...props}>
         Your browser doesn't have this capability.
@@ -106,7 +102,7 @@ export function OpenDeckLocallyButton() {
         overlay={tooltip}
       >
         {({ ref, ...triggerHandler }) => (
-          <NavDropdown.Item
+          <CustomMenuItem
 
             as="div"
             {...triggerHandler}
@@ -117,16 +113,18 @@ export function OpenDeckLocallyButton() {
               cursor: "pointer",
               pointerEvents: "all"
             }}
-          >
-            <MSIcon name="file_open" />&nbsp;<span ref={ref}>Open Local Deck File...</span>
-          </NavDropdown.Item>
+
+            icon="file_open"
+            body={<span ref={ref}>Open Local Deck File...</span>}
+            keyboardShortcut={"N"}
+          />
         )}
 
       </OverlayTrigger>
     )
   } else {
     return (
-      <NavDropdown.Item
+      <CustomMenuItem
         ref={dropdownItemRef}
         as="div"
         className="d-flex align-items-center"
@@ -136,9 +134,12 @@ export function OpenDeckLocallyButton() {
           cursor: "pointer",
           pointerEvents: "all"
         }}
+
+        icon="file_open"
+        body={<span>Open Local Deck File...</span>}
+        keyboardShortcut={KeyboardShortcuts.openDeckLocally()}
       >
-        <MSIcon name="file_open" />&nbsp;Open Local Deck File...
-      </NavDropdown.Item>
+      </CustomMenuItem>
     )
   }
 }

@@ -5,6 +5,8 @@ import Dialog from "../../../app/Dialog";
 import AppMode from "../../../app/AppMode";
 import { MSIcon } from "../../Icons";
 import { Deck } from "../../../card/deck";
+import CustomMenuItem from "../CustomMenuItem";
+import { KeyboardShortcuts } from "../../KeyboardShortcuts";
 
 export function NewDeckButton() {
 
@@ -31,12 +33,14 @@ export function NewDeckButton() {
   };
 
   return (
-    <NavDropdown.Item
+    <CustomMenuItem
       as="button"
       className="d-flex align-items-center"
       onClick={createNewDeck}
-    >
-      <MSIcon name="add" />&nbsp;New Deck
-    </NavDropdown.Item>
+
+      icon="add"
+      body={<>New Deck</>}
+      keyboardShortcut={KeyboardShortcuts.newDeck()}
+    />
   );
 }
