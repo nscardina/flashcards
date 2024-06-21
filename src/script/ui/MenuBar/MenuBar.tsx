@@ -1,4 +1,4 @@
-import { Container, Dropdown, Image, Nav, Navbar } from "react-bootstrap"
+import { Container, Dropdown, DropdownToggleProps, Image, Nav, Navbar } from "react-bootstrap"
 import FileMenu from "./FileMenu/FileMenu"
 import EditMenu from "./EditMenu"
 import AppMode from "../../app/AppMode"
@@ -9,16 +9,14 @@ import ViewMenu from "./ViewMenu"
 import favicon from "../../../favicon/favicon.svg"
 
 // https://github.com/react-bootstrap/react-bootstrap/issues/341
-export const MenuDropdownToggle = styled(Dropdown.Toggle)`
-  &::after {
-    display: none;
-  }
-`
+export const MenuDropdownToggle = (props: DropdownToggleProps) => (
+  <Dropdown.Toggle {...props} className={`no-arrow-dropdown ${props.className}`} />
+)
+
 
 function MenuBar() {
 
   const appState = useContext(AppState)
-  const appMode = appState.appMode
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">

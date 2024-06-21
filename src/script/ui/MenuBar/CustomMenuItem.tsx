@@ -1,6 +1,6 @@
 import { DropdownItemProps, NavDropdown } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
-import { LegacyRef, MutableRefObject, forwardRef } from "react";
+import { LegacyRef, forwardRef } from "react";
 
 const CustomMenuItem = forwardRef((props: DropdownItemProps & {
     icon: string,

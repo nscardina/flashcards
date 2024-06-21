@@ -1,12 +1,4 @@
-import { HTMLAttributes, HTMLProps, PropsWithChildren } from "react"
-import styled from "styled-components"
-
-// const MaterialSymbolStyle = styled("span").attrs({
-//     className: "material-symbols-outlined",
-// })`
-// width: max-content;
-// display: block;
-// `
+import { HTMLAttributes } from "react"
 
 function MaterialSymbol(props: HTMLAttributes<HTMLSpanElement>) {
     const modifiedProps = {
@@ -20,7 +12,5 @@ function MaterialSymbol(props: HTMLAttributes<HTMLSpanElement>) {
 
     return <span {...modifiedProps}/>
 }
-
-// const MaterialSymbol = (props: HTMLAttributes<typeof MaterialSymbolStyle>) => <MaterialSymbolStyle {...props} />
 
 export default MaterialSymbol

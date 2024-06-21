@@ -20,3 +20,7 @@
         min-width: 10rem;
     }
 }
+
+.no-arrow-dropdown::after {
+    display: none;
+}
