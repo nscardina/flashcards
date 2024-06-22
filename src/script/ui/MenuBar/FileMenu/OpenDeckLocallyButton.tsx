@@ -116,7 +116,6 @@ export function OpenDeckLocallyButton() {
 
             icon="file_open"
             body={<span ref={ref}>Open Local Deck File...</span>}
-            keyboardShortcut={"N"}
           />
         )}
 
