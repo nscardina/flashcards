@@ -1,11 +1,8 @@
 import { Container, Dropdown, DropdownToggleProps, Image, Nav, Navbar } from "react-bootstrap"
 import FileMenu from "./FileMenu/FileMenu"
-import EditMenu from "./EditMenu"
-import AppMode from "../../app/AppMode"
+import EditMenu from "./EditMenu/EditMenu"
 import { useContext } from "react"
 import { AppState } from "../../App"
-import styled from "styled-components"
-import ViewMenu from "./ViewMenu"
 import favicon from "../../../favicon/favicon.svg"
 
 // https://github.com/react-bootstrap/react-bootstrap/issues/341

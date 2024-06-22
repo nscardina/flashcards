@@ -3,7 +3,7 @@ import MaterialSymbol from "../MaterialSymbol";
 import { LegacyRef, forwardRef } from "react";
 
 const CustomMenuItem = forwardRef((props: DropdownItemProps & {
-    icon: string,
+    icon: string | JSX.Element,
     body: JSX.Element,
     keyboardShortcut?: string,
 }, ref: LegacyRef<null>,) => {
@@ -14,8 +14,13 @@ const CustomMenuItem = forwardRef((props: DropdownItemProps & {
     )
 
     return (
-        <NavDropdown.Item as={props.as} {...dropdownItemPropsOnly} ref={ref}>
-            <MaterialSymbol className="me-2">{props.icon}</MaterialSymbol>
+        <NavDropdown.Item as={props.as} {...dropdownItemPropsOnly} ref={ref} >
+            {(typeof(props.icon) === "string") ? 
+            (<MaterialSymbol className="me-2">{props.icon}</MaterialSymbol>)
+            : props.icon
+            }
+                
+                
             {props.body}
 
             <span className="ms-auto ps-4 text-muted">{props.keyboardShortcut}</span>
