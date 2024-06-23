@@ -124,12 +124,6 @@ function EditModeBox({ box }: { box: BoxNumber }) {
             }}>
             <span className="material-symbols-outlined">image</span>&nbsp;Image
           </Dropdown.Item>
-          <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
-            onClick={() => {
-              changeEditor(appState, Editor.LATEX_TEST, box)
-            }}>
-            <span className="material-symbols-outlined">play_arrow</span>&nbsp;<Latex>$\LaTeX$</Latex>
-          </Dropdown.Item>
         </Dropdown.Menu>
 
       </Dropdown>
