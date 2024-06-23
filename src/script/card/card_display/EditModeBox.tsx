@@ -4,6 +4,8 @@ import { BoxNumber } from "../Box";
 import { useContext } from "react";
 import { AppState } from "../../App";
 import { changeEditor } from "../../state/AppState";
+import { Side } from "../side";
+import { CardContentData } from "../CardContentData";
 
 /**
  * React component which encapsulates the "edit mode box" functionality; that is, the pencil dropdown
@@ -13,7 +15,7 @@ import { changeEditor } from "../../state/AppState";
  * @param param0 props.
  * @returns React component described above.
  */
-export function EditModeBox({ box }: { box: BoxNumber; }) {
+export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
 
   const appState = useContext(AppState);
 
@@ -37,13 +39,21 @@ export function EditModeBox({ box }: { box: BoxNumber; }) {
         <Dropdown.Menu style={{ flexDirection: "column" }}>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
-              changeEditor(appState, Editor.PLAIN_TEXT, box);
+              const boxes = appState.deck!.cards[appState.visibleCardIndex][side].box
+              boxes[box] = {
+                type: CardContentData.Type.TEXT,
+                textNodes: []
+              }
+              console.log("test2")
+
+
+              
             }}>
             <span className="material-symbols-outlined">article</span>&nbsp;Text
           </Dropdown.Item>
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
-              changeEditor(appState, Editor.IMAGE, box);
+              // changeEditor(appState, Editor.IMAGE, box);
             }}>
             <span className="material-symbols-outlined">image</span>&nbsp;Image
           </Dropdown.Item>

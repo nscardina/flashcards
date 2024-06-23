@@ -39,7 +39,19 @@ function App() {
     const [visibleCardIndex, setVisibleCardIndex] =
         useState<number>(NO_CARD_FOCUSED)
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
-    const [textEditor] = useState(() => withReact(withHistory(createEditor())))
+    const [textEditors] = useState(
+        () => [
+            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())),
+        ]
+    )
+    
 
     const [currentDialog, setCurrentDialog] = useState<JSX.Element>(<></>)
 
@@ -68,7 +80,8 @@ function App() {
                 setVisibleCardIndex: setVisibleCardIndex,
                 visibleSide: visibleSide,
                 setVisibleSide: setVisibleSide,
-                textEditor: textEditor,
+                
+                textEditors: textEditors,
 
                 currentDialog: currentDialog,
                 setCurrentDialog: setCurrentDialog,
@@ -77,7 +90,7 @@ function App() {
                 <TextEditorBar />
                 <DeckInteractionArea />
 
-                <Slate editor={textEditor} initialValue={[{
+                {/* <Slate editor={textEditor} initialValue={[{
                     type: 'paragraph',
                     children: [
                         {
@@ -91,7 +104,7 @@ function App() {
                     renderLeaf={BoldLeaf}
                     renderElement={blockRenderer}
                     />
-                </Slate>
+                </Slate> */}
 
                 {currentDialog}
 

@@ -34,10 +34,15 @@ export type AppStateType = {
     readonly setVisibleCardIndex: ReactSetter<number>,
     readonly visibleSide: Side,
     readonly setVisibleSide: ReactSetter<Side>,
-    readonly textEditor: BaseEditor & ReactEditor & HistoryEditor,
+
+    readonly textEditors: (BaseEditor & ReactEditor & HistoryEditor)[],
 
     readonly currentDialog: JSX.Element,
     readonly setCurrentDialog: ReactSetter<JSX.Element>
+}
+
+export function getCorrespondingTextEditorNumber(side: Side, boxNumber: BoxNumber): number {
+  return (side === Side.FRONT ? 0 : 4) + Number(boxNumber) - 1
 }
 
 /**

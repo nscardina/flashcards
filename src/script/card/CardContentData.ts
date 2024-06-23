@@ -7,7 +7,7 @@ import { CustomElement } from "../ui/types/slate_defs"
  */
 export type CardContentDataType<T extends CardContentData.Type> = {
     type: T,
-    data: T extends CardContentData.Type.PLAIN_TEXT | CardContentData.Type.RICH_TEXT ? CustomElement[] : string
+    data: T extends CardContentData.Type.TEXT | CardContentData.Type.RICH_TEXT ? CustomElement[] : string
 }
 
 /**
@@ -34,7 +34,7 @@ export namespace CardContentData {
      * flashcard.
      */
     export enum Type {
-        PLAIN_TEXT = "PLAIN_TEXT",
+        TEXT = "PLAIN_TEXT",
         RICH_TEXT = "RICH_TEXT",
         IMAGE = "IMAGE",
     }

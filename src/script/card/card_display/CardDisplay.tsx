@@ -12,7 +12,8 @@ import "./CardDisplay.scss"
 import 'katex/dist/katex.min.css';
 import { CardDisplayXButton } from "./CardDisplayXButton"
 import { EditModeBox } from "./EditModeBox"
-import { Slate } from "slate-react"
+import { Editable, Slate } from "slate-react"
+import blockRenderer from "../../ui/Editor/BlockRenderer"
 
 function getCSSClassFromCardLayout(layout: CardLayout): string {
   switch (layout) {
@@ -78,7 +79,7 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                   if (box === null && appState.appMode === AppMode.EDITING_DECK) {
                     return (
                       <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
-                        <EditModeBox box={boxNumber} />
+                        <EditModeBox side={side} box={boxNumber} />
                       </div>
                     )
                   } else if (box === null) {
@@ -86,26 +87,14 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                   }
 
                   switch (box.type) {
-                    case CardContentData.Type.PLAIN_TEXT:
+                    case CardContentData.Type.TEXT:
                       return (
-                        <Slate editor={}
-                        // <>
-                        //   <div key={boxNumber}
-                        //     className={`${appState.appMode === AppMode.EDITING_DECK
-                        //       ? "flashcard-edit-mode-box" : ""
-                        //       } flashcard-box flashcard-display-box-container`}
-                        //     style={{ position: "relative" }}
-                        //     onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
-                        //       changeEditor(appState,
-                        //         getEditorTypeFromBoxType(
-                        //           visibleSide.box[boxNumber]),
-                        //         boxNumber)
-                        //     } : () => {}} dangerouslySetInnerHTML={{ __html: box.text }}></div>
-                        //   {
-                        //     appState.appMode === AppMode.EDITING_DECK ? 
-                        //     <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
-                        //   }
-                        // </>
+                        <Slate editor={appState.textEditors[
+                          (side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)
+                        ]} initialValue={box.textNodes}>
+                          <Editable renderElement={blockRenderer} />
+                        </Slate>
+
 
                       )
                     case CardContentData.Type.IMAGE:
