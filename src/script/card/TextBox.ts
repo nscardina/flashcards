@@ -1,8 +1,10 @@
+import { Element, Node, Text } from "slate";
 import { CardContentData } from "./CardContentData";
+import { CustomElement, CustomText } from "../ui/types/slate_defs";
 
 export type TextBox = {
     readonly type: CardContentData.Type.PLAIN_TEXT
-    readonly text: string
+    readonly textNodes: (Element | Text)[]
 }
 
 export namespace TextBox {
@@ -12,15 +14,20 @@ export namespace TextBox {
             variable !== null &&
             "type" in variable &&
             variable.type === CardContentData.Type.PLAIN_TEXT &&
-            "text" in variable &&
-            typeof (variable.text) === "string"
+            "textNodes" in variable &&
+            (
+                CustomElement.isCustomElement(variable)
+                || CustomText.isCustomText(variable)
+            )
         )
     }
 
+    /**
+     * @deprecated
+     * @param text 
+     * @returns 
+     */
     export function of(text: string): TextBox {
-        return Object.freeze({
-            type: CardContentData.Type.PLAIN_TEXT,
-            text: text
-        })
+        throw "Don't call this!"
     }
 }

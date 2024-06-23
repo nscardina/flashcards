@@ -1,13 +1,12 @@
 import { Editor } from "../app/Editor"
 import { ImageBox } from "./ImageBox"
 import { TextBox } from "./TextBox"
-import { LaTeXTextBox } from "./LaTeXTextBox"
 
 /**
  * Interface representing a box, which is a field on a flashcard which can 
  * contain one of several types of data.
  */
-export type Box = TextBox | ImageBox | LaTeXTextBox
+export type Box = TextBox | ImageBox
 
 export namespace Box {
     /**
@@ -19,8 +18,7 @@ export namespace Box {
      */
     export const isBox = (variable: unknown) =>
         TextBox.isTextBox(variable) ||
-        ImageBox.isImageBox(variable) ||
-        LaTeXTextBox.isLaTeXTextBox(variable)
+        ImageBox.isImageBox(variable)
 }
 
 /**
@@ -28,6 +26,7 @@ export namespace Box {
  * which contain a specific type of data.
  * @param box `Box` to process.
  * @returns `Editor` used to edit the type of data contained in the `box`.
+ * @deprecated
  */
 export function getEditorTypeFromBoxType(box: Box | null): Editor {
     if (box) {
@@ -35,8 +34,6 @@ export function getEditorTypeFromBoxType(box: Box | null): Editor {
             return Editor.PLAIN_TEXT
         } else if (ImageBox.isImageBox(box)) {
             return Editor.IMAGE
-        } else if (LaTeXTextBox.isLaTeXTextBox(box)) {
-            return Editor.LATEX_TEST
         }
     }
     return Editor.NONE

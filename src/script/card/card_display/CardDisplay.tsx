@@ -191,7 +191,7 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
           return (
             <div key={side} className={`flashcard-face ${
               appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
-              } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`
+              } ${getCSSClassFromCardLayout(visibleCard[side].layout)}`
             }>
 
               {
@@ -212,22 +212,25 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                     case CardContentData.Type.PLAIN_TEXT:
                       return (
                         <>
-                          <div key={boxNumber}
-                            className={`${appState.appMode === AppMode.EDITING_DECK
-                              ? "flashcard-edit-mode-box" : ""
-                              } flashcard-box flashcard-display-box-container`}
-                            style={{ position: "relative" }}
-                            onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
-                              changeEditor(appState,
-                                getEditorTypeFromBoxType(
-                                  visibleSide.box[boxNumber]),
-                                boxNumber)
-                            } : () => {}} dangerouslySetInnerHTML={{ __html: box.text }}></div>
-                          {
-                            appState.appMode === AppMode.EDITING_DECK ? 
-                            <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
-                          }
+                          
                         </>
+                        // <>
+                        //   <div key={boxNumber}
+                        //     className={`${appState.appMode === AppMode.EDITING_DECK
+                        //       ? "flashcard-edit-mode-box" : ""
+                        //       } flashcard-box flashcard-display-box-container`}
+                        //     style={{ position: "relative" }}
+                        //     onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
+                        //       changeEditor(appState,
+                        //         getEditorTypeFromBoxType(
+                        //           visibleSide.box[boxNumber]),
+                        //         boxNumber)
+                        //     } : () => {}} dangerouslySetInnerHTML={{ __html: box.text }}></div>
+                        //   {
+                        //     appState.appMode === AppMode.EDITING_DECK ? 
+                        //     <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
+                        //   }
+                        // </>
 
                       )
                     case CardContentData.Type.LATEX:

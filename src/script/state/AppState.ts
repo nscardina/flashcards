@@ -3,11 +3,8 @@ import { ShowSideProviderName } from "../ShowSideProvider"
 import AppMode from "../app/AppMode"
 import Dialog from "../app/Dialog"
 import { Editor } from "../app/Editor"
-import { CardContentData, CardContentDataType, getCardContentDataType } from "../card/CardContentData"
+import { CardContentData, CardContentDataType } from "../card/CardContentData"
 import { BoxNumber } from "../card/Box"
-import { LaTeXTextBox } from "../card/LaTeXTextBox"
-import { ImageBox } from "../card/ImageBox"
-import { TextBox } from "../card/TextBox"
 import { Deck } from "../card/deck"
 import { Side } from "../card/side"
 import { BaseEditor } from "slate"
@@ -66,33 +63,33 @@ export function editCard<T extends CardContentData.Type>(
     // if not. (This scenario shouldn't be encountered, but it is the fallback 
     // behavior if the situation does occur.)
     if (state.deck !== null && state.deck.cards.length > 0) {
-      switch (getCardContentDataType(data)) {
-        case CardContentData.Type.PLAIN_TEXT:
-          {
-            state.deck.cards[state.visibleCardIndex][face].box[box] = 
-              TextBox.of(
-                (data as CardContentDataType<CardContentData.Type.PLAIN_TEXT>).text
-              )
-          }
-          break
-        case CardContentData.Type.IMAGE:
-          {
-            state.deck.cards[state.visibleCardIndex][face].box[box] =
-              ImageBox.of(
-                (data as CardContentDataType<CardContentData.Type.IMAGE>)
-                .imageBase64
-              )
-          }
-          break
-        case CardContentData.Type.LATEX:
-          {
-            state.deck.cards[state.visibleCardIndex][face].box[box] = 
-            LaTeXTextBox.of(
-              (data as CardContentDataType<CardContentData.Type.LATEX>)
-                .latex_text
-            )
-          }
-      }
+      // switch (getCardContentDataType(data)) {
+      //   case CardContentData.Type.PLAIN_TEXT:
+      //     {
+      //       state.deck.cards[state.visibleCardIndex][face].box[box] = 
+      //         TextBox.of(
+      //           (data as CardContentDataType<CardContentData.Type.PLAIN_TEXT>).text
+      //         )
+      //     }
+      //     break
+      //   case CardContentData.Type.IMAGE:
+      //     {
+      //       state.deck.cards[state.visibleCardIndex][face].box[box] =
+      //         ImageBox.of(
+      //           (data as CardContentDataType<CardContentData.Type.IMAGE>)
+      //           .imageBase64
+      //         )
+      //     }
+      //     break
+      //   case CardContentData.Type.LATEX:
+      //     {
+      //       state.deck.cards[state.visibleCardIndex][face].box[box] = 
+      //       LaTeXTextBox.of(
+      //         (data as CardContentDataType<CardContentData.Type.LATEX>)
+      //           .latex_text
+      //       )
+      //     }
+      // }
     }
     state.setVisibleEditor(Editor.NONE)
   }
