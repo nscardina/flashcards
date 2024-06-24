@@ -27,4 +27,106 @@ export namespace CardFace {
             (Box.isBox(variable.box[4]) || variable.box[4] === null)
         )
     }
+
+    /**
+     * Returns a new `CardFace` object that is identical 
+     * to the one passed in aside from the `layout` field,
+     * specified in the `layout` parameter.
+     * @param cardFace existing `CardFace` object.
+     * @param layout new layout.
+     * @returns new `CardFace` object.
+     */
+    export function setLayout(
+        cardFace: CardFace,
+        newLayout: CardLayout
+    ): CardFace {
+        return {
+            ...cardFace,
+            layout: newLayout
+        }
+    }
+
+    /**
+     * Returns a new `CardFace` object that is identical
+     * to the one passed in aside from the `box[1]` field,
+     * specified in the `newBox1` parameter.
+     * @param cardFace existing `CardFace` object.
+     * @param newBox1 new Box 1 value.
+     * @returns new `CardFace` object.
+     */
+    export function setBox1(
+        cardFace: CardFace,
+        newBox1: Box
+    ): CardFace {
+        return {
+            ...cardFace,
+            box: {
+                ...cardFace.box,
+                "1": newBox1
+            }
+        }
+    }
+
+    /**
+     * Returns a new `CardFace` object that is identical
+     * to the one passed in aside from the `box[2]` field,
+     * specified in the `newBox2` parameter.
+     * @param cardFace existing `CardFace` object.
+     * @param newBox1 new Box 2 value.
+     * @returns new `CardFace` object.
+     */
+    export function setBox2(
+        cardFace: CardFace,
+        newBox2: Box
+    ): CardFace {
+        return {
+            ...cardFace,
+            box: {
+                ...cardFace.box,
+                "2": newBox2
+            }
+        }
+    }
+
+    /**
+     * Returns a new `CardFace` object that is identical
+     * to the one passed in aside from the `box[3]` field,
+     * specified in the `newBox3` parameter.
+     * @param cardFace existing `CardFace` object.
+     * @param newBox1 new Box 3 value.
+     * @returns new `CardFace` object.
+     */
+    export function setBox3(
+        cardFace: CardFace,
+        newBox3: Box
+    ): CardFace {
+        return {
+            ...cardFace,
+            box: {
+                ...cardFace.box,
+                "3": newBox3
+            }
+        }
+    }
+
+    /**
+     * Returns a new `CardFace` object that is identical
+     * to the one passed in aside from the `box[4]` field,
+     * specified in the `newBox4` parameter.
+     * @param cardFace existing `CardFace` object.
+     * @param newBox1 new Box 4 value.
+     * @returns new `CardFace` object.
+     */
+    export function setBox4(
+        cardFace: CardFace,
+        newBox4: Box
+    ): CardFace {
+        return {
+            ...cardFace,
+            box: {
+                ...cardFace.box,
+                "4": newBox4
+            }
+        }
+    }
 }
