@@ -30,7 +30,7 @@ function DeckNameEditor() {
       <Modal.Body >
         <Container>
           <Row>
-            <Slate editor={editor} initialValue={[{
+            {/* <Slate editor={editor} initialValue={[{
               type: 'paragraph',
               children: [{ text: '' }]
             }]}>
@@ -40,7 +40,7 @@ function DeckNameEditor() {
                     {children}
                   </div>
                 )} />
-            </Slate>
+            </Slate> */}
           </Row>
           <Row>
             <Col className="d-flex justify-content-end">

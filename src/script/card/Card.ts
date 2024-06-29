@@ -40,4 +40,6 @@ export namespace Card {
     export function makeDefault(): Card {
         return structuredClone(DEFAULT_CARD)
     }
+
+    
 }

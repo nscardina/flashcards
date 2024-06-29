@@ -2,7 +2,7 @@ import { CardContentData } from "./CardContentData"
 import { TextBox } from "./TextBox"
 
 const incompleteTextBox1 = {
-    type: CardContentData.Type.PLAIN_TEXT
+    type: CardContentData.Type.TEXT
 }
 
 const incompleteTextBox2 = {
@@ -10,7 +10,7 @@ const incompleteTextBox2 = {
 }
 
 const completeTextBox = {
-    type: CardContentData.Type.PLAIN_TEXT,
+    type: CardContentData.Type.TEXT,
     text: "Test Text"
 }
 
