@@ -16,7 +16,7 @@ const OTHER_FONTS: string[] = [
 export default function FontSelectButton({currentFont}: { currentFont: string }) {
 
     return (
-        <Dropdown>
+        <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button">
                 {currentFont}
             </Dropdown.Toggle>

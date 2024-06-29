@@ -32,7 +32,7 @@ export default function TextAlignmentButton() {
     const justifiedFunction = textAlignmentOnClickFactory('justified')
 
     return (
-        <Dropdown>
+        <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button d-flex flex-row" style={{alignItems: "center"}}> 
                 <MaterialSymbol>format_align_left</MaterialSymbol>
             </Dropdown.Toggle>

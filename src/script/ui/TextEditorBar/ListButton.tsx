@@ -9,7 +9,7 @@ export default function ListButton() {
     const textEditor = useContext(AppState).textEditor
 
     return (
-        <Dropdown>
+        <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button d-flex flex-row" style={{ alignItems: "center" }}>
                 <MaterialSymbol>format_list_bulleted</MaterialSymbol>
             </Dropdown.Toggle>

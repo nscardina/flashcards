@@ -31,7 +31,7 @@ const FONT_SIZES = [
 
 export default function FontSizeSelectButton() {
     return (
-        <Dropdown>
+        <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button">
                 12 pt
             </Dropdown.Toggle>
