@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap"
-import CardDisplay from "../../card/card_display/CardDisplay"
+import CardDisplay from "../CardDisplay/CardDisplay"
 import { useContext } from "react"
 import { AppState } from "../../App"
 import AppMode from "../../app/AppMode"

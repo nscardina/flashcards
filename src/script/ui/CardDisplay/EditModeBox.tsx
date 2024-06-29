@@ -1,10 +1,10 @@
 import { Dropdown } from "react-bootstrap";
-import { BoxNumber } from "../Box";
 import { useContext } from "react";
 import { AppState } from "../../App";
-import { Side } from "../side";
-import { CardContentData } from "../CardContentData";
-import { Deck } from "../deck";
+import { Side } from "../../card/side";
+import { BoxNumber } from "../../card/Box";
+import { Deck } from "../../card/deck";
+import { CardContentData } from "../../card/CardContentData";
 
 /**
  * React component which encapsulates the "edit mode box" functionality; that is, the pencil dropdown

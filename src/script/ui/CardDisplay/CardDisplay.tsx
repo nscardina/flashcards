@@ -1,10 +1,6 @@
-import CardLayout from "../cardlayout"
-import { Side } from "../side"
 import AppMode from "../../app/AppMode"
-import { BoxNumber } from "../Box"
 import { useContext } from "react"
 import { AppState } from "../../App"
-import { CardContentData } from "../CardContentData"
 import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
 import "./CardDisplay.scss"
 import 'katex/dist/katex.min.css';
@@ -12,6 +8,10 @@ import { CardDisplayXButton } from "./CardDisplayXButton"
 import { EditModeBox } from "./EditModeBox"
 import { Editable, Slate } from "slate-react"
 import blockRenderer from "../../ui/Editor/BlockRenderer"
+import CardLayout from "../../card/cardlayout"
+import { CardContentData } from "../../card/CardContentData"
+import { Side } from "../../card/side"
+import { BoxNumber } from "../../card/Box"
 
 function getCSSClassFromCardLayout(layout: CardLayout): string {
   switch (layout) {
@@ -89,8 +89,15 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                         <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
                           <Slate editor={appState.textEditors[
                             (side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)
-                          ]} initialValue={structuredClone(box.textNodes)}> 
-                            <Editable renderElement={blockRenderer} />
+                          ]} initialValue={structuredClone(box.textNodes)}
+                          
+                          > 
+                            <Editable renderElement={blockRenderer} style={{
+                            width: "100%",
+                            height: "100%",
+                            borderRadius: "1rem",
+                            overflow: "scroll",
+                          }} />
                           </Slate>
                           {
                             appState.appMode === AppMode.EDITING_DECK ?

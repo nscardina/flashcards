@@ -1,7 +1,8 @@
-import { Side } from "../side";
-import { BoxNumber } from "../Box";
+
 import { useContext } from "react";
 import { AppState } from "../../App";
+import { BoxNumber } from "../../card/Box";
+import { Side } from "../../card/side";
 
 export function CardDisplayXButton({ side, boxNumber }: { boxNumber: BoxNumber; side: Side; }) {
 

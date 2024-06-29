@@ -1,11 +1,11 @@
 import { useContext, useState } from "react"
 import { AppState } from "../App"
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
-import CardDisplay from "../card/card_display/CardDisplay"
 import { Side } from "../card/side"
 import ShowSideProvider from "../ShowSideProvider"
 import AppMode from "../app/AppMode"
 import "./ReviewCardPopover.scss"
+import CardDisplay from "./CardDisplay/CardDisplay"
 
 enum ReviewingCardState {
   VIEWING_QUESTION_SIDE,
