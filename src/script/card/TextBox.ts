@@ -1,4 +1,4 @@
-import { Element, Node, Text } from "slate";
+import { Element, Text } from "slate";
 import { CardContentData } from "./CardContentData";
 import { CustomElement, CustomText } from "../ui/types/slate_defs";
 

@@ -1,11 +1,9 @@
 import CardLayout from "../cardlayout"
 import { Side } from "../side"
 import AppMode from "../../app/AppMode"
-import { Editor } from "../../app/Editor"
 import { BoxNumber } from "../Box"
 import { useContext } from "react"
 import { AppState } from "../../App"
-import { changeEditor } from "../../state/AppState"
 import { CardContentData } from "../CardContentData"
 import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
 import "./CardDisplay.scss"
@@ -67,8 +65,7 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
           return (
-            <div key={side} className={`flashcard-face ${
-              appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
+            <div key={side} className={`flashcard-face ${appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
               } ${getCSSClassFromCardLayout(visibleCard[side].layout)}`
             }>
 
@@ -89,12 +86,19 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                   switch (box.type) {
                     case CardContentData.Type.TEXT:
                       return (
-                        <Slate editor={appState.textEditors[
-                          (side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)
-                        ]} initialValue={box.textNodes}>
-                          <Editable renderElement={blockRenderer} />
-                        </Slate>
-
+                        <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
+                          <style>{`
+                            div {
+                            width: 100%;
+                            height: 100%;
+                            }
+                          `}</style>
+                          <Slate editor={appState.textEditors[
+                            (side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)
+                          ]} initialValue={structuredClone(box.textNodes)}> 
+                            <Editable renderElement={blockRenderer} />
+                          </Slate>
+                        </div>
 
                       )
                     case CardContentData.Type.IMAGE:
@@ -111,12 +115,12 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                             src={box.base64ImageData}
                             className={`flashcard-display-box-container`}
                             onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
-                              changeEditor(appState, Editor.LATEX_TEST, boxNumber)
-                            } : () => {}}
+
+                            } : () => { }}
                           />
                           {
-                            appState.appMode === AppMode.EDITING_DECK ? 
-                            <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
+                            appState.appMode === AppMode.EDITING_DECK ?
+                              <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
                           }
                         </div>
                       )
