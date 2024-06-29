@@ -24,3 +24,8 @@
 .no-arrow-dropdown::after {
     display: none;
 }
+
+.fc-navbar-dropdown-trigger {
+    cursor: pointer;
+    width: min-content;
+}

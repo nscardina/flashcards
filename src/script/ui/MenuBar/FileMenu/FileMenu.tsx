@@ -10,7 +10,7 @@ export default function FileMenu() {
   const appState = useContext(AppState)
 
   return (
-    <NavDropdown title="File" className="navbar-menu-item" style={{ cursor: "pointer" }}>
+    <NavDropdown title="File" className="navbar-menu-item fc-navbar-dropdown-trigger">
 
       <NewDeckButton />
       <OpenDeckLocallyButton />
