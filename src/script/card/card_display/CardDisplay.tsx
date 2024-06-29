@@ -92,6 +92,10 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                           ]} initialValue={structuredClone(box.textNodes)}> 
                             <Editable renderElement={blockRenderer} />
                           </Slate>
+                          {
+                            appState.appMode === AppMode.EDITING_DECK ?
+                              <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
+                          }
                         </div>
 
                       )
