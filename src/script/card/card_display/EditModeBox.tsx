@@ -46,7 +46,13 @@ export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
                 box,
                 {
                   type: CardContentData.Type.TEXT,
-                  textNodes: []
+                  textNodes: [{
+                    type: "paragraph",
+                    children: [{
+                      text: "test"
+                    }],
+                    alignment: "left"
+                  }]
                 }
               )
 

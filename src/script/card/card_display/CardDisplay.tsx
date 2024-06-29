@@ -87,12 +87,6 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                     case CardContentData.Type.TEXT:
                       return (
                         <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
-                          <style>{`
-                            div {
-                            width: 100%;
-                            height: 100%;
-                            }
-                          `}</style>
                           <Slate editor={appState.textEditors[
                             (side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)
                           ]} initialValue={structuredClone(box.textNodes)}> 
