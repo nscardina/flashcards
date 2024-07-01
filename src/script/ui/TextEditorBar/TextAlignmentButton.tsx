@@ -10,7 +10,10 @@ import { HorizontalAlignment } from "../types/slate_defs";
 
 export default function TextAlignmentButton() {
 
-    const textEditor = useContext(AppState).textEditor
+    const appState = useContext(AppState)
+    const textEditor = appState.textEditors[
+        appState.lastEditedTextEditorIndex
+    ]
 
     function textAlignmentOnClickFactory(
         propertyName: HorizontalAlignment,

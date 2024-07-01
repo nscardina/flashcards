@@ -19,12 +19,16 @@ export default function blockRenderer(
 
     const style: React.CSSProperties = {
         display: "block",
-        textAlign: getTextAlign(props.element)
+        textAlign: getTextAlign(props.element),
+        margin: "0px"
     }
 
     switch (props.element.type) {
         case "paragraph":
-            return <p style={style} {...props} />
+            return <p style={{
+                ...style,
+                width: "100%",
+            }} {...props} />
         case "unordered_list_element":
             return <ul style={style} {...props} />
         case "unordered_list_member":
