@@ -38,6 +38,8 @@ export type AppStateType = {
     readonly setVisibleSide: ReactSetter<Side>,
 
     readonly textEditors: (BaseEditor & ReactEditor & HistoryEditor)[],
+    readonly lastEditedTextEditorIndex: number,
+    readonly setLastEditedTextEditorIndex: ReactSetter<number>,
 
     readonly currentDialog: JSX.Element,
     readonly setCurrentDialog: ReactSetter<JSX.Element>

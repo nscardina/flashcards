@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { AppState } from "../../App";
 import NonUserSelectableButton from "./NonUserSelectableButton";
-import { Editor } from "slate";
 import { FormattedText } from "../types/slate_defs";
+import { Editor } from "slate";
+import React, { useCallback, useContext } from "react";
+import { AppState } from "../../App";
 
 export type SimpleMarkToggleButtonProps = {
     markToggleProperty: keyof Omit<FormattedText, "text">,
@@ -13,20 +13,30 @@ export type SimpleMarkToggleButtonProps = {
 export default function SimpleMarkToggleButton(
     props: SimpleMarkToggleButtonProps
 ) {
-    const textEditor = useContext(AppState).textEditor
+    const appState = useContext(AppState)
 
-    return (
-        <NonUserSelectableButton className={props.className} onClick={() => {
-            const marks = Editor.marks(textEditor)
+    const selectedEditor = appState.textEditors[
+        appState.lastEditedTextEditorIndex
+    ]
+
+    const onClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        if (selectedEditor !== null) {
+            const marks = Editor.marks(selectedEditor)
             if (marks !== null) {
                 if (marks[props.markToggleProperty]) {
-                    Editor.removeMark(textEditor, props.markToggleProperty)
+                    Editor.removeMark(selectedEditor, props.markToggleProperty)
                 } else {
-                    Editor.addMark(textEditor, props.markToggleProperty, true)
+                    Editor.addMark(selectedEditor, props.markToggleProperty, true)
                 }
-            }  
-        }}>
+            }
+        }
+        e.preventDefault()
+    }, [selectedEditor, props.markToggleProperty])
+
+    return (
+        <NonUserSelectableButton className={props.className} onClick={onClick}>
             {props.children}
         </NonUserSelectableButton>
+
     )
 }

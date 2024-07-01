@@ -1,7 +1,6 @@
 import { RenderElementProps } from "slate-react";
 import { Property } from "csstype"
 import { CustomElement } from "../types/slate_defs";
-import Latex from "react-latex-next";
 
 //@ts-expect-error
 function getTextAlign({alignment}: CustomElement):
@@ -34,7 +33,5 @@ export default function blockRenderer(
             return <ol style={style} {...props} />
         case "ordered_list_member":
             return <li style={{...style, display: "list-item"}} className="flashcard-ul-elem" {...props} />
-        case "LaTeX":
-            return <Latex {...props} />
     }
 }

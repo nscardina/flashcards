@@ -33,7 +33,7 @@ function App() {
     const [visibleCardIndex, setVisibleCardIndex] =
         useState<number>(NO_CARD_FOCUSED)
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
-    const [textEditors] = useState(
+    const [ textEditors ] = useState(
         () => [
             withReact(withHistory(createEditor())),
             withReact(withHistory(createEditor())),
@@ -45,7 +45,7 @@ function App() {
             withReact(withHistory(createEditor())),
         ]
     )
-    
+    const [ lastEditedTextEditorIndex, setLastEditedTextEditorIndex ] = useState<number>(0)    
 
     const [currentDialog, setCurrentDialog] = useState<JSX.Element>(<></>)
 
@@ -72,6 +72,8 @@ function App() {
                 setVisibleSide: setVisibleSide,
                 
                 textEditors: textEditors,
+                lastEditedTextEditorIndex: lastEditedTextEditorIndex,
+                setLastEditedTextEditorIndex: setLastEditedTextEditorIndex,
 
                 currentDialog: currentDialog,
                 setCurrentDialog: setCurrentDialog,

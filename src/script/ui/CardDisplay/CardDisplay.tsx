@@ -6,12 +6,11 @@ import "./CardDisplay.scss"
 import 'katex/dist/katex.min.css';
 import { CardDisplayXButton } from "./CardDisplayXButton"
 import { EditModeBox } from "./EditModeBox"
-import { Editable, Slate } from "slate-react"
-import blockRenderer from "../../ui/Editor/BlockRenderer"
 import CardLayout from "../../card/cardlayout"
 import { CardContentData } from "../../card/CardContentData"
 import { Side } from "../../card/side"
 import { BoxNumber } from "../../card/Box"
+import { FCEditor } from "../Editor/FCEditor"
 
 function getCSSClassFromCardLayout(layout: CardLayout): string {
   switch (layout) {
@@ -87,18 +86,10 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                     case CardContentData.Type.TEXT:
                       return (
                         <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
-                          <Slate editor={appState.textEditors[
-                            (side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)
-                          ]} initialValue={structuredClone(box.textNodes)}
-                          
-                          > 
-                            <Editable renderElement={blockRenderer} style={{
-                            width: "100%",
-                            height: "100%",
-                            borderRadius: "1rem",
-                            overflow: "scroll",
-                          }} />
-                          </Slate>
+                          <FCEditor
+                            initialValue={structuredClone(box.textNodes)}
+                            editorIndex={(side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)}
+                          />
                           {
                             appState.appMode === AppMode.EDITING_DECK ?
                               <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
