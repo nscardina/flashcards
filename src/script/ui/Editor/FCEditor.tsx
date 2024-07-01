@@ -25,9 +25,10 @@ export function FCEditor({
                     height: "100%",
                     borderRadius: "1rem",
                     overflow: "scroll",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
                 onSelect={() => {
-                    console.log(editorIndex)
                     appState.setLastEditedTextEditorIndex(editorIndex);
                 }}
 
