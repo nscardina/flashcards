@@ -6,7 +6,11 @@ import { Editor } from "slate";
 
 export default function SubscriptButton() {
 
-    const textEditor = useContext(AppState).textEditor
+    const appState = useContext(AppState)
+
+    const textEditor = appState.textEditors[
+        appState.lastEditedTextEditorIndex
+    ]
 
     return (
         <NonUserSelectableButton className="flashcard-button" onClick={event => {
