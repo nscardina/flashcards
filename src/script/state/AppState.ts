@@ -9,6 +9,7 @@ import { Side } from "../card/side"
 import { BaseEditor } from "slate"
 import { ReactEditor } from "slate-react"
 import { HistoryEditor } from "slate-history"
+import { FormattedText } from "../ui/types/slate_defs"
 
 type ReactSetter<T> = React.Dispatch<React.SetStateAction<T>>
 
@@ -40,6 +41,8 @@ export type AppStateType = {
     readonly textEditors: (BaseEditor & ReactEditor & HistoryEditor)[],
     readonly lastEditedTextEditorIndex: number,
     readonly setLastEditedTextEditorIndex: ReactSetter<number>,
+    readonly currentMarks: (Omit<FormattedText, "text"> | null),
+    readonly setCurrentMarks: ReactSetter<(Omit<FormattedText, "text"> | null)>,
 
     readonly currentDialog: JSX.Element,
     readonly setCurrentDialog: ReactSetter<JSX.Element>

@@ -34,7 +34,8 @@ export default function renderLeaf(props: RenderLeafProps) {
         fontStyle: props.leaf.italic ? "italic" : "normal",
         textDecorationLine: getTextDecoration(props.leaf),
         verticalAlign: getVerticalAlign(props.leaf),
-        fontSize: getFontSize(props.leaf)
+        fontSize: getFontSize(props.leaf),
+        fontFamily: props.leaf.fontFamily ?? "Roboto",
     }
     return (
         <span style={style} {...props.attributes}>

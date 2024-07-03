@@ -14,7 +14,7 @@ export default function TextEditorBar() {
 
     return (
         <div className="d-flex flex-row text-editor-bar">
-            <FontSelectButton currentFont={"Roboto"}/>
+            <FontSelectButton />
             <FontSizeSelectButton />
             <BoldButton />
             <ItalicButton />

@@ -46,6 +46,8 @@ export type FormattedText = {
   strikethrough?: true,
   superscript?: true,
   subscript?: true,
+  fontFamily?: string,
+  fontSize?: string
 }
 
 export namespace FormattedText {
@@ -64,6 +66,8 @@ export namespace FormattedText {
       && ("strikethrough" in variable ? variable.strikethrough === true : true)
       && ("superscript" in variable ? variable.superscript === true : true)
       && ("subscript" in variable ? variable.subscript === true : true)
+      && ("fontFamily" in variable ? typeof(variable.fontFamily) === "string" : true)
+      && ("fontSize" in variable ? typeof(variable.fontSize) === "string" : true)
     )
   }
   

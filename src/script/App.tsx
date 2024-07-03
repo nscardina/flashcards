@@ -17,6 +17,7 @@ import { withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { createEditor } from 'slate';
 import TextEditorBar from './ui/TextEditorBar/TextEditorBar';
+import { FormattedText } from './ui/types/slate_defs';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -47,6 +48,8 @@ function App() {
     )
     const [ lastEditedTextEditorIndex, setLastEditedTextEditorIndex ] = useState<number>(0)    
 
+    const [ currentMarks, setCurrentMarks ] = useState<(Omit<FormattedText, "text"> | null)>(null)
+
     const [currentDialog, setCurrentDialog] = useState<JSX.Element>(<></>)
 
 
@@ -74,6 +77,8 @@ function App() {
                 textEditors: textEditors,
                 lastEditedTextEditorIndex: lastEditedTextEditorIndex,
                 setLastEditedTextEditorIndex: setLastEditedTextEditorIndex,
+                currentMarks: currentMarks,
+                setCurrentMarks: setCurrentMarks,
 
                 currentDialog: currentDialog,
                 setCurrentDialog: setCurrentDialog,

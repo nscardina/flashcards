@@ -1,4 +1,4 @@
-import { Descendant } from "slate";
+import { Descendant, Editor } from "slate";
 import { Editable, Slate } from "slate-react";
 import blockRenderer from "./BlockRenderer";
 import renderLeaf from "./Leaf";
@@ -38,6 +38,9 @@ export function FCEditor({
                 }}
                 onSelect={() => {
                     appState.setLastEditedTextEditorIndex(editorIndex);
+                    appState.setCurrentMarks(Editor.marks(appState.textEditors[
+                        appState.lastEditedTextEditorIndex
+                    ]))
                 }}
                 onKeyDown={onKeyDown}
 
