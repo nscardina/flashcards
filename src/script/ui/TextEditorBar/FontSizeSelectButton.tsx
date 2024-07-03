@@ -1,42 +1,46 @@
+import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
+import { AppState } from "../../App";
+import { Editor } from "slate";
 
 const FONT_SIZES = [
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    18,
-    20,
-    22,
-    24,
-    28,
-    32,
-    36,
-    48,
-    54,
-    60,
-    66,
-    72,
-    80,
-    88,
-    96
+    ["xx-small", "super small"],
+    ["x-small", "very small"],
+    ["small", "small"],
+    ["medium", "medium"],
+    ["large", "large"],
+    ["x-large", "very large"],
+    ["xx-large", "super large"],
+    ["xxx-large", "ultra large"],
 ]
 
 export default function FontSizeSelectButton() {
+
+    const appState = useContext(AppState)
+    const selectedEditor = appState.textEditors[
+        appState.lastEditedTextEditorIndex
+    ]
+
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button">
-                12 pt
+                {appState.currentMarks?.fontSize ?? "Medium"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                {FONT_SIZES.map(size => <Dropdown.Item key={size}>{size} pt</Dropdown.Item>)}
+                {FONT_SIZES.map(size => <Dropdown.Item key={size[0]} onClick={event => {
+                        if (selectedEditor !== null) {
+                            
+                            const marks = Editor.marks(selectedEditor)
+                            if (marks !== null) {
+                                if (marks.fontSize !== undefined) {
+                                    Editor.removeMark(selectedEditor, "fontSize");
+                                }
+                                Editor.addMark(selectedEditor, "fontSize", size[0]);
+                                appState.setCurrentMarks(Editor.marks(selectedEditor))
+                            }
+                        }
+                        event.preventDefault();
+                    }}>{size[1]}</Dropdown.Item>)}
             </Dropdown.Menu>
         </Dropdown>
     )

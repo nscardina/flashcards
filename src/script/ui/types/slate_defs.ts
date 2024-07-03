@@ -47,7 +47,7 @@ export type FormattedText = {
   superscript?: true,
   subscript?: true,
   fontFamily?: string,
-  fontSize?: string
+  fontSize?: "xx-small" | "x-small" | "small" | "medium" | "large" | "x-large" | "xx-large" | "xxx-large"
 }
 
 export namespace FormattedText {

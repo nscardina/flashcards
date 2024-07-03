@@ -20,11 +20,23 @@ Property.VerticalAlign | undefined {
     }
 }
 
-function getFontSize({superscript, subscript}: FormattedText):
+function getFontSize({superscript, subscript, fontSize}: FormattedText):
 Property.FontSize | undefined {
+    let multiplier = 1.0;
     if (superscript || subscript) {
-        return "smaller"
+        multiplier *= 0.8;
     }
+    switch (fontSize) {
+        case "xx-small": multiplier *= 0.4; break;
+        case "x-small": multiplier *= 0.6; break;
+        case "small": multiplier *= 0.75; break;
+        case "medium": break;
+        case "large": multiplier *= 1.25; break;
+        case "x-large": multiplier *= 1.6; break;
+        case "xx-large": multiplier *= 1.8; break;
+        case "xxx-large": multiplier *= 2.0; break;
+    }
+    return `${multiplier * 100}%`
 }
 
 export default function renderLeaf(props: RenderLeafProps) {
