@@ -1,12 +1,171 @@
 import { Dropdown } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
 import { Editor, Element, Node, Path, Transforms } from "slate";
-import { useContext } from "react";
+import { KeyboardEvent, useContext } from "react";
 import { AppState } from "../../App";
+import { Range } from "slate";
+import { UnorderedListElement, UnorderedListMember } from "../types/UnorderedListElement";
+import { CustomText } from "../types/slate_defs";
+import { ParagraphElement } from "../types/ParagraphElement";
+
+
+export function listEnterKeyEventHandler(
+    event: KeyboardEvent,
+    editor: Editor
+) {
+    outermost_if: if (
+        editor.selection !== null
+        && Range.isCollapsed(editor.selection)
+    ) {
+        const pathToSelectedElement = editor.selection.anchor.path
+        console.log(`selected element ${JSON.stringify(pathToSelectedElement)}`)
+
+        if (!CustomText.isCustomText(editor.node(pathToSelectedElement)[0])) {
+            console.log(`not custom text`);
+            break outermost_if;
+        }
+
+        const [
+            customTextElem,
+            customTextElemPath
+        ] = editor.node(pathToSelectedElement) as [CustomText, Path]
+        console.log(customTextElem)
+
+        if (
+            customTextElemPath.length < 4
+            || !ParagraphElement.isParagraphElement(editor.node(Path.parent(customTextElemPath))[0])
+        ) {
+            // Custom text element has no paragraph element parent
+            console.log("no paragraph elem parent");
+            break outermost_if;
+        }
+
+        const [
+            _,
+            paragraphElementPath
+        ] = editor.node(Path.parent(customTextElemPath)) as [ParagraphElement, Path]
+
+        const [
+            unorderedListMemberElement,
+            unorderedListMemberElementPath
+        ] = editor.node(Path.parent(paragraphElementPath)) as [UnorderedListMember, Path]
+
+        const [
+            unorderedListElement,
+            unorderedListElementPath
+        ] = editor.node(Path.parent(unorderedListMemberElementPath)) as [UnorderedListElement, Path]
+
+        if (!UnorderedListMember.isUnorderedListMember(unorderedListMemberElement)) {
+            // Paragraph element has no ordered list member parent
+            break outermost_if;
+        }
+
+        if (!UnorderedListElement.isUnorderedListElement(unorderedListElement)) {
+            // Paragraph element has no ordered list parent
+            console.log("no unordered list parent");
+            break outermost_if;
+        }
+
+        if (!event.shiftKey) {
+            if (
+                event.key === "Enter"
+                && customTextElem.text.length > 0
+            ) {
+                const newNode: UnorderedListMember = {
+                    type: "unordered_list_member",
+                    children: [
+                        {
+                            "type": "paragraph",
+                            "children": [
+                                {
+                                    "text": ""
+                                }
+                            ],
+                            "alignment": "left"
+                        }
+                    ],
+                }
+
+                Transforms.insertNodes(
+                    editor,
+                    newNode,
+                    {
+                        at: [...unorderedListMemberElementPath.slice(0, -1), unorderedListMemberElementPath.at(-1)! + 1]
+                    }
+                )
+                Transforms.select(editor, 
+                    [...unorderedListMemberElementPath.slice(0, -1), unorderedListMemberElementPath.at(-1)! + 1]
+                )
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            else if (
+                (
+                    event.key === "Enter"
+                    && customTextElem.text.length === 0
+                ) || (
+                    event.key === "Backspace"
+                    && customTextElem.text.length === 0
+                )
+            ) {
+                Transforms.delete(editor, {
+                    at: unorderedListMemberElementPath
+                })
+                // insert new paragraph element below the list
+                const newParagraphElement: ParagraphElement = {
+                    type: "paragraph",
+                    children: [
+                        {
+                            text: ""
+                        }
+                    ],
+                    alignment: "left"
+                }
+                if (unorderedListElement.children.length > 1) {
+                    Transforms.insertNodes(
+                        editor, newParagraphElement,
+                        {
+                            at: [
+                                ...unorderedListElementPath.slice(0, -1),
+                                unorderedListElementPath.at(-1)! + 1
+                            ]
+                        }
+                    )
+                    Transforms.select(editor, [
+                        ...unorderedListElementPath.slice(0, -1),
+                        unorderedListElementPath.at(-1)! + 1
+                    ])
+                } else {
+                    Transforms.delete(editor, {
+                        at: unorderedListElementPath
+                    })
+                    if (unorderedListElementPath.length > 1) {
+                        Transforms.select(editor, [
+                            ...unorderedListElementPath.slice(0, -1)
+                        ])
+                    } else {
+                        Transforms.insertNodes(
+                            editor, structuredClone(newParagraphElement),
+                            {
+                                at: [0]
+                            }
+                        )
+                        Transforms.select(editor, [0])
+                    }
+                }
+                
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
+    }
+}
+
 
 export default function ListButton() {
 
-    const textEditor = useContext(AppState).textEditor
+    const appState = useContext(AppState)
+    const textEditor = appState.textEditors[appState.lastEditedTextEditorIndex]
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
@@ -22,8 +181,9 @@ export default function ListButton() {
                     }
 
                     const selectedRange = Editor.unhangRange(textEditor, textEditor.selection, { voids: true })
+
                     let [_, textElemPath] = Node.common(
-                        textEditor, selectedRange.anchor.path, 
+                        textEditor, selectedRange.anchor.path,
                         selectedRange.focus.path)
 
                     const pParentPath = Path.parent(textElemPath)
@@ -49,38 +209,38 @@ export default function ListButton() {
 
                             Transforms.unwrapNodes(textEditor,
                                 { at: potentialLIPathRef.current! })
-                            
 
-                                if (
-                                    (potentialList as Element).type === "ordered_list_element"
-                                ) {
-                                    Transforms.wrapNodes(textEditor,
-                                        { type: "unordered_list_element", alignment: "left", children: [] }
-                                    )
-                
-                                    Transforms.wrapNodes(textEditor,
-                                        { type: "unordered_list_member", children: { type: "paragraph", children: [], alignment: "left" } },
-                                        {
-                                            match: node => Element.isElement(node) &&
-                                                Editor.isBlock(textEditor, node)
-                                        })
-                                }
-        
+
+                            if (
+                                (potentialList as Element).type === "ordered_list_element"
+                            ) {
+                                Transforms.wrapNodes(textEditor,
+                                    { type: "unordered_list_element", alignment: "left", children: [] }
+                                )
+
+                                Transforms.wrapNodes(textEditor,
+                                    { type: "unordered_list_member", children: [{ type: "paragraph", children: [], alignment: "left" }] },
+                                    {
+                                        match: node => Element.isElement(node) &&
+                                            Editor.isBlock(textEditor, node)
+                                    })
+                            }
+
                         }
                     } else {
                         Transforms.wrapNodes(textEditor,
                             { type: "unordered_list_element", alignment: "left", children: [] }
                         )
-    
+
                         Transforms.wrapNodes(textEditor,
-                            { type: "unordered_list_member", children: { type: "paragraph", children: [], alignment: "left" } },
+                            { type: "unordered_list_member", children: [{ type: "paragraph", children: [], alignment: "left" }] },
                             {
                                 match: node => Element.isElement(node) &&
                                     Editor.isBlock(textEditor, node)
                             })
                     }
 
-                    
+
                 }}>
                     <MaterialSymbol>format_list_bulleted</MaterialSymbol>&nbsp;&nbsp;Left
                 </Dropdown.Item>
@@ -93,7 +253,7 @@ export default function ListButton() {
 
                     const selectedRange = Editor.unhangRange(textEditor, textEditor.selection, { voids: true })
                     let [_, textElemPath] = Node.common(
-                        textEditor, selectedRange.anchor.path, 
+                        textEditor, selectedRange.anchor.path,
                         selectedRange.focus.path)
 
                     const pParentPath = Path.parent(textElemPath)
@@ -124,7 +284,7 @@ export default function ListButton() {
                                 Transforms.wrapNodes(textEditor,
                                     { type: "ordered_list_element", alignment: "left", children: [] }
                                 )
-            
+
                                 Transforms.wrapNodes(textEditor,
                                     { type: "ordered_list_member", children: { type: "paragraph", children: [], alignment: "left" } },
                                     {
@@ -138,7 +298,7 @@ export default function ListButton() {
                         Transforms.wrapNodes(textEditor,
                             { type: "ordered_list_element", alignment: "left", children: [] }
                         )
-    
+
                         Transforms.wrapNodes(textEditor,
                             { type: "ordered_list_member", children: { type: "paragraph", children: [], alignment: "left" } },
                             {
@@ -146,7 +306,7 @@ export default function ListButton() {
                                     Editor.isBlock(textEditor, node)
                             })
                     }
-                    
+
                 }}>
                     <MaterialSymbol>format_list_numbered</MaterialSymbol>&nbsp;&nbsp;Center
                 </Dropdown.Item>

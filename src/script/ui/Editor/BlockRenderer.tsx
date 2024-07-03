@@ -30,9 +30,17 @@ export default function blockRenderer(
                 width: "100%",
             }} {...props} />
         case "unordered_list_element":
-            return <ul style={style} {...props} />
+            return <ul style={{
+                ...style,
+                width: "max-content",
+                maxWidth: "100%",
+            }} {...props} />
         case "unordered_list_member":
-            return <li style={{...style, display: "list-item"}} className="flashcard-ul-elem" {...props} />
+            return <li style={{
+                ...style, 
+                display: "list-item",
+                width: "100%",
+            }} className="flashcard-ul-elem" {...props} />
         case "ordered_list_element":
             return <ol style={style} {...props} />
         case "ordered_list_member":

@@ -2,8 +2,10 @@ import { Descendant } from "slate";
 import { Editable, Slate } from "slate-react";
 import blockRenderer from "./BlockRenderer";
 import renderLeaf from "./Leaf";
-import { useContext } from "react";
+import { KeyboardEvent, useContext } from "react";
 import { AppState } from "../../App";
+import { KeyboardInteraction } from "./EditorUtils";
+import { listEnterKeyEventHandler } from "../TextEditorBar/ListButton";
 
 export function FCEditor({
     editorIndex,
@@ -15,6 +17,12 @@ export function FCEditor({
 
     const appState = useContext(AppState);
     const editor = appState.textEditors[editorIndex];
+
+    const onKeyDown = (event: KeyboardEvent) => {
+        // Handle Shift+Enter behavior
+        KeyboardInteraction.shiftEnterKeyEventHandler(event, editor)
+        listEnterKeyEventHandler(event, editor)
+    }
 
     return (
         <Slate editor={editor} initialValue={initialValue}>
@@ -31,6 +39,7 @@ export function FCEditor({
                 onSelect={() => {
                     appState.setLastEditedTextEditorIndex(editorIndex);
                 }}
+                onKeyDown={onKeyDown}
 
             />
         </Slate>
