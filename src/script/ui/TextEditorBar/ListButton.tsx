@@ -7,21 +7,28 @@ import { Range } from "slate";
 import { UnorderedListElement, UnorderedListMember } from "../types/UnorderedListElement";
 import { CustomText } from "../types/slate_defs";
 import { ParagraphElement } from "../types/ParagraphElement";
-
+import { OrderedListElement, OrderedListMember } from "../types/OrderedListElement";
 
 export function listEnterKeyEventHandler(
     event: KeyboardEvent,
     editor: Editor
+) {
+    unorderedListEnterKeyEventHandler(event, editor);
+    orderedListEnterKeyEventHandler(event, editor);
+}
+
+function unorderedListEnterKeyEventHandler(
+    event: KeyboardEvent,
+    editor: Editor,
+
 ) {
     outermost_if: if (
         editor.selection !== null
         && Range.isCollapsed(editor.selection)
     ) {
         const pathToSelectedElement = editor.selection.anchor.path
-        console.log(`selected element ${JSON.stringify(pathToSelectedElement)}`)
 
         if (!CustomText.isCustomText(editor.node(pathToSelectedElement)[0])) {
-            console.log(`not custom text`);
             break outermost_if;
         }
 
@@ -29,14 +36,12 @@ export function listEnterKeyEventHandler(
             customTextElem,
             customTextElemPath
         ] = editor.node(pathToSelectedElement) as [CustomText, Path]
-        console.log(customTextElem)
 
         if (
             customTextElemPath.length < 4
             || !ParagraphElement.isParagraphElement(editor.node(Path.parent(customTextElemPath))[0])
         ) {
             // Custom text element has no paragraph element parent
-            console.log("no paragraph elem parent");
             break outermost_if;
         }
 
@@ -160,6 +165,155 @@ export function listEnterKeyEventHandler(
         }
     }
 }
+
+function orderedListEnterKeyEventHandler(
+    event: KeyboardEvent,
+    editor: Editor,
+
+) {
+    outermost_if: if (
+        editor.selection !== null
+        && Range.isCollapsed(editor.selection)
+    ) {
+        const pathToSelectedElement = editor.selection.anchor.path
+
+        if (!CustomText.isCustomText(editor.node(pathToSelectedElement)[0])) {
+            break outermost_if;
+        }
+
+        const [
+            customTextElem,
+            customTextElemPath
+        ] = editor.node(pathToSelectedElement) as [CustomText, Path]
+
+        if (
+            customTextElemPath.length < 4
+            || !ParagraphElement.isParagraphElement(editor.node(Path.parent(customTextElemPath))[0])
+        ) {
+            // Custom text element has no paragraph element parent
+            break outermost_if;
+        }
+
+        const [
+            _,
+            paragraphElementPath
+        ] = editor.node(Path.parent(customTextElemPath)) as [ParagraphElement, Path]
+
+        const [
+            orderedListMemberElement,
+            orderedListMemberElementPath
+        ] = editor.node(Path.parent(paragraphElementPath)) as [OrderedListMember, Path]
+
+        const [
+            orderedListElement,
+            orderedListElementPath
+        ] = editor.node(Path.parent(orderedListMemberElementPath)) as [OrderedListElement, Path]
+
+        if (!OrderedListMember.isOrderedListMember(orderedListMemberElement)) {
+            // Paragraph element has no ordered list member parent
+            break outermost_if;
+        }
+
+        if (!OrderedListElement.isOrderedListElement(orderedListElement)) {
+            // Paragraph element has no ordered list parent
+            break outermost_if;
+        }
+
+        if (!event.shiftKey) {
+            if (
+                event.key === "Enter"
+                && customTextElem.text.length > 0
+            ) {
+                const newNode: OrderedListMember = {
+                    type: "ordered_list_member",
+                    children: [
+                        {
+                            "type": "paragraph",
+                            "children": [
+                                {
+                                    "text": ""
+                                }
+                            ],
+                            "alignment": "left"
+                        }
+                    ],
+                }
+
+                Transforms.insertNodes(
+                    editor,
+                    newNode,
+                    {
+                        at: [...orderedListMemberElementPath.slice(0, -1), orderedListMemberElementPath.at(-1)! + 1]
+                    }
+                )
+                Transforms.select(editor, 
+                    [...orderedListMemberElementPath.slice(0, -1), orderedListMemberElementPath.at(-1)! + 1]
+                )
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            else if (
+                (
+                    event.key === "Enter"
+                    && customTextElem.text.length === 0
+                ) || (
+                    event.key === "Backspace"
+                    && customTextElem.text.length === 0
+                )
+            ) {
+                Transforms.delete(editor, {
+                    at: orderedListMemberElementPath
+                })
+                // insert new paragraph element below the list
+                const newParagraphElement: ParagraphElement = {
+                    type: "paragraph",
+                    children: [
+                        {
+                            text: ""
+                        }
+                    ],
+                    alignment: "left"
+                }
+                if (orderedListElement.children.length > 1) {
+                    Transforms.insertNodes(
+                        editor, newParagraphElement,
+                        {
+                            at: [
+                                ...orderedListElementPath.slice(0, -1),
+                                orderedListElementPath.at(-1)! + 1
+                            ]
+                        }
+                    )
+                    Transforms.select(editor, [
+                        ...orderedListElementPath.slice(0, -1),
+                        orderedListElementPath.at(-1)! + 1
+                    ])
+                } else {
+                    Transforms.delete(editor, {
+                        at: orderedListElementPath
+                    })
+                    if (orderedListElementPath.length > 1) {
+                        Transforms.select(editor, [
+                            ...orderedListElementPath.slice(0, -1)
+                        ])
+                    } else {
+                        Transforms.insertNodes(
+                            editor, structuredClone(newParagraphElement),
+                            {
+                                at: [0]
+                            }
+                        )
+                        Transforms.select(editor, [0])
+                    }
+                }
+                
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
+    }
+}
+
 
 
 export default function ListButton() {
@@ -286,7 +440,7 @@ export default function ListButton() {
                                 )
 
                                 Transforms.wrapNodes(textEditor,
-                                    { type: "ordered_list_member", children: { type: "paragraph", children: [], alignment: "left" } },
+                                    { type: "ordered_list_member", children: [{ type: "paragraph", children: [], alignment: "left" }] },
                                     {
                                         match: node => Element.isElement(node) &&
                                             Editor.isBlock(textEditor, node)
@@ -300,7 +454,7 @@ export default function ListButton() {
                         )
 
                         Transforms.wrapNodes(textEditor,
-                            { type: "ordered_list_member", children: { type: "paragraph", children: [], alignment: "left" } },
+                            { type: "ordered_list_member", children: [{ type: "paragraph", children: [], alignment: "left" }] },
                             {
                                 match: node => Element.isElement(node) &&
                                     Editor.isBlock(textEditor, node)

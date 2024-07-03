@@ -27,7 +27,7 @@ export namespace OrderedListElement {
 
 export type OrderedListMember = {
     type: "ordered_list_member",
-    children: CustomElement
+    children: CustomElement[]
   }
 
 export namespace OrderedListMember {
@@ -40,7 +40,8 @@ export namespace OrderedListMember {
             && variable.type === "ordered_list_member"
 
             && "children" in variable
-            && CustomElement.isCustomElement(variable.children)
+            && Array.isArray(variable.children)
+            && variable.children.every(child => CustomElement.isCustomElement(child))
         )
     }
 }
