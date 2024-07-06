@@ -49,7 +49,14 @@ export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
                   textNodes: [{
                     type: "paragraph",
                     children: [{
-                      text: "test"
+                      type: "formatted_text_span",
+                      isInline: true,
+                      children: [
+                        {
+                          type: "formatted_text",
+                          text: "test",
+                        }
+                      ]
                     }],
                     alignment: "left"
                   }]

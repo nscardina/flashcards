@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AppState } from "../../App";
 import NonUserSelectableButton from "./NonUserSelectableButton";
 import { Editor } from "slate";
+import { FormattedText } from "../types/leaf/FormattedText";
 
 export default function SubscriptButton() {
 
@@ -17,7 +18,7 @@ export default function SubscriptButton() {
             event.preventDefault()
             const marks = Editor.marks(textEditor)
 
-            if (marks !== null) {
+            if (marks !== null && FormattedText.isFormattedTextMarks(marks)) {
                 Editor.removeMark(textEditor, "superscript")
                 if (marks.subscript) {
                     Editor.removeMark(textEditor, 'subscript')

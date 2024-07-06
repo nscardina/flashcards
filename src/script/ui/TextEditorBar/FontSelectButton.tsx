@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
 import { AppState } from "../../App";
 import { Editor } from "slate";
+import { FormattedText } from "../types/leaf/FormattedText";
 
 const WEB_SAFE_FONTS: string[] = [
     "Arial",
@@ -26,16 +27,18 @@ export default function FontSelectButton() {
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button">
-                {appState.currentMarks?.fontFamily ?? "Roboto"}
+                {appState.currentMarks?.type === "formatted_text"
+                    ? ((appState.currentMarks as Omit<FormattedText, "text"> | null)?.fontFamily ?? "Roboto")
+                    : "Roboto"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <Dropdown.Header>Web Safe Fonts</Dropdown.Header>
                 {WEB_SAFE_FONTS.map(font => (
                     <Dropdown.Item key={font} onClick={event => {
                         if (selectedEditor !== null) {
-                            
+
                             const marks = Editor.marks(selectedEditor)
-                            if (marks !== null) {
+                            if (marks !== null && FormattedText.isFormattedTextMarks(marks)) {
                                 if (marks.fontFamily !== undefined) {
                                     Editor.removeMark(selectedEditor, "fontFamily");
                                 }
@@ -51,19 +54,19 @@ export default function FontSelectButton() {
 
                 <Dropdown.Header>Other Fonts</Dropdown.Header>
                 {OTHER_FONTS.map(font => <Dropdown.Item key={font} onClick={event => {
-                        if (selectedEditor !== null) {
-                            
-                            const marks = Editor.marks(selectedEditor)
-                            if (marks !== null) {
-                                if (marks.fontFamily !== undefined) {
-                                    Editor.removeMark(selectedEditor, "fontFamily");
-                                }
-                                Editor.addMark(selectedEditor, "fontFamily", font);
-                                appState.setCurrentMarks(Editor.marks(selectedEditor))
+                    if (selectedEditor !== null) {
+
+                        const marks = Editor.marks(selectedEditor)
+                        if (marks !== null && FormattedText.isFormattedTextMarks(marks)) {
+                            if (marks.fontFamily !== undefined) {
+                                Editor.removeMark(selectedEditor, "fontFamily");
                             }
+                            Editor.addMark(selectedEditor, "fontFamily", font);
+                            appState.setCurrentMarks(Editor.marks(selectedEditor))
                         }
-                        event.preventDefault();
-                    }}>{font}</Dropdown.Item>)}
+                    }
+                    event.preventDefault();
+                }}>{font}</Dropdown.Item>)}
             </Dropdown.Menu>
         </Dropdown>
     )

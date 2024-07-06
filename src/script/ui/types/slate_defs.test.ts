@@ -1,4 +1,5 @@
-import { FormattedText } from "./slate_defs"
+import { FormattedText } from "./leaf/FormattedText"
+
 
 describe("Tests for FormattedText.isFormattedText() function", () => {
     test("Passing string data returns false", () => {

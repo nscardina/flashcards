@@ -1,8 +1,8 @@
 import NonUserSelectableButton from "./NonUserSelectableButton";
-import { FormattedText } from "../types/slate_defs";
 import { Editor } from "slate";
 import React, { useCallback, useContext } from "react";
 import { AppState } from "../../App";
+import { FormattedText } from "../types/leaf/FormattedText";
 
 export type SimpleMarkToggleButtonProps = {
     markToggleProperty: keyof Omit<FormattedText, "text">,
@@ -22,7 +22,7 @@ export default function SimpleMarkToggleButton(
     const onClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (selectedEditor !== null) {
             const marks = Editor.marks(selectedEditor)
-            if (marks !== null) {
+            if (marks !== null && FormattedText.isFormattedTextMarks(marks)) {
                 if (marks[props.markToggleProperty]) {
                     Editor.removeMark(selectedEditor, props.markToggleProperty)
                 } else {

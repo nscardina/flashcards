@@ -24,6 +24,12 @@ export function FCEditor({
         listEnterKeyEventHandler(event, editor)
     }
 
+    const { isVoid } = editor
+
+    editor.isVoid = element => {
+        return ["latex_text_span"].includes(element.type) ? true : isVoid(element)
+    }
+
     return (
         <Slate editor={editor} initialValue={initialValue}>
             <Editable renderElement={blockRenderer}

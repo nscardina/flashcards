@@ -1,4 +1,5 @@
-import { CustomElement, HorizontalAlignment } from "./slate_defs";
+import { HorizontalAlignment } from "../slate_defs";
+import { UnorderedListMember } from "./UnorderedListMember";
 
 export type UnorderedListElement = {
   type: "unordered_list_element",
@@ -6,10 +7,16 @@ export type UnorderedListElement = {
   alignment: HorizontalAlignment,
 };
 
+const DEFAULT_UNORDERED_LIST_ELEMENT: UnorderedListElement = {
+  type: "unordered_list_element",
+  children: [UnorderedListMember.makeDefault()],
+  alignment: "left"
+}
+
 export namespace UnorderedListElement {
   export function isUnorderedListElement(variable: unknown): variable is UnorderedListElement {
     return (
-      typeof(variable) === "object"
+      typeof (variable) === "object"
       && variable !== null
 
       && "type" in variable
@@ -23,25 +30,9 @@ export namespace UnorderedListElement {
       && HorizontalAlignment.isHorizontalAlignment(variable.alignment)
     )
   }
-}
 
-export type UnorderedListMember = {
-  type: "unordered_list_member",
-  children: CustomElement[]
-}
-
-export namespace UnorderedListMember {
-  export function isUnorderedListMember(variable: unknown): variable is UnorderedListMember {
-    return (
-      typeof(variable) === "object"
-      && variable !== null
-
-      && "type" in variable
-      && variable.type === "unordered_list_member"
-
-      && "children" in variable
-      && Array.isArray(variable.children)
-      && variable.children.every(child => CustomElement.isCustomElement(child))
-    )
+  export function makeDefault(): UnorderedListElement {
+    return structuredClone(DEFAULT_UNORDERED_LIST_ELEMENT);
   }
 }
+

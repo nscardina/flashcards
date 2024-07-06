@@ -1,9 +1,15 @@
 import { BaseEditor } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor } from "slate-react";
-import { ParagraphElement } from "./ParagraphElement";
-import { UnorderedListElement, UnorderedListMember } from "./UnorderedListElement";
-import { OrderedListElement, OrderedListMember } from "./OrderedListElement";
+import { ParagraphElement } from "./block/ParagraphElement";
+import { OrderedListElement } from "./block/OrderedListElement";
+import { OrderedListMember } from "./block/OrderedListMember";
+import { UnorderedListElement } from "./block/UnorderedListElement";
+import { UnorderedListMember } from "./block/UnorderedListMember";
+import { FormattedText } from "./leaf/FormattedText";
+import { LaTeXText } from "./leaf/LaTeXText";
+import { FormattedTextSpan } from "./block/FormattedTextSpan";
+import { LaTeXTextSpan } from "./block/LaTeXTextSpan";
 
 export type HorizontalAlignment = "left" | "center" | "right" | "justified"
 export namespace HorizontalAlignment {
@@ -22,6 +28,7 @@ export namespace HorizontalAlignment {
 export type CustomEditor = BaseEditor & ReactEditor & HistoryEditor
 
 export type CustomElement = ParagraphElement 
+| FormattedTextSpan | LaTeXTextSpan
 | UnorderedListElement | UnorderedListMember
 | OrderedListElement | OrderedListMember
 
@@ -29,6 +36,8 @@ export namespace CustomElement {
   export function isCustomElement(object: unknown): object is CustomElement {
       return (
         ParagraphElement.isParagraphElement(object)
+        || FormattedTextSpan.isFormattedTextSpan(object)
+        || LaTeXTextSpan.isLaTeXTextSpan(object)
         || UnorderedListElement.isUnorderedListElement(object)
         || UnorderedListMember.isUnorderedListMember(object)
         || OrderedListElement.isOrderedListElement(object)
@@ -38,47 +47,13 @@ export namespace CustomElement {
 }
 
 
-export type FormattedText = {
-  text: string,
-  bold?: true,
-  italic?: true,
-  underlined?: true,
-  strikethrough?: true,
-  superscript?: true,
-  subscript?: true,
-  fontFamily?: string,
-  fontSize?: "xx-small" | "x-small" | "small" | "medium" | "large" | "x-large" | "xx-large" | "xxx-large"
-}
-
-export namespace FormattedText {
-
-  export function isFormattedText(variable: unknown): variable is FormattedText {
-    return (
-      typeof(variable) === "object"
-      && variable !== null
-  
-      && "text" in variable
-      && typeof(variable.text) === "string"
-  
-      && ("bold" in variable ? variable.bold === true : true)
-      && ("italic" in variable ? variable.italic === true : true)
-      && ("underlined" in variable ? variable.underlined === true : true)
-      && ("strikethrough" in variable ? variable.strikethrough === true : true)
-      && ("superscript" in variable ? variable.superscript === true : true)
-      && ("subscript" in variable ? variable.subscript === true : true)
-      && ("fontFamily" in variable ? typeof(variable.fontFamily) === "string" : true)
-      && ("fontSize" in variable ? typeof(variable.fontSize) === "string" : true)
-    )
-  }
-  
-}
-
-export type CustomText = FormattedText
+export type CustomText = FormattedText | LaTeXText
 
 export namespace CustomText {
   export function isCustomText(variable: unknown): variable is CustomText {
     return (
       FormattedText.isFormattedText(variable)
+      || LaTeXText.isLaTeXText(variable)
     )
   }
 }

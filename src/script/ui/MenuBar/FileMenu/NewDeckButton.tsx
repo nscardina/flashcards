@@ -1,9 +1,7 @@
-import { NavDropdown } from "react-bootstrap";
 import { useContext } from "react";
 import { AppState } from "../../../App";
 import Dialog from "../../../app/Dialog";
 import AppMode from "../../../app/AppMode";
-import { MSIcon } from "../../Icons";
 import { Deck } from "../../../card/deck";
 import CustomMenuItem from "../CustomMenuItem";
 import { KeyboardShortcuts } from "../../KeyboardShortcuts";

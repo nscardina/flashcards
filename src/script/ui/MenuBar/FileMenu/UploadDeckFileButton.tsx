@@ -1,11 +1,8 @@
 import { useContext } from "react";
-import { AppStateType } from "../../../state/AppState"
-import { MSIcon } from "../../Icons";
 import { AppState } from "../../../App";
 import { UnableToOpenFileErrorDialog } from "./UnableToOpenFileErrorDialog";
 import { Deck } from "../../../card/deck";
 import { KeyboardShortcuts } from "../../KeyboardShortcuts";
-import CustomMenuItem from "../CustomMenuItem";
 import MaterialSymbol from "../../MaterialSymbol";
 
 export default function UploadDeckFileButton() {

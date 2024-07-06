@@ -4,10 +4,12 @@ import { Editor, Element, Node, Path, Transforms } from "slate";
 import { KeyboardEvent, useContext } from "react";
 import { AppState } from "../../App";
 import { Range } from "slate";
-import { UnorderedListElement, UnorderedListMember } from "../types/UnorderedListElement";
 import { CustomText } from "../types/slate_defs";
-import { ParagraphElement } from "../types/ParagraphElement";
-import { OrderedListElement, OrderedListMember } from "../types/OrderedListElement";
+import { ParagraphElement } from "../types/block/ParagraphElement";
+import { OrderedListElement } from "../types/block/OrderedListElement";
+import { OrderedListMember } from "../types/block/OrderedListMember";
+import { UnorderedListMember } from "../types/block/UnorderedListMember";
+import { UnorderedListElement } from "../types/block/UnorderedListElement";
 
 export function listEnterKeyEventHandler(
     event: KeyboardEvent,
@@ -78,17 +80,7 @@ function unorderedListEnterKeyEventHandler(
             ) {
                 const newNode: UnorderedListMember = {
                     type: "unordered_list_member",
-                    children: [
-                        {
-                            "type": "paragraph",
-                            "children": [
-                                {
-                                    "text": ""
-                                }
-                            ],
-                            "alignment": "left"
-                        }
-                    ],
+                    children: [UnorderedListMember.makeDefault()]
                 }
 
                 Transforms.insertNodes(
@@ -117,18 +109,9 @@ function unorderedListEnterKeyEventHandler(
                     at: unorderedListMemberElementPath
                 })
                 // insert new paragraph element below the list
-                const newParagraphElement: ParagraphElement = {
-                    type: "paragraph",
-                    children: [
-                        {
-                            text: ""
-                        }
-                    ],
-                    alignment: "left"
-                }
                 if (unorderedListElement.children.length > 1) {
                     Transforms.insertNodes(
-                        editor, newParagraphElement,
+                        editor, ParagraphElement.makeDefault(),
                         {
                             at: [
                                 ...unorderedListElementPath.slice(0, -1),
@@ -150,7 +133,7 @@ function unorderedListEnterKeyEventHandler(
                         ])
                     } else {
                         Transforms.insertNodes(
-                            editor, structuredClone(newParagraphElement),
+                            editor, structuredClone(ParagraphElement.makeDefault()),
                             {
                                 at: [0]
                             }
@@ -224,24 +207,10 @@ function orderedListEnterKeyEventHandler(
                 event.key === "Enter"
                 && customTextElem.text.length > 0
             ) {
-                const newNode: OrderedListMember = {
-                    type: "ordered_list_member",
-                    children: [
-                        {
-                            "type": "paragraph",
-                            "children": [
-                                {
-                                    "text": ""
-                                }
-                            ],
-                            "alignment": "left"
-                        }
-                    ],
-                }
 
                 Transforms.insertNodes(
                     editor,
-                    newNode,
+                    OrderedListMember.makeDefault(),
                     {
                         at: [...orderedListMemberElementPath.slice(0, -1), orderedListMemberElementPath.at(-1)! + 1]
                     }
@@ -265,18 +234,18 @@ function orderedListEnterKeyEventHandler(
                     at: orderedListMemberElementPath
                 })
                 // insert new paragraph element below the list
-                const newParagraphElement: ParagraphElement = {
-                    type: "paragraph",
-                    children: [
-                        {
-                            text: ""
-                        }
-                    ],
-                    alignment: "left"
-                }
+                // const newParagraphElement: ParagraphElement = {
+                //     type: "paragraph",
+                //     children: [
+                //         {
+                //             text: ""
+                //         }
+                //     ],
+                //     alignment: "left"
+                // }
                 if (orderedListElement.children.length > 1) {
                     Transforms.insertNodes(
-                        editor, newParagraphElement,
+                        editor, ParagraphElement.makeDefault(),
                         {
                             at: [
                                 ...orderedListElementPath.slice(0, -1),
@@ -298,7 +267,7 @@ function orderedListEnterKeyEventHandler(
                         ])
                     } else {
                         Transforms.insertNodes(
-                            editor, structuredClone(newParagraphElement),
+                            editor, ParagraphElement.makeDefault(),
                             {
                                 at: [0]
                             }

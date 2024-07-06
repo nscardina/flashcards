@@ -3,7 +3,6 @@ import AppMode from "../app/AppMode";
 import { useContext } from "react";
 import { AppState } from "../App";
 import { AppStateType } from "../state/AppState";
-import { Editor } from "../app/Editor";
 import { Deck } from "../card/deck";
 import { Card } from "../card/Card";
 import { Side } from "../card/side";
@@ -28,8 +27,6 @@ function createNewCard(state: AppStateType) {
         ...state.deck.cards.slice(state.visibleCardIndex + 1)
       ]
     })
-    state.setBoxBeingEdited(null),
-    state.setVisibleEditor(Editor.NONE),
     state.setVisibleCardIndex(state.visibleCardIndex + 1)
   }
 }

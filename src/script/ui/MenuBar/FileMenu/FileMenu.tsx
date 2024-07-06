@@ -1,13 +1,9 @@
-import { Dropdown, NavDropdown } from "react-bootstrap"
-import { useContext } from "react"
-import { AppState } from "../../../App"
+import { NavDropdown } from "react-bootstrap"
 import { NewDeckButton } from "./NewDeckButton"
 import { OpenDeckLocallyButton } from "./OpenDeckLocallyButton"
 import UploadDeckFileButton from "./UploadDeckFileButton"
 
 export default function FileMenu() {
-
-  const appState = useContext(AppState)
 
   return (
     <NavDropdown title="File" className="navbar-menu-item fc-navbar-dropdown-trigger">

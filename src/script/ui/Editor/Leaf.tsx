@@ -1,7 +1,8 @@
 
 import { RenderLeafProps } from "slate-react"
-import { FormattedText } from "../types/slate_defs"
 import { Property } from "csstype"
+import { FormattedText } from "../types/leaf/FormattedText"
+import katex from "katex"
 
 function getTextDecoration({underlined, strikethrough}: FormattedText):
 Property.TextDecorationLine {
@@ -41,17 +42,27 @@ Property.FontSize | undefined {
 
 export default function renderLeaf(props: RenderLeafProps) {
 
-    const style: React.CSSProperties = {
-        fontWeight: props.leaf.bold ? "bold" : "normal",
-        fontStyle: props.leaf.italic ? "italic" : "normal",
-        textDecorationLine: getTextDecoration(props.leaf),
-        verticalAlign: getVerticalAlign(props.leaf),
-        fontSize: getFontSize(props.leaf),
-        fontFamily: props.leaf.fontFamily ?? "Roboto",
+    if (FormattedText.isFormattedText(props.leaf)) {
+        const style: React.CSSProperties = {
+            fontWeight: props.leaf.bold ? "bold" : "normal",
+            fontStyle: props.leaf.italic ? "italic" : "normal",
+            textDecorationLine: getTextDecoration(props.leaf),
+            verticalAlign: getVerticalAlign(props.leaf),
+            fontSize: getFontSize(props.leaf),
+            fontFamily: props.leaf.fontFamily ?? "Roboto",
+        }
+        return (
+            <span style={style} {...props.attributes}>
+                {props.children}
+            </span>
+        )
     }
-    return (
-        <span style={style} {...props.attributes}>
-            {props.children}
-        </span>
-    )
+    else {
+        console.log("test")
+        return (
+            <span {...props.attributes}>
+                {katex.renderToString("17+5")}
+            </span>
+        )
+    }
 }

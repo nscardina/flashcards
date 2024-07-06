@@ -1,8 +1,6 @@
 import { Container, Dropdown, DropdownToggleProps, Image, Nav, Navbar } from "react-bootstrap"
 import FileMenu from "./FileMenu/FileMenu"
 import EditMenu from "./EditMenu/EditMenu"
-import { useContext } from "react"
-import { AppState } from "../../App"
 import favicon from "../../../favicon/favicon.svg"
 
 // https://github.com/react-bootstrap/react-bootstrap/issues/341
@@ -12,8 +10,6 @@ export const MenuDropdownToggle = (props: DropdownToggleProps) => (
 
 
 function MenuBar() {
-
-  const appState = useContext(AppState)
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary">

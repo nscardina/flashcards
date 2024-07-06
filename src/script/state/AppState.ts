@@ -2,14 +2,13 @@ import { ReviewOrder } from "../ReviewOrder"
 import { ShowSideProviderName } from "../ShowSideProvider"
 import AppMode from "../app/AppMode"
 import Dialog from "../app/Dialog"
-import { CardContentData, CardContentDataType } from "../card/CardContentData"
 import { BoxNumber } from "../card/Box"
 import { Deck } from "../card/deck"
 import { Side } from "../card/side"
 import { BaseEditor } from "slate"
 import { ReactEditor } from "slate-react"
 import { HistoryEditor } from "slate-history"
-import { FormattedText } from "../ui/types/slate_defs"
+import { CustomText } from "../ui/types/slate_defs"
 
 type ReactSetter<T> = React.Dispatch<React.SetStateAction<T>>
 
@@ -41,8 +40,8 @@ export type AppStateType = {
     readonly textEditors: (BaseEditor & ReactEditor & HistoryEditor)[],
     readonly lastEditedTextEditorIndex: number,
     readonly setLastEditedTextEditorIndex: ReactSetter<number>,
-    readonly currentMarks: (Omit<FormattedText, "text"> | null),
-    readonly setCurrentMarks: ReactSetter<(Omit<FormattedText, "text"> | null)>,
+    readonly currentMarks: (Omit<CustomText, "text"> | null),
+    readonly setCurrentMarks: ReactSetter<(Omit<CustomText, "text"> | null)>,
 
     readonly currentDialog: JSX.Element,
     readonly setCurrentDialog: ReactSetter<JSX.Element>
@@ -58,11 +57,8 @@ export function getCorrespondingTextEditorNumber(side: Side, boxNumber: BoxNumbe
  */
 export const NO_CARD_FOCUSED: number = -1
 
-export function editCard<T extends CardContentData.Type>(
+export function editCard(
     state: AppStateType, 
-    face: Side, 
-    box: BoxNumber, 
-    data: CardContentDataType<T>
   ) {
     // Copy old set of cards if they exist, and create an empty set of cards 
     // if not. (This scenario shouldn't be encountered, but it is the fallback 

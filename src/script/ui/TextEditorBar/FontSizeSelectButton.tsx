@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
 import { AppState } from "../../App";
 import { Editor } from "slate";
+import { FormattedText } from "../types/leaf/FormattedText";
 
 const FONT_SIZES = [
     ["xx-small", "super small"],
@@ -24,14 +25,17 @@ export default function FontSizeSelectButton() {
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button">
-                {appState.currentMarks?.fontSize ?? "Medium"}
+                {(appState.currentMarks !== null
+                    && FormattedText.isFormattedTextMarks(appState.currentMarks)
+                    ? appState.currentMarks.fontSize : "Medium"
+                )}
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 {FONT_SIZES.map(size => <Dropdown.Item key={size[0]} onClick={event => {
                         if (selectedEditor !== null) {
                             
                             const marks = Editor.marks(selectedEditor)
-                            if (marks !== null) {
+                            if (marks !== null && FormattedText.isFormattedTextMarks(marks)) {
                                 if (marks.fontSize !== undefined) {
                                     Editor.removeMark(selectedEditor, "fontSize");
                                 }

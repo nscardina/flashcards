@@ -1,9 +1,5 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
-import { createEditor } from 'slate'
-import { Editable, Slate, withReact } from "slate-react";
-import { Editor } from "../app/Editor";
-import { changeEditor } from "../state/AppState";
 import { AppState } from "../App";
 
 
@@ -19,8 +15,6 @@ export type DeckEditorPayload = {
 
 function DeckNameEditor() {
   const appState = useContext(AppState)
-
-  const [editor] = useState(() => withReact(createEditor()))
 
   return (
     <Modal show={true}>
@@ -44,9 +38,7 @@ function DeckNameEditor() {
           </Row>
           <Row>
             <Col className="d-flex justify-content-end">
-            <Button className="ms-auto mt-3" onClick={() => changeEditor(
-                appState, Editor.NONE, "1")
-              }
+            <Button className="ms-auto mt-3"
               >
                 Cancel
               </Button>
@@ -59,7 +51,7 @@ function DeckNameEditor() {
                     name: document.getElementById("deckNameEditorBox")?.innerText ?? "",
                   })
                   
-                  appState.setVisibleEditor(Editor.NONE)
+                  // appState.setVisibleEditor(Editor.NONE)
                 }
 
               }}>
