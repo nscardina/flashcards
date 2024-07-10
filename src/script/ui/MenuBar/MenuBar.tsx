@@ -1,4 +1,4 @@
-import { Container, Dropdown, DropdownToggleProps, Image, Nav, Navbar } from "react-bootstrap"
+import { Dropdown, DropdownToggleProps, Image, Nav, Navbar } from "react-bootstrap"
 import FileMenu from "./FileMenu/FileMenu"
 import EditMenu from "./EditMenu/EditMenu"
 import favicon from "../../../favicon/favicon.svg"
@@ -12,9 +12,9 @@ export const MenuDropdownToggle = (props: DropdownToggleProps) => (
 function MenuBar() {
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand>
+    <Navbar className="w-100 bg-body-tertiary">
+      <div className="d-flex flex-row w-100">
+        <Navbar.Brand className="ms-3">
           <Image src={favicon} alt="Flashcards Logo" height="32px" />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
@@ -24,7 +24,7 @@ function MenuBar() {
             <EditMenu disabled={false} />
           </Nav>
         </Navbar.Collapse>
-      </Container>
+      </div>
     </Navbar>
   )
 
