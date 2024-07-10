@@ -1,18 +1,18 @@
 import { FormattedText } from "../leaf/FormattedText"
-import { FCSlateInlineType, FCSlateType } from "../MiscTypeInfo"
+import { FCSlateType } from "../MiscTypeInfo"
 
-export type FormattedTextSpan = FCSlateInlineType<"formatted_text_span"> & {
+export type FormattedTextSpan = FCSlateType<"formatted_text_span"> & {
     children: FormattedText[]
 };
 
 const DEFAULT_FORMATTED_TEXT_SPAN: FormattedTextSpan = {
-    ...FCSlateInlineType.makeDefault("formatted_text_span"),
+    type: "formatted_text_span",
     children: [FormattedText.makeDefault()]
 };
 
 export namespace FormattedTextSpan {
     export const isFormattedTextSpan = (variable: unknown): variable is FormattedTextSpan => (
-        FCSlateType.isFCSlateInlineType(variable, "formatted_text_span")
+        FCSlateType.isFCSlateType(variable, "formatted_text_span")
         
         && "children" in variable
         && Array.isArray(variable.children)

@@ -5,7 +5,7 @@ import Dialog from "../app/Dialog"
 import { BoxNumber } from "../card/Box"
 import { Deck } from "../card/deck"
 import { Side } from "../card/side"
-import { BaseEditor } from "slate"
+import { BaseEditor, Path } from "slate"
 import { ReactEditor } from "slate-react"
 import { HistoryEditor } from "slate-history"
 import { CustomText } from "../ui/types/slate_defs"
@@ -40,11 +40,18 @@ export type AppStateType = {
     readonly textEditors: (BaseEditor & ReactEditor & HistoryEditor)[],
     readonly lastEditedTextEditorIndex: number,
     readonly setLastEditedTextEditorIndex: ReactSetter<number>,
+    readonly lastEditedNodePath: Path,
+    readonly setLastEditedNodePath: ReactSetter<Path>,
     readonly currentMarks: (Omit<CustomText, "text"> | null),
     readonly setCurrentMarks: ReactSetter<(Omit<CustomText, "text"> | null)>,
 
     readonly currentDialog: JSX.Element,
-    readonly setCurrentDialog: ReactSetter<JSX.Element>
+    readonly setCurrentDialog: ReactSetter<JSX.Element>,
+
+    readonly showLaTeXEditor: boolean,
+    readonly setShowLaTeXEditor: ReactSetter<boolean>,
+    readonly shouldLaTeXEditorReplace: boolean,
+    readonly setShouldLaTeXEditorReplace: ReactSetter<boolean>,
 }
 
 export function getCorrespondingTextEditorNumber(side: Side, boxNumber: BoxNumber): number {

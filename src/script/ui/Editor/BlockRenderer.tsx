@@ -1,11 +1,13 @@
 import { RenderElementProps } from "slate-react";
 import { Property } from "csstype"
 import { CustomElement } from "../types/slate_defs";
-import { HTMLProps } from "react";
+import { HTMLProps, useContext } from "react";
 import 'katex/dist/katex.min.css';
 import Latex from "react-latex-next";
 import { LaTeXText } from "../types/leaf/LaTeXText";
-import katex from "katex";
+import { AppState } from "../../App";
+import { Range } from "slate";
+import arrayEqual from "array-equal"
 
 
 //@ts-ignore
@@ -62,25 +64,47 @@ function FormattedTextSpan(props: RenderElementProps) {
 
 function LaTeXTextSpan(props: RenderElementProps) {
 
-    console.log(props.children)
+    const appState = useContext(AppState);
+    const editor = appState.textEditors[
+        appState.lastEditedTextEditorIndex
+    ]
 
-    const test = 
-                (props.element.children as LaTeXText[])
-                    .map(child => child.text)
-                    .reduceRight((prev, curr) => {
-                        if (typeof (prev) === "string") {
-                            return `${prev}\n${curr}`
-                        } else {
-                            return curr
-                        }
-                    })
+    const latexContents =
+        (props.element.children as LaTeXText[])
+            .map(child => child.text)
+            .reduceRight((prev, curr) => {
+                if (typeof (prev) === "string") {
+                    return `${prev}\n${curr}`
+                } else {
+                    return curr
+                }
+            });
 
     return (
         <span {...props.attributes} contentEditable={false} onClick={
-            event => console.log("test")
-        } >
+            () => {
+                
+                if (editor.selection !== null 
+                    && Range.isCollapsed(editor.selection)
+                ) {
+                    appState.setShouldLaTeXEditorReplace(true);
+                    appState.setShowLaTeXEditor(true);
+                    const path = editor.selection.anchor.path
+                    console.log(`path: ${path.toString()}`)
+                    console.log(`appState.lePath: ${appState.lastEditedNodePath}`)
+                    if (appState.lastEditedNodePath.length <= path.length) {
+                        console.log("1")
+                        appState.setLastEditedNodePath(path)
+                    } else {
+                        console.log("1")
+                        appState.setLastEditedNodePath([...path, 0])
+                    }
+                    
+                }
+            }
+        }>
             {props.children}
-            <Latex>{test}</Latex>
+            <Latex>{latexContents}</Latex>
         </span>
     )
 }
@@ -88,12 +112,6 @@ function LaTeXTextSpan(props: RenderElementProps) {
 export default function blockRenderer(
     props: RenderElementProps
 ): JSX.Element {
-
-    // const style: React.CSSProperties = {
-    //     display: "block",
-    //     textAlign: getTextAlign(props.element),
-    //     margin: "0px"
-    // }
 
     switch (props.element.type) {
         case "paragraph": return <Paragraph {...props} />

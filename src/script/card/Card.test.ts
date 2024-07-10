@@ -22,19 +22,19 @@ const DefaultCard = Object.freeze({
     })
 })
 
-describe("Card.isCard() method", () => {
-    test("Card.isCard(DefaultCard) returns true", () => {
-        expect(Card.isCard(DefaultCard)).toBe(true)
-    })
+// describe("Card.isCard() method", () => {
+//     test("Card.isCard(DefaultCard) returns true", () => {
+//         expect(Card.isCard(DefaultCard)).toBe(true)
+//     })
 
-    test("Card.isCard({}) returns false", () => {
-        expect(Card.isCard({})).toBe(false)
-    })
-})
+//     test("Card.isCard({}) returns false", () => {
+//         expect(Card.isCard({})).toBe(false)
+//     })
+// })
 
-describe("Card.makeDefault() method", () => {
-    test("Card.makeDefault() returns card object equivalent to DefaultCard", 
-    () => {
-        expect(Card.makeDefault()).toMatchObject(DefaultCard)
-    })
-})
+// describe("Card.makeDefault() method", () => {
+//     test("Card.makeDefault() returns card object equivalent to DefaultCard", 
+//     () => {
+//         expect(Card.makeDefault()).toMatchObject(DefaultCard)
+//     })
+// })

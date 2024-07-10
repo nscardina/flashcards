@@ -2,7 +2,6 @@
 import { RenderLeafProps } from "slate-react"
 import { Property } from "csstype"
 import { FormattedText } from "../types/leaf/FormattedText"
-import katex from "katex"
 
 function getTextDecoration({underlined, strikethrough}: FormattedText):
 Property.TextDecorationLine {
@@ -58,10 +57,9 @@ export default function renderLeaf(props: RenderLeafProps) {
         )
     }
     else {
-        console.log("test")
         return (
             <span {...props.attributes}>
-                {katex.renderToString("17+5")}
+                {props.children}
             </span>
         )
     }

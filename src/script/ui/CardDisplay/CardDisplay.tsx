@@ -63,13 +63,14 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
       {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
+        
           return (
             <div key={side} className={`flashcard-face ${appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
               } ${getCSSClassFromCardLayout(visibleCard[side].layout)}`
             }>
 
               {
-                (Object.keys(visibleSide.box) as BoxNumber[]).map(boxNumber => {
+                (["1", "2", "3", "4"] as BoxNumber[]).map(boxNumber => {
                   const box = visibleSide.box[boxNumber]
 
                   if (box === null && appState.appMode === AppMode.EDITING_DECK) {

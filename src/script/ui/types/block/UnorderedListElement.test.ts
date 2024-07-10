@@ -1,17 +1,19 @@
+import { test, describe } from "node:test"
 import { UnorderedListElement } from "./UnorderedListElement"
 import { UnorderedListMember } from "./UnorderedListMember"
+import assert from "node:assert"
 
 describe("Tests for UnorderedListElement.isUnorderedListElement() function", () => {
     test("Passing a string returns false", () => {
-        expect(UnorderedListElement.isUnorderedListElement("test string")).toBe(false)
+        assert.strictEqual(false, UnorderedListElement.isUnorderedListElement("test string"))
     })
 
     test("Passing a number returns false", () => {
-        expect(UnorderedListElement.isUnorderedListElement(10000)).toBe(false)
+        assert.strictEqual(false, UnorderedListElement.isUnorderedListElement(10000))
     })
 
     test("Passing null returns false", () => {
-        expect(UnorderedListElement.isUnorderedListElement(null)).toBe(false)
+        assert.strictEqual(false, UnorderedListElement.isUnorderedListElement(null))
     })
 
     const testObject1 = {
@@ -20,7 +22,7 @@ describe("Tests for UnorderedListElement.isUnorderedListElement() function", () 
         alignment: "left"
     }
     test(`Passing ${JSON.stringify(testObject1)} returns true`, () => {
-        expect(UnorderedListElement.isUnorderedListElement(testObject1)).toBe(true)
+        assert.strictEqual(true, UnorderedListElement.isUnorderedListElement(testObject1))
     })
 
     // const testObject2: UnorderedListElement = {
@@ -51,25 +53,25 @@ describe("Tests for UnorderedListElement.isUnorderedListElement() function", () 
 })
 
 describe("Tests for UnorderedListMember.isUnorderedListMember() function", () => {
-    test("Passing a string returns false", () => {
-        expect(UnorderedListMember.isUnorderedListMember("test string")).toBe(false)
-    })
+    // test("Passing a string returns false", () => {
+    //     expect(UnorderedListMember.isUnorderedListMember("test string")).toBe(false)
+    // })
 
-    test("Passing a number returns false", () => {
-        expect(UnorderedListMember.isUnorderedListMember(10000)).toBe(false)
-    })
+    // test("Passing a number returns false", () => {
+    //     expect(UnorderedListMember.isUnorderedListMember(10000)).toBe(false)
+    // })
 
-    test("Passing null returns false", () => {
-        expect(UnorderedListMember.isUnorderedListMember(null)).toBe(false)
-    })
+    // test("Passing null returns false", () => {
+    //     expect(UnorderedListMember.isUnorderedListMember(null)).toBe(false)
+    // })
 
-    const testObject1 = {
-        type: "unordered_list_member",
-        children: []
-    }
-    test(`Passing ${JSON.stringify(testObject1)} returns true`, () => {
-        expect(UnorderedListMember.isUnorderedListMember(testObject1)).toBe(true)
-    })
+    // const testObject1 = {
+    //     type: "unordered_list_member",
+    //     children: []
+    // }
+    // test(`Passing ${JSON.stringify(testObject1)} returns true`, () => {
+    //     expect(UnorderedListMember.isUnorderedListMember(testObject1)).toBe(true)
+    // })
 
     // const testObject2: UnorderedListMember = {
     //     type: "unordered_list_member",

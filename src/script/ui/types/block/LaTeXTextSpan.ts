@@ -1,18 +1,18 @@
 import { LaTeXText } from "../leaf/LaTeXText";
-import { FCSlateInlineType, FCSlateType } from "../MiscTypeInfo";
+import { FCSlateType } from "../MiscTypeInfo";
 
-export type LaTeXTextSpan = FCSlateInlineType<"latex_text_span"> & {
+export type LaTeXTextSpan = FCSlateType<"latex_text_span"> & {
     children: LaTeXText[]
 };
 
 const DEFAULT_LATEX_TEXT_SPAN: LaTeXTextSpan = {
-    ...FCSlateInlineType.makeDefault("latex_text_span"),
+    type: "latex_text_span",
     children: [LaTeXText.makeDefault()]
 };
 
 export namespace LaTeXTextSpan {
     export const isLaTeXTextSpan = (variable: unknown): variable is LaTeXTextSpan => (
-        FCSlateType.isFCSlateInlineType(variable, "latex_text_span")
+        FCSlateType.isFCSlateType(variable, "latex_text_span")
 
         && "children" in variable
         && Array.isArray(variable.children)

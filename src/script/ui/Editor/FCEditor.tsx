@@ -23,11 +23,14 @@ export function FCEditor({
         KeyboardInteraction.shiftEnterKeyEventHandler(event, editor)
         listEnterKeyEventHandler(event, editor)
     }
-
-    const { isVoid } = editor
+    const { isVoid, isInline } = editor
 
     editor.isVoid = element => {
         return ["latex_text_span"].includes(element.type) ? true : isVoid(element)
+    }
+    
+    editor.isInline = element => {
+        return ["formatted_text_span"].includes(element.type) ? true : isInline(element)
     }
 
     return (

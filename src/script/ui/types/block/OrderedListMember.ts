@@ -1,7 +1,18 @@
 import { OrderedListElement } from "./OrderedListElement";
-import { ParagraphElement } from "./ParagraphElement";
 import { CustomElement } from "../slate_defs";
+import { ParagraphElement } from "./ParagraphElement";
 
+export type OrderedListMember = {
+    type: "ordered_list_member";
+    children: CustomElement[];
+};
+
+
+
+const DEFAULT_ORDERED_LIST_MEMBER: OrderedListMember = {
+    type: "ordered_list_member",
+    children: [ParagraphElement.makeDefault()]
+};
 
 export namespace OrderedListMember {
     export function isOrderedListMember(variable: unknown): variable is OrderedListElement {
@@ -18,18 +29,9 @@ export namespace OrderedListMember {
         );
     }
 
-    export function makeDefault(): OrderedListMember {
+    export function makeDefaultOrderedListMember(): OrderedListMember {
         return structuredClone(DEFAULT_ORDERED_LIST_MEMBER);
     }
 }
-export type OrderedListMember = {
-    type: "ordered_list_member";
-    children: CustomElement[];
-};
 
-export const DEFAULT_ORDERED_LIST_MEMBER: OrderedListMember = {
-    type: "ordered_list_member",
-    children: [ParagraphElement.makeDefault()]
-};
-;
 

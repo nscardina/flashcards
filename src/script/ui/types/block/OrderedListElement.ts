@@ -10,7 +10,7 @@ export type OrderedListElement = {
 const DEFAULT_ORDERED_LIST_ELEMENT: OrderedListElement = {
     type: "ordered_list_element",
     children: [
-        OrderedListMember.makeDefault()
+        OrderedListMember.makeDefaultOrderedListMember()
     ],
     alignment: "left"
 }

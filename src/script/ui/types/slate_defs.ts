@@ -6,10 +6,10 @@ import { OrderedListElement } from "./block/OrderedListElement";
 import { OrderedListMember } from "./block/OrderedListMember";
 import { UnorderedListElement } from "./block/UnorderedListElement";
 import { UnorderedListMember } from "./block/UnorderedListMember";
-import { FormattedText } from "./leaf/FormattedText";
 import { LaTeXText } from "./leaf/LaTeXText";
 import { FormattedTextSpan } from "./block/FormattedTextSpan";
 import { LaTeXTextSpan } from "./block/LaTeXTextSpan";
+import { FormattedText } from "./leaf/FormattedText";
 
 export type HorizontalAlignment = "left" | "center" | "right" | "justified"
 export namespace HorizontalAlignment {

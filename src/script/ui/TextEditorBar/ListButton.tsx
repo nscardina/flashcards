@@ -210,7 +210,7 @@ function orderedListEnterKeyEventHandler(
 
                 Transforms.insertNodes(
                     editor,
-                    OrderedListMember.makeDefault(),
+                    OrderedListMember.makeDefaultOrderedListMember(),
                     {
                         at: [...orderedListMemberElementPath.slice(0, -1), orderedListMemberElementPath.at(-1)! + 1]
                     }

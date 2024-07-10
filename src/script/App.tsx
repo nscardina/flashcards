@@ -15,11 +15,14 @@ import "../style/App.scss"
 import DeleteDeckConfirmationMessage from './ui/DeleteDeckConfirmationMessage';
 import { withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
-import { createEditor } from 'slate';
+import { createEditor, Path } from 'slate';
 import TextEditorBar from './ui/TextEditorBar/TextEditorBar';
 import { CustomText } from './ui/types/slate_defs';
+import LaTeXEditor from './ui/LaTeXEditor';
 
 export const AppState = createContext<AppStateType>(undefined!)
+
+
 
 function App() {
 
@@ -36,6 +39,7 @@ function App() {
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
     const [ textEditors ] = useState(
         () => [
+            withReact(withHistory(createEditor())), // 0 to 7 are for the flashcards
             withReact(withHistory(createEditor())),
             withReact(withHistory(createEditor())),
             withReact(withHistory(createEditor())),
@@ -43,14 +47,18 @@ function App() {
             withReact(withHistory(createEditor())),
             withReact(withHistory(createEditor())),
             withReact(withHistory(createEditor())),
-            withReact(withHistory(createEditor())),
+            withReact(withHistory(createEditor())), // 8 is for the LaTeX editor
         ]
     )
-    const [ lastEditedTextEditorIndex, setLastEditedTextEditorIndex ] = useState<number>(0)    
+    const [ lastEditedTextEditorIndex, setLastEditedTextEditorIndex ] = useState<number>(0)   
+    const [ lastEditedNodePath, setLastEditedNodePath ] = useState<Path>([]) 
 
     const [ currentMarks, setCurrentMarks ] = useState<(Omit<CustomText, "text"> | null)>(null)
 
     const [currentDialog, setCurrentDialog] = useState<JSX.Element>(<></>)
+
+    const [showLaTeXEditor, setShowLaTeXEditor] = useState<boolean>(false)
+    const [shouldLaTeXEditorReplace, setShouldLaTeXEditorReplace] = useState<boolean>(false)
 
 
 
@@ -77,31 +85,24 @@ function App() {
                 textEditors: textEditors,
                 lastEditedTextEditorIndex: lastEditedTextEditorIndex,
                 setLastEditedTextEditorIndex: setLastEditedTextEditorIndex,
+                lastEditedNodePath: lastEditedNodePath,
+                setLastEditedNodePath: setLastEditedNodePath,
                 currentMarks: currentMarks,
                 setCurrentMarks: setCurrentMarks,
 
                 currentDialog: currentDialog,
                 setCurrentDialog: setCurrentDialog,
+
+                showLaTeXEditor: showLaTeXEditor,
+                setShowLaTeXEditor: setShowLaTeXEditor,
+                shouldLaTeXEditorReplace: shouldLaTeXEditorReplace,
+                setShouldLaTeXEditorReplace: setShouldLaTeXEditorReplace,
             }}>
                 <MenuBar />
                 <TextEditorBar />
                 <DeckInteractionArea />
 
-                {/* <Slate editor={textEditor} initialValue={[{
-                    type: 'paragraph',
-                    children: [
-                        {
-                            text: 'A line of text!',
-                            
-                        },
-                    ],
-                    alignment: "left",
-                }]}>
-                    <Editable
-                    renderLeaf={BoldLeaf}
-                    renderElement={blockRenderer}
-                    />
-                </Slate> */}
+                {showLaTeXEditor && <LaTeXEditor />}
 
                 {currentDialog}
 
@@ -116,6 +117,10 @@ function App() {
             </AppState.Provider>
         </>
     )
+}
+
+namespace App {
+    export const LATEX_EDITOR_INDEX = 8;
 }
 
 export default App

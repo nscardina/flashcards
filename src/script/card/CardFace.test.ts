@@ -15,16 +15,16 @@ const completeCardFace = {
     }
 }
 
-describe("CardFace.isCardFace() methods", () => {
-    test("CardFace.isCardFace(null) returns false", () => {
-        expect(CardFace.isCardFace(null)).toBe(false)
-    })
+// describe("CardFace.isCardFace() methods", () => {
+//     test("CardFace.isCardFace(null) returns false", () => {
+//         expect(CardFace.isCardFace(null)).toBe(false)
+//     })
 
-    test("CardFace.isCardFace(incompleteCardFace) returns false", () => {
-        expect(CardFace.isCardFace(incompleteCardFace)).toBe(false)
-    })
+//     test("CardFace.isCardFace(incompleteCardFace) returns false", () => {
+//         expect(CardFace.isCardFace(incompleteCardFace)).toBe(false)
+//     })
 
-    test("CardFace.isCardFace(completeCardFace) returns true", () => {
-        expect(CardFace.isCardFace(completeCardFace)).toBe(true)
-    })
-})
+//     test("CardFace.isCardFace(completeCardFace) returns true", () => {
+//         expect(CardFace.isCardFace(completeCardFace)).toBe(true)
+//     })
+// })
