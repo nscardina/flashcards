@@ -2,7 +2,7 @@ import { useContext } from "react";
 import Latex from "react-latex-next";
 import { AppState } from "../../App";
 import NonUserSelectableButton from "./NonUserSelectableButton";
-import { Path, Transforms } from "slate";
+import { Path } from "slate";
 import { LaTeXTextSpan } from "../types/block/LaTeXTextSpan";
 
 export default function LaTeXButton() {
@@ -22,7 +22,6 @@ export default function LaTeXButton() {
             if (parentElem !== undefined) {
                 const node: LaTeXTextSpan = {
                     type: "latex_text_span",
-                    isInline: true,
                     children: [
                         {
                             type: "latex_text",

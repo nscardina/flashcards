@@ -50,7 +50,6 @@ export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
                     type: "paragraph",
                     children: [{
                       type: "formatted_text_span",
-                      isInline: true,
                       children: [
                         {
                           type: "formatted_text",

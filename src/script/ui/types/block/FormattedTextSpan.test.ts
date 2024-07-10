@@ -1,7 +1,7 @@
 import assert from "node:assert"
 import { test, describe } from "node:test"
 import { FormattedTextSpan } from "./FormattedTextSpan"
-import { FormattedText } from "../leaf/FormattedText";
+import { makeDefaultFormattedText } from "../leaf/FormattedText";
 
 describe("FormattedTextSpan.isFormattedTextSpan()", () => {
     ["test string", 1000, null].forEach(value => {
@@ -37,7 +37,7 @@ describe("FormattedTextSpan.isFormattedTextSpan()", () => {
 
     const testObject4 = {
         type: "formatted_text_span",
-        children: [FormattedText.makeDefault()],
+        children: [makeDefaultFormattedText()],
     };
     test(`should return true when passed ${JSON.stringify(testObject4)}`, () => {
         assert.strictEqual(true, FormattedTextSpan.isFormattedTextSpan(testObject4));

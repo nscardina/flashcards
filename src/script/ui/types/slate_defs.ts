@@ -9,7 +9,7 @@ import { UnorderedListMember } from "./block/UnorderedListMember";
 import { LaTeXText } from "./leaf/LaTeXText";
 import { FormattedTextSpan } from "./block/FormattedTextSpan";
 import { LaTeXTextSpan } from "./block/LaTeXTextSpan";
-import { FormattedText } from "./leaf/FormattedText";
+import { FormattedText, isFormattedText } from "./leaf/FormattedText";
 
 export type HorizontalAlignment = "left" | "center" | "right" | "justified"
 export namespace HorizontalAlignment {
@@ -52,7 +52,7 @@ export type CustomText = FormattedText | LaTeXText
 export namespace CustomText {
   export function isCustomText(variable: unknown): variable is CustomText {
     return (
-      FormattedText.isFormattedText(variable)
+      isFormattedText(variable)
       || LaTeXText.isLaTeXText(variable)
     )
   }

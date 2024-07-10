@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
 import { AppState } from "../../App";
 import { Editor } from "slate";
-import { FormattedText } from "../types/leaf/FormattedText";
+import { FormattedText, isFormattedTextMarks } from "../types/leaf/FormattedText";
 
 const WEB_SAFE_FONTS: string[] = [
     "Arial",
@@ -38,7 +38,7 @@ export default function FontSelectButton() {
                         if (selectedEditor !== null) {
 
                             const marks = Editor.marks(selectedEditor)
-                            if (marks !== null && FormattedText.isFormattedTextMarks(marks)) {
+                            if (marks !== null && isFormattedTextMarks(marks)) {
                                 if (marks.fontFamily !== undefined) {
                                     Editor.removeMark(selectedEditor, "fontFamily");
                                 }
@@ -57,7 +57,7 @@ export default function FontSelectButton() {
                     if (selectedEditor !== null) {
 
                         const marks = Editor.marks(selectedEditor)
-                        if (marks !== null && FormattedText.isFormattedTextMarks(marks)) {
+                        if (marks !== null && isFormattedTextMarks(marks)) {
                             if (marks.fontFamily !== undefined) {
                                 Editor.removeMark(selectedEditor, "fontFamily");
                             }

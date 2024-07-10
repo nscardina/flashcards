@@ -2,16 +2,10 @@ import { useContext, useState } from "react";
 import { AppState } from "../App";
 import { Button, Modal, Row } from "react-bootstrap";
 import Latex from "react-latex-next";
-import { createEditor, Element, isBlock, Node, Path, Transforms } from "slate";
+import { createEditor, Node, Path, Transforms } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
 import { withHistory } from "slate-history";
 import { ParagraphElement } from "./types/block/ParagraphElement";
-import { Deck } from "../card/deck";
-import { Side } from "../card/side";
-import { BoxNumber } from "../card/Box";
-import { CardContentData } from "../card/CardContentData";
-import { LaTeXText } from "./types/leaf/LaTeXText";
-import deepEqual from "deep-equal";
 import { LaTeXTextSpan } from "./types/block/LaTeXTextSpan";
 import GeneratorToArray from "../misc/GeneratorToArray";
 import { CustomElement } from "./types/slate_defs";
@@ -47,7 +41,6 @@ export default function LaTeXEditor() {
     
                             const node: LaTeXTextSpan = {
                                 type: "latex_text_span",
-                                isInline: true,
                                 children: [
                                     {
                                         type: "latex_text",

@@ -7,7 +7,6 @@ import Latex from "react-latex-next";
 import { LaTeXText } from "../types/leaf/LaTeXText";
 import { AppState } from "../../App";
 import { Range } from "slate";
-import arrayEqual from "array-equal"
 
 
 //@ts-ignore

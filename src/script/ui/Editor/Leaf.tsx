@@ -1,7 +1,7 @@
 
 import { RenderLeafProps } from "slate-react"
 import { Property } from "csstype"
-import { FormattedText } from "../types/leaf/FormattedText"
+import { FormattedText, isFormattedText } from "../types/leaf/FormattedText"
 
 function getTextDecoration({underlined, strikethrough}: FormattedText):
 Property.TextDecorationLine {
@@ -41,7 +41,7 @@ Property.FontSize | undefined {
 
 export default function renderLeaf(props: RenderLeafProps) {
 
-    if (FormattedText.isFormattedText(props.leaf)) {
+    if (isFormattedText(props.leaf)) {
         const style: React.CSSProperties = {
             fontWeight: props.leaf.bold ? "bold" : "normal",
             fontStyle: props.leaf.italic ? "italic" : "normal",

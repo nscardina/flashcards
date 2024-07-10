@@ -1,4 +1,4 @@
-import { FormattedText } from "../leaf/FormattedText"
+import { FormattedText, isFormattedText, makeDefaultFormattedText } from "../leaf/FormattedText"
 import { FCSlateType } from "../MiscTypeInfo"
 
 export type FormattedTextSpan = FCSlateType<"formatted_text_span"> & {
@@ -7,7 +7,7 @@ export type FormattedTextSpan = FCSlateType<"formatted_text_span"> & {
 
 const DEFAULT_FORMATTED_TEXT_SPAN: FormattedTextSpan = {
     type: "formatted_text_span",
-    children: [FormattedText.makeDefault()]
+    children: [makeDefaultFormattedText()]
 };
 
 export namespace FormattedTextSpan {
@@ -16,7 +16,7 @@ export namespace FormattedTextSpan {
         
         && "children" in variable
         && Array.isArray(variable.children)
-        && variable.children.every(child => FormattedText.isFormattedText(child))
+        && variable.children.every(child => isFormattedText(child))
     );
 
     export const makeDefault = () => structuredClone(DEFAULT_FORMATTED_TEXT_SPAN);

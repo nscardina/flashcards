@@ -1,6 +1,5 @@
 import { test, describe } from "node:test"
 import { UnorderedListElement } from "./UnorderedListElement"
-import { UnorderedListMember } from "./UnorderedListMember"
 import assert from "node:assert"
 
 describe("Tests for UnorderedListElement.isUnorderedListElement() function", () => {
