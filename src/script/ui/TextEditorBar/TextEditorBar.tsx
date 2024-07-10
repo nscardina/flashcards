@@ -2,7 +2,6 @@ import BoldButton from "./BoldButton";
 import FontSelectButton from "./FontSelectButton";
 import FontSizeSelectButton from "./FontSizeSelectButton";
 import ItalicButton from "./ItalicButton";
-import LaTeXButton from "./LaTeXButton";
 import ListButton from "./ListButton";
 import StrikethroughButton from "./StrikethroughButton";
 import SubscriptButton from "./SubscriptButton";
@@ -24,7 +23,6 @@ export default function TextEditorBar() {
             <SubscriptButton />
             <TextAlignmentButton />
             <ListButton />
-            <LaTeXButton />
         </div>
     )
 }
