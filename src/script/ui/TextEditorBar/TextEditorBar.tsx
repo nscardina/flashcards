@@ -3,6 +3,8 @@ import FontSelectButton from "./FontSelectButton";
 import FontSizeSelectButton from "./FontSizeSelectButton";
 import ItalicButton from "./ItalicButton";
 import ListButton from "./ListButton";
+import MoveCardBackwardsButton from "./MoveCardBackwardsButton";
+import MoveCardForwardsButton from "./MoveCardForwardsButton";
 import StrikethroughButton from "./StrikethroughButton";
 import SubscriptButton from "./SubscriptButton";
 import SuperscriptButton from "./SuperscriptButton";
@@ -23,6 +25,8 @@ export default function TextEditorBar() {
             <SubscriptButton />
             <TextAlignmentButton />
             <ListButton />
+            <MoveCardBackwardsButton />
+            <MoveCardForwardsButton />
         </div>
     )
 }
