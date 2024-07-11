@@ -1,3 +1,4 @@
+import AddCardButton from "./AddCardButton";
 import BoldButton from "./BoldButton";
 import FontSelectButton from "./FontSelectButton";
 import FontSizeSelectButton from "./FontSizeSelectButton";
@@ -15,6 +16,10 @@ export default function TextEditorBar() {
 
     return (
         <div className="d-flex flex-row text-editor-bar">
+            <AddCardButton />
+            <MoveCardBackwardsButton />
+            <MoveCardForwardsButton />
+            <div className="vr"></div>
             <FontSelectButton />
             <FontSizeSelectButton />
             <BoldButton />
@@ -25,8 +30,7 @@ export default function TextEditorBar() {
             <SubscriptButton />
             <TextAlignmentButton />
             <ListButton />
-            <MoveCardBackwardsButton />
-            <MoveCardForwardsButton />
+            
         </div>
     )
 }

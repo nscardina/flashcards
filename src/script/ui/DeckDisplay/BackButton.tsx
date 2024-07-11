@@ -13,6 +13,7 @@ function BackButton() {
             disabled={appState.deck === null || appState.deck.cards.length <= 1}
             className="d-flex align-items-center flashcard-button flashcard-round-button"
             onClick={() => {
+              console.log("sdfsfds")
               if (appState.appMode !== AppMode.REVIEWING_DECK || 
                 appState.visibleCardIndex !== 0) {
                 viewPreviousCard(appState)

@@ -17,6 +17,7 @@ export function NewDeckButton() {
     if (appState.deck !== null) {
       appState.setVisibleDialog(Dialog.NEW_DECK_CONFIRMATION_MESSAGE);
       appState.setAppMode(AppMode.EDITING_DECK);
+      appState.setVisibleCardIndex(0);
     }
 
 
