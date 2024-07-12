@@ -27,7 +27,7 @@ export default function FontSizeSelectButton() {
             <Dropdown.Toggle className="flashcard-button">
                 {(appState.currentMarks !== null
                     && isFormattedTextMarks(appState.currentMarks)
-                    ? appState.currentMarks.fontSize : "Medium"
+                    ? (appState.currentMarks.fontSize ?? "medium") : "medium"
                 )}
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -36,7 +36,7 @@ export default function FontSizeSelectButton() {
                             
                             const marks = Editor.marks(selectedEditor)
                             if (marks !== null && isFormattedTextMarks(marks)) {
-                                if (marks.fontSize !== undefined) {
+                                if (marks.fontSize) {
                                     Editor.removeMark(selectedEditor, "fontSize");
                                 }
                                 Editor.addMark(selectedEditor, "fontSize", size[0]);
