@@ -40,6 +40,7 @@ export default function TextAlignmentButton() {
                 <MaterialSymbol>format_align_left</MaterialSymbol>
             </Dropdown.Toggle>
             <Dropdown.Menu>
+                <Dropdown.Header>Text Alignment</Dropdown.Header>
                 <Dropdown.Item className="d-flex flex-row" onClick={leftAlignedFunction}>
                     <MaterialSymbol>format_align_left</MaterialSymbol>&nbsp;&nbsp;Left
                 </Dropdown.Item>

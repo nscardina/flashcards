@@ -31,6 +31,7 @@ export default function FontSizeSelectButton() {
                 )}
             </Dropdown.Toggle>
             <Dropdown.Menu>
+                <Dropdown.Header>Font Sizes</Dropdown.Header>
                 {FONT_SIZES.map(size => <Dropdown.Item key={size[0]} onClick={event => {
                         if (selectedEditor !== null) {
                             

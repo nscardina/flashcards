@@ -296,6 +296,7 @@ export default function ListButton() {
                 <MaterialSymbol>format_list_bulleted</MaterialSymbol>
             </Dropdown.Toggle>
             <Dropdown.Menu>
+                <Dropdown.Header>Lists</Dropdown.Header>
                 <Dropdown.Item className="d-flex flex-row" onClick={event => {
                     event.preventDefault()
 
@@ -365,7 +366,7 @@ export default function ListButton() {
 
 
                 }}>
-                    <MaterialSymbol>format_list_bulleted</MaterialSymbol>&nbsp;&nbsp;Left
+                    <MaterialSymbol>format_list_bulleted</MaterialSymbol>&nbsp;&nbsp;Bulleted List
                 </Dropdown.Item>
                 <Dropdown.Item className="d-flex flex-row" onClick={event => {
                     event.preventDefault()
@@ -431,7 +432,7 @@ export default function ListButton() {
                     }
 
                 }}>
-                    <MaterialSymbol>format_list_numbered</MaterialSymbol>&nbsp;&nbsp;Center
+                    <MaterialSymbol>format_list_numbered</MaterialSymbol>&nbsp;&nbsp;Numbered List
                 </Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>
