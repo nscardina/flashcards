@@ -56,83 +56,83 @@ const CommonRectElement = (props: SVGAttributes<SVGRectElement>) => (
     />
 )
 
-const OneBoxIcon = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const OneBoxIcon = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
         <CommonRectElement
             x="10"
             y="10"
             width="80"
             height="80"
-            stroke={props.strokeColor}
+            stroke={props.strokecolor}
         />
     </CommonSVGElement>
 )
 
-const TwoVerticalBoxesIcon = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const TwoVerticalBoxesIcon = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
-        <CommonRectElement x="10" y="10" width="35" height="80" stroke={props.strokeColor} />
-        <CommonRectElement x="55" y="10" width="35" height="80" stroke={props.strokeColor} />
+        <CommonRectElement x="10" y="10" width="35" height="80" stroke={props.strokecolor} />
+        <CommonRectElement x="55" y="10" width="35" height="80" stroke={props.strokecolor} />
     </CommonSVGElement>
 )
 
-const TwoHorizontalBoxesIcon = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const TwoHorizontalBoxesIcon = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
-        <CommonRectElement x="10" y="10" width="80" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="10" y="55" width="80" height="35" stroke={props.strokeColor} />
+        <CommonRectElement x="10" y="10" width="80" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="10" y="55" width="80" height="35" stroke={props.strokecolor} />
     </CommonSVGElement>
 )
 
-const FourBoxesIcon = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const FourBoxesIcon = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
-        <CommonRectElement x="10" y="10" width="35" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="10" y="55" width="35" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="55" y="10" width="35" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="55" y="55" width="35" height="35" stroke={props.strokeColor} />
+        <CommonRectElement x="10" y="10" width="35" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="10" y="55" width="35" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="55" y="10" width="35" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="55" y="55" width="35" height="35" stroke={props.strokecolor} />
     </CommonSVGElement>
 )
 
-const OneLeftVerticalBoxTwoRightHorizontalBoxes = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const OneLeftVerticalBoxTwoRightHorizontalBoxes = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
-        <CommonRectElement x="10" y="10" width="35" height="80" stroke={props.strokeColor} />
-        <CommonRectElement x="55" y="10" width="35" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="55" y="55" width="35" height="35" stroke={props.strokeColor} />
+        <CommonRectElement x="10" y="10" width="35" height="80" stroke={props.strokecolor} />
+        <CommonRectElement x="55" y="10" width="35" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="55" y="55" width="35" height="35" stroke={props.strokecolor} />
     </CommonSVGElement>
 )
 
-const OneRightVerticalBoxTwoLeftHorizontalBoxes = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const OneRightVerticalBoxTwoLeftHorizontalBoxes = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
-        <CommonRectElement x="55" y="10" width="35" height="80" stroke={props.strokeColor} />
-        <CommonRectElement x="10" y="10" width="35" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="10" y="55" width="35" height="35" stroke={props.strokeColor} />
+        <CommonRectElement x="55" y="10" width="35" height="80" stroke={props.strokecolor} />
+        <CommonRectElement x="10" y="10" width="35" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="10" y="55" width="35" height="35" stroke={props.strokecolor} />
     </CommonSVGElement>
 )
 
-const OneTopHorizontalBoxTwoBottomVerticalBoxes = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const OneTopHorizontalBoxTwoBottomVerticalBoxes = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
-        <CommonRectElement x="10" y="10" width="80" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="10" y="55" width="35" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="55" y="55" width="35" height="35" stroke={props.strokeColor} />
+        <CommonRectElement x="10" y="10" width="80" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="10" y="55" width="35" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="55" y="55" width="35" height="35" stroke={props.strokecolor} />
     </CommonSVGElement>
 )
 
-const TwoTopVerticalBoxesOneBottomHorizontalBox = (props: HTMLAttributes<SVGElement> & { strokeColor: string }) => (
+const TwoTopVerticalBoxesOneBottomHorizontalBox = (props: HTMLAttributes<SVGElement> & { strokecolor: string }) => (
     <CommonSVGElement {...props}>
-        <CommonRectElement x="10" y="55" width="80" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="10" y="10" width="35" height="35" stroke={props.strokeColor} />
-        <CommonRectElement x="55" y="10" width="35" height="35" stroke={props.strokeColor} />
+        <CommonRectElement x="10" y="55" width="80" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="10" y="10" width="35" height="35" stroke={props.strokecolor} />
+        <CommonRectElement x="55" y="10" width="35" height="35" stroke={props.strokecolor} />
     </CommonSVGElement>
 )
 
 export default function LayoutToggleButton() {
 
-    const oneBoxIcon = <OneBoxIcon strokeColor="black" className="ms-2 mt-1" />
-    const twoVerticalBoxesIcon = <TwoVerticalBoxesIcon strokeColor="black" className="ms-2 mt-1" />
-    const twoHorizontalBoxesIcon = <TwoHorizontalBoxesIcon strokeColor="black" className="ms-2 mt-1" />
-    const fourBoxesIcon = <FourBoxesIcon strokeColor="black" className="ms-2 mt-1" />
-    const oneLeftVTwoRightHIcon = <OneLeftVerticalBoxTwoRightHorizontalBoxes strokeColor="black" className="ms-2 mt-1" />
-    const oneRightVTwoLeftHIcon = <OneRightVerticalBoxTwoLeftHorizontalBoxes strokeColor="black" className="ms-2 mt-1" />
-    const oneTopHTwoBottomVIcon = <OneTopHorizontalBoxTwoBottomVerticalBoxes strokeColor="black" className="ms-2 mt-1" />
-    const twoTopVOneBottomHIcon = <TwoTopVerticalBoxesOneBottomHorizontalBox strokeColor="black" className="ms-2 mt-1" />
+    const oneBoxIcon = <OneBoxIcon strokecolor="black" className="ms-2 mt-1" />
+    const twoVerticalBoxesIcon = <TwoVerticalBoxesIcon strokecolor="black" className="ms-2 mt-1" />
+    const twoHorizontalBoxesIcon = <TwoHorizontalBoxesIcon strokecolor="black" className="ms-2 mt-1" />
+    const fourBoxesIcon = <FourBoxesIcon strokecolor="black" className="ms-2 mt-1" />
+    const oneLeftVTwoRightHIcon = <OneLeftVerticalBoxTwoRightHorizontalBoxes strokecolor="black" className="ms-2 mt-1" />
+    const oneRightVTwoLeftHIcon = <OneRightVerticalBoxTwoLeftHorizontalBoxes strokecolor="black" className="ms-2 mt-1" />
+    const oneTopHTwoBottomVIcon = <OneTopHorizontalBoxTwoBottomVerticalBoxes strokecolor="black" className="ms-2 mt-1" />
+    const twoTopVOneBottomHIcon = <TwoTopVerticalBoxesOneBottomHorizontalBox strokecolor="black" className="ms-2 mt-1" />
 
     function mapLayout(layout: CardLayout | undefined) {
         switch (layout) {
@@ -167,7 +167,7 @@ export default function LayoutToggleButton() {
                 <DropdownSubmenu as="button" title="Card Layout">
                     <CustomMenuItem
                         style={{ display: "flex", flexDirection: "row" }}
-                        icon={<OneBoxIcon strokeColor="black" className="me-2" />}
+                        icon={<OneBoxIcon strokecolor="black" className="me-2" />}
                         body={<>One Box</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.ONE_BOX)
@@ -175,7 +175,7 @@ export default function LayoutToggleButton() {
                         }}
                     />
                     <CustomMenuItem
-                        icon={<TwoVerticalBoxesIcon strokeColor="black" className="me-2" />}
+                        icon={<TwoVerticalBoxesIcon strokecolor="black" className="me-2" />}
                         body={<>Two Vertical Boxes</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.TWO_BOXES_V)
@@ -183,7 +183,7 @@ export default function LayoutToggleButton() {
                         }}
                     />
                     <CustomMenuItem
-                        icon={<TwoHorizontalBoxesIcon strokeColor="black" className="me-2" />}
+                        icon={<TwoHorizontalBoxesIcon strokecolor="black" className="me-2" />}
                         body={<>Two Horizontal Boxes</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.TWO_BOXES_H)
@@ -191,7 +191,7 @@ export default function LayoutToggleButton() {
                         }}
                     />
                     <CustomMenuItem
-                        icon={<FourBoxesIcon strokeColor="black" className="me-2" />}
+                        icon={<FourBoxesIcon strokecolor="black" className="me-2" />}
                         body={<>Four Boxes</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.FOUR_BOXES)
@@ -199,7 +199,7 @@ export default function LayoutToggleButton() {
                         }}
                     />
                     <CustomMenuItem
-                        icon={<OneLeftVerticalBoxTwoRightHorizontalBoxes strokeColor="black" className="me-2" />}
+                        icon={<OneLeftVerticalBoxTwoRightHorizontalBoxes strokecolor="black" className="me-2" />}
                         body={<>One vertical box on left, two horizontal boxes on right</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.ONE_BOX_LV_TWO_BOXES_RV)
@@ -207,7 +207,7 @@ export default function LayoutToggleButton() {
                         }}
                     />
                     <CustomMenuItem
-                        icon={<OneRightVerticalBoxTwoLeftHorizontalBoxes strokeColor="black" className="me-2" />}
+                        icon={<OneRightVerticalBoxTwoLeftHorizontalBoxes strokecolor="black" className="me-2" />}
                         body={<>One vertical box on right, two horizontal boxes on left</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.ONE_BOX_RV_TWO_BOXES_LV)
@@ -215,7 +215,7 @@ export default function LayoutToggleButton() {
                         }}
                     />
                     <CustomMenuItem
-                        icon={<OneTopHorizontalBoxTwoBottomVerticalBoxes strokeColor="black" className="me-2" />}
+                        icon={<OneTopHorizontalBoxTwoBottomVerticalBoxes strokecolor="black" className="me-2" />}
                         body={<>One horizontal box on top, two vertical boxes on bottom</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.ONE_BOX_TH_TWO_BOXES_BH)
@@ -223,7 +223,7 @@ export default function LayoutToggleButton() {
                         }}
                     />
                     <CustomMenuItem
-                        icon={<TwoTopVerticalBoxesOneBottomHorizontalBox strokeColor="black" className="me-2" />}
+                        icon={<TwoTopVerticalBoxesOneBottomHorizontalBox strokecolor="black" className="me-2" />}
                         body={<>Two vertical boxes on top, one horizontal box on bottom</>}
                         onClick={() => {
                             changeCardLayout(appState, CardLayout.ONE_BOX_BH_TWO_BOXES_TH)

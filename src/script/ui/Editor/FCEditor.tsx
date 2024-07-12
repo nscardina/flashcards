@@ -6,6 +6,10 @@ import { KeyboardEvent, useContext } from "react";
 import { AppState } from "../../App";
 import { KeyboardInteraction } from "./EditorUtils";
 import { listEnterKeyEventHandler } from "../TextEditorBar/ListButton";
+import { Side } from "../../card/side";
+import { Deck } from "../../card/deck";
+import { CardContentData } from "../../card/CardContentData";
+import { BoxNumber } from "../../card/Box";
 
 export function FCEditor({
     editorIndex,
@@ -17,6 +21,28 @@ export function FCEditor({
 
     const appState = useContext(AppState);
     const editor = appState.textEditors[editorIndex];
+    editor.setSelection({})
+
+    const deckSynchronizer = () => {
+        
+        const side = [0, 1, 2, 3].includes(editorIndex) ? Side.FRONT : Side.BACK;
+        let box: unknown = editorIndex % 4 + 1;
+
+        if (appState.deck !== null) {
+            appState.setDeck(Deck.setBoxOnCardFace(
+                appState.deck,
+                appState.visibleCardIndex,
+                side,
+                String(box) as BoxNumber,
+                {
+                    type: CardContentData.Type.TEXT,
+                    textNodes: editor.children,
+                }
+            ))
+        }
+
+        console.log(appState.deck)
+    }
 
     const onKeyDown = (event: KeyboardEvent) => {
         // Handle Shift+Enter behavior
@@ -33,8 +59,10 @@ export function FCEditor({
         return ["formatted_text_span"].includes(element.type) ? true : isInline(element)
     }
 
+    
+
     return (
-        <Slate editor={editor} initialValue={initialValue}>
+        <Slate editor={editor} initialValue={initialValue} onChange={deckSynchronizer}>
             <Editable renderElement={blockRenderer}
                 renderLeaf={renderLeaf}
                 style={{
@@ -52,6 +80,7 @@ export function FCEditor({
                     ]))
                 }}
                 onKeyDown={onKeyDown}
+                
 
             />
         </Slate>
