@@ -1,7 +1,8 @@
-import { NavDropdown } from "react-bootstrap"
+import { Dropdown, NavDropdown } from "react-bootstrap"
 import { NewDeckButton } from "./NewDeckButton"
 import { OpenDeckLocallyButton } from "./OpenDeckLocallyButton"
 import UploadDeckFileButton from "./UploadDeckFileButton"
+import { CloseDeckButton } from "./CloseDeckButton"
 
 export default function FileMenu() {
 
@@ -11,6 +12,8 @@ export default function FileMenu() {
       <NewDeckButton />
       <OpenDeckLocallyButton />
       <UploadDeckFileButton />
+      <Dropdown.Divider />
+      <CloseDeckButton />
 
     </NavDropdown>
   )
