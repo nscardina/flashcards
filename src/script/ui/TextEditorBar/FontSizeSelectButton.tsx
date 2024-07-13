@@ -24,7 +24,7 @@ export default function FontSizeSelectButton() {
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
-            <Dropdown.Toggle className="flashcard-button">
+            <Dropdown.Toggle className="flashcard-button" style={{textTransform: "capitalize"}}>
                 {(appState.currentMarks !== null
                     && isFormattedTextMarks(appState.currentMarks)
                     ? (appState.currentMarks.fontSize ?? "medium") : "medium"
@@ -32,7 +32,9 @@ export default function FontSizeSelectButton() {
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <Dropdown.Header>Font Sizes</Dropdown.Header>
-                {FONT_SIZES.map(size => <Dropdown.Item key={size[0]} onClick={event => {
+                {FONT_SIZES.map(size => <Dropdown.Item key={size[0]} 
+                style={{textTransform: "capitalize"}}
+                onClick={event => {
                         if (selectedEditor !== null) {
                             
                             const marks = Editor.marks(selectedEditor)
