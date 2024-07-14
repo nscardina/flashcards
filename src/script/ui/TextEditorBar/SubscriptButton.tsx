@@ -26,7 +26,9 @@ export default function SubscriptButton() {
                     Editor.addMark(textEditor, 'subscript', true)
                 }
             }   
-        }}>
+        }}
+        style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+        >
             <MaterialSymbol>subscript</MaterialSymbol>
         </NonUserSelectableButton>
     )

@@ -10,42 +10,41 @@ export default function MoveCardForwardsButton() {
 
     return (
         <OverlayTrigger overlay={<Tooltip placement="bottom-end">View Next Card</Tooltip>}>
-            <span>
-                <Button
-                    style={(appState.deck === null
-                        || appState.deck.cards.length > 0) ? {
-                        pointerEvents: "none"
-                    } : {}}
-                    className="flashcard-button" disabled={
-                        appState.deck === null
-                        || appState.deck.cards.length > 0
-                    } onClick={() => {
-                        if (
-                            appState.deck !== null
-                            && appState.deck.cards.length >= 2
-                            && appState.visibleCardIndex >= 0
-                            && appState.visibleCardIndex < appState.deck.cards.length
-                        ) {
-                            const cards = [...appState.deck.cards];
-                            if (appState.visibleCardIndex === cards.length - 1) {
-                                const temp = cards[cards.length - 1];
-                                cards[cards.length - 1] = cards[0];
-                                cards[0] = temp;
-                            } else {
-                                const temp = cards[appState.visibleCardIndex];
-                                cards[appState.visibleCardIndex] = cards[appState.visibleCardIndex + 1];
-                                cards[appState.visibleCardIndex + 1] = temp;
-                            }
-
-                            appState.setDeck({
-                                ...appState.deck,
-                                cards: cards
-                            });
+            <Button
+                style={(appState.deck === null
+                    || appState.deck.cards.length > 0) ? {
+                    pointerEvents: "none",
+                    color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
+                } : {}}
+                className="flashcard-button" disabled={
+                    appState.deck === null
+                    || appState.deck.cards.length > 0
+                } onClick={() => {
+                    if (
+                        appState.deck !== null
+                        && appState.deck.cards.length >= 2
+                        && appState.visibleCardIndex >= 0
+                        && appState.visibleCardIndex < appState.deck.cards.length
+                    ) {
+                        const cards = [...appState.deck.cards];
+                        if (appState.visibleCardIndex === cards.length - 1) {
+                            const temp = cards[cards.length - 1];
+                            cards[cards.length - 1] = cards[0];
+                            cards[0] = temp;
+                        } else {
+                            const temp = cards[appState.visibleCardIndex];
+                            cards[appState.visibleCardIndex] = cards[appState.visibleCardIndex + 1];
+                            cards[appState.visibleCardIndex + 1] = temp;
                         }
-                    }}>
-                    <MaterialSymbol>arrow_forward</MaterialSymbol>
-                </Button>
-            </span>
+
+                        appState.setDeck({
+                            ...appState.deck,
+                            cards: cards
+                        });
+                    }
+                }}>
+                <MaterialSymbol>arrow_forward</MaterialSymbol>
+            </Button>
         </OverlayTrigger>
     )
 }

@@ -24,7 +24,12 @@ export default function FontSizeSelectButton() {
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
-            <Dropdown.Toggle className="flashcard-button" style={{textTransform: "capitalize"}}>
+            <Dropdown.Toggle className="flashcard-button" style={{
+                textTransform: "capitalize",
+                color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
+            }}
+                disabled={appState.deck === null}
+            >
                 {(appState.currentMarks !== null
                     && isFormattedTextMarks(appState.currentMarks)
                     ? (appState.currentMarks.fontSize ?? "medium") : "medium"

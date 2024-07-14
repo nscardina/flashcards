@@ -292,7 +292,12 @@ export default function ListButton() {
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
-            <Dropdown.Toggle className="flashcard-button d-flex flex-row" style={{ alignItems: "center" }}>
+            <Dropdown.Toggle className="flashcard-button d-flex flex-row" style={{ 
+                alignItems: "center",
+                color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
+            }}
+                disabled={appState.deck === null}
+            >
                 <MaterialSymbol>format_list_bulleted</MaterialSymbol>
             </Dropdown.Toggle>
             <Dropdown.Menu>

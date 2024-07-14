@@ -34,7 +34,9 @@ export default function SimpleMarkToggleButton(
     }, [selectedEditor, props.markToggleProperty])
 
     return (
-        <NonUserSelectableButton className={props.className} onClick={onClick}>
+        <NonUserSelectableButton disabled={appState.deck === null} className={props.className} onClick={onClick}
+        style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+        >
             {props.children}
         </NonUserSelectableButton>
 

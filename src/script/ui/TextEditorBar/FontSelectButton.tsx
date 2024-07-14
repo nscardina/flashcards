@@ -26,7 +26,10 @@ export default function FontSelectButton() {
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
-            <Dropdown.Toggle className="flashcard-button">
+            <Dropdown.Toggle className="flashcard-button"
+            disabled={appState.deck === null}
+            style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+            >
                 {appState.currentMarks?.type === "formatted_text"
                     ? ((appState.currentMarks as Omit<FormattedText, "text"> | null)?.fontFamily ?? "Roboto")
                     : "Roboto"}

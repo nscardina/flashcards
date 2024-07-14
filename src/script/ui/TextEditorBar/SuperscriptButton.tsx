@@ -14,7 +14,7 @@ export default function SuperscriptButton() {
     ]
 
     return (
-        <NonUserSelectableButton className="flashcard-button" onClick={event => {
+        <NonUserSelectableButton disabled={appState.deck === null} className="flashcard-button" onClick={event => {
             event.preventDefault()
             const marks = Editor.marks(textEditor)
 
@@ -26,7 +26,9 @@ export default function SuperscriptButton() {
                     Editor.addMark(textEditor, 'superscript', true)
                 }
             }   
-        }}>
+        }}
+        style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+        >
             <MaterialSymbol>superscript</MaterialSymbol>
         </NonUserSelectableButton>
     )

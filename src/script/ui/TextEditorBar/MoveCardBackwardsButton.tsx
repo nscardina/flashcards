@@ -10,41 +10,41 @@ export default function MoveCardBackwardsButton() {
 
     return (
         <OverlayTrigger overlay={<Tooltip>View Previous Card</Tooltip>}>
-            <span>
-                <Button style={(appState.deck === null
+            <Button
+                style={(appState.deck === null
                     || appState.deck.cards.length > 0) ? {
-                    pointerEvents: "none"
+                    pointerEvents: "none",
+                    color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
                 } : {}}
-                    className="flashcard-button" disabled={
-                        appState.deck === null
-                        || appState.deck.cards.length > 0
-                    } onClick={() => {
-                        if (
-                            appState.deck !== null
-                            && appState.deck.cards.length >= 2
-                            && appState.visibleCardIndex >= 0
-                            && appState.visibleCardIndex < appState.deck.cards.length
-                        ) {
-                            const cards = [...appState.deck.cards];
-                            if (appState.visibleCardIndex === 0) {
-                                const temp = cards[0];
-                                cards[0] = cards.at(-1)!;
-                                cards[cards.length - 1] = temp;
-                            } else {
-                                const temp = cards[appState.visibleCardIndex];
-                                cards[appState.visibleCardIndex] = cards[appState.visibleCardIndex - 1];
-                                cards[appState.visibleCardIndex - 1] = temp;
-                            }
-
-                            appState.setDeck({
-                                ...appState.deck,
-                                cards: cards
-                            });
+                className="flashcard-button" disabled={
+                    appState.deck === null
+                    || appState.deck.cards.length > 0
+                } onClick={() => {
+                    if (
+                        appState.deck !== null
+                        && appState.deck.cards.length >= 2
+                        && appState.visibleCardIndex >= 0
+                        && appState.visibleCardIndex < appState.deck.cards.length
+                    ) {
+                        const cards = [...appState.deck.cards];
+                        if (appState.visibleCardIndex === 0) {
+                            const temp = cards[0];
+                            cards[0] = cards.at(-1)!;
+                            cards[cards.length - 1] = temp;
+                        } else {
+                            const temp = cards[appState.visibleCardIndex];
+                            cards[appState.visibleCardIndex] = cards[appState.visibleCardIndex - 1];
+                            cards[appState.visibleCardIndex - 1] = temp;
                         }
-                    }}>
-                    <MaterialSymbol>arrow_back</MaterialSymbol>
-                </Button>
-            </span>
+
+                        appState.setDeck({
+                            ...appState.deck,
+                            cards: cards
+                        });
+                    }
+                }}>
+                <MaterialSymbol>arrow_back</MaterialSymbol>
+            </Button>
         </OverlayTrigger>
     );
 }
