@@ -1,0 +1,8 @@
+span[data-slate-placeholder=true] {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center !important;
+    justify-content: center !important;
+    left: calc(0%);
+    height: 100%;
+}

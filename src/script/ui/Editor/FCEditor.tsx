@@ -73,6 +73,7 @@ export function FCEditor({
                     display: "flex",
                     flexDirection: "column",
                 }}
+                placeholder="Type here..."
                 onSelect={() => {
                     appState.setLastEditedTextEditorIndex(editorIndex);
                     appState.setCurrentMarks(Editor.marks(appState.textEditors[

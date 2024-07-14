@@ -5,6 +5,8 @@ import { Side } from "../../card/side";
 import { BoxNumber } from "../../card/Box";
 import { Deck } from "../../card/deck";
 import { CardContentData } from "../../card/CardContentData";
+import { ParagraphElement } from "../types/block/ParagraphElement";
+import { Transforms } from "slate";
 
 /**
  * React component which encapsulates the "edit mode box" functionality; that is, the pencil dropdown
@@ -46,19 +48,7 @@ export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
                 box,
                 {
                   type: CardContentData.Type.TEXT,
-                  textNodes: [{
-                    type: "paragraph",
-                    children: [{
-                      type: "formatted_text_span",
-                      children: [
-                        {
-                          type: "formatted_text",
-                          text: "test",
-                        }
-                      ]
-                    }],
-                    alignment: "left"
-                  }]
+                  textNodes: [ParagraphElement.makeDefault()]
                 }
               )
 
