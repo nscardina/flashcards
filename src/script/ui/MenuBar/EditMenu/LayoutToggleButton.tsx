@@ -152,7 +152,7 @@ export default function LayoutToggleButton() {
                 return oneTopHTwoBottomVIcon
             case CardLayout.ONE_BOX_BH_TWO_BOXES_TH:
                 return twoTopVOneBottomHIcon
-            default: 
+            default:
                 return <></>
         }
     }
@@ -160,78 +160,88 @@ export default function LayoutToggleButton() {
     const appState = useContext(AppState)
     const [currentIcon, setCurrentIcon] = useState<JSX.Element>(mapLayout(appState?.deck?.cards[appState?.visibleCardIndex][appState?.visibleSide]?.layout))
 
-    return (
-        <>
-            <Dropdown.Item as="button" style={{ margin: "0px", padding: "0px", display: "flex", flexDirection: "row", }}>
+    if (appState.deck === null) {
+        return (
+            <Dropdown.Item as="button" style={{ display: "flex", flexDirection: "row", }} disabled={appState.deck === null}> 
                 {currentIcon}
-                <DropdownSubmenu as="button" title="Card Layout">
-                    <CustomMenuItem
-                        style={{ display: "flex", flexDirection: "row" }}
-                        icon={<OneBoxIcon strokecolor="black" className="me-2" />}
-                        body={<>One Box</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.ONE_BOX)
-                            setCurrentIcon(oneBoxIcon)
-                        }}
-                    />
-                    <CustomMenuItem
-                        icon={<TwoVerticalBoxesIcon strokecolor="black" className="me-2" />}
-                        body={<>Two Vertical Boxes</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.TWO_BOXES_V)
-                            setCurrentIcon(twoVerticalBoxesIcon)
-                        }}
-                    />
-                    <CustomMenuItem
-                        icon={<TwoHorizontalBoxesIcon strokecolor="black" className="me-2" />}
-                        body={<>Two Horizontal Boxes</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.TWO_BOXES_H)
-                            setCurrentIcon(twoHorizontalBoxesIcon)
-                        }}
-                    />
-                    <CustomMenuItem
-                        icon={<FourBoxesIcon strokecolor="black" className="me-2" />}
-                        body={<>Four Boxes</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.FOUR_BOXES)
-                            setCurrentIcon(fourBoxesIcon)
-                        }}
-                    />
-                    <CustomMenuItem
-                        icon={<OneLeftVerticalBoxTwoRightHorizontalBoxes strokecolor="black" className="me-2" />}
-                        body={<>One vertical box on left, two horizontal boxes on right</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.ONE_BOX_LV_TWO_BOXES_RV)
-                            setCurrentIcon(oneLeftVTwoRightHIcon)
-                        }}
-                    />
-                    <CustomMenuItem
-                        icon={<OneRightVerticalBoxTwoLeftHorizontalBoxes strokecolor="black" className="me-2" />}
-                        body={<>One vertical box on right, two horizontal boxes on left</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.ONE_BOX_RV_TWO_BOXES_LV)
-                            setCurrentIcon(oneRightVTwoLeftHIcon)
-                        }}
-                    />
-                    <CustomMenuItem
-                        icon={<OneTopHorizontalBoxTwoBottomVerticalBoxes strokecolor="black" className="me-2" />}
-                        body={<>One horizontal box on top, two vertical boxes on bottom</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.ONE_BOX_TH_TWO_BOXES_BH)
-                            setCurrentIcon(oneTopHTwoBottomVIcon)
-                        }}
-                    />
-                    <CustomMenuItem
-                        icon={<TwoTopVerticalBoxesOneBottomHorizontalBox strokecolor="black" className="me-2" />}
-                        body={<>Two vertical boxes on top, one horizontal box on bottom</>}
-                        onClick={() => {
-                            changeCardLayout(appState, CardLayout.ONE_BOX_BH_TWO_BOXES_TH)
-                            setCurrentIcon(twoTopVOneBottomHIcon)
-                        }}
-                    />
-                </DropdownSubmenu>
+                Card Layout
             </Dropdown.Item>
-        </>
-    )
+        )
+    } else {
+
+        return (
+            <>
+                <Dropdown.Item as="button" style={{ margin: "0px", padding: "0px", display: "flex", flexDirection: "row", }} >
+                    {currentIcon}
+                    <DropdownSubmenu as="button" id={`layout-toggle-button${(appState.deck === null) ? "-disabled" : ""}`} title="Card Layout">
+                        <CustomMenuItem
+                            style={{ display: "flex", flexDirection: "row" }}
+                            icon={<OneBoxIcon strokecolor="black" className="me-2" />}
+                            body={<>One Box</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.ONE_BOX)
+                                setCurrentIcon(oneBoxIcon)
+                            }}
+                        />
+                        <CustomMenuItem
+                            icon={<TwoVerticalBoxesIcon strokecolor="black" className="me-2" />}
+                            body={<>Two Vertical Boxes</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.TWO_BOXES_V)
+                                setCurrentIcon(twoVerticalBoxesIcon)
+                            }}
+                        />
+                        <CustomMenuItem
+                            icon={<TwoHorizontalBoxesIcon strokecolor="black" className="me-2" />}
+                            body={<>Two Horizontal Boxes</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.TWO_BOXES_H)
+                                setCurrentIcon(twoHorizontalBoxesIcon)
+                            }}
+                        />
+                        <CustomMenuItem
+                            icon={<FourBoxesIcon strokecolor="black" className="me-2" />}
+                            body={<>Four Boxes</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.FOUR_BOXES)
+                                setCurrentIcon(fourBoxesIcon)
+                            }}
+                        />
+                        <CustomMenuItem
+                            icon={<OneLeftVerticalBoxTwoRightHorizontalBoxes strokecolor="black" className="me-2" />}
+                            body={<>One vertical box on left, two horizontal boxes on right</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.ONE_BOX_LV_TWO_BOXES_RV)
+                                setCurrentIcon(oneLeftVTwoRightHIcon)
+                            }}
+                        />
+                        <CustomMenuItem
+                            icon={<OneRightVerticalBoxTwoLeftHorizontalBoxes strokecolor="black" className="me-2" />}
+                            body={<>One vertical box on right, two horizontal boxes on left</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.ONE_BOX_RV_TWO_BOXES_LV)
+                                setCurrentIcon(oneRightVTwoLeftHIcon)
+                            }}
+                        />
+                        <CustomMenuItem
+                            icon={<OneTopHorizontalBoxTwoBottomVerticalBoxes strokecolor="black" className="me-2" />}
+                            body={<>One horizontal box on top, two vertical boxes on bottom</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.ONE_BOX_TH_TWO_BOXES_BH)
+                                setCurrentIcon(oneTopHTwoBottomVIcon)
+                            }}
+                        />
+                        <CustomMenuItem
+                            icon={<TwoTopVerticalBoxesOneBottomHorizontalBox strokecolor="black" className="me-2" />}
+                            body={<>Two vertical boxes on top, one horizontal box on bottom</>}
+                            onClick={() => {
+                                changeCardLayout(appState, CardLayout.ONE_BOX_BH_TWO_BOXES_TH)
+                                setCurrentIcon(twoTopVOneBottomHIcon)
+                            }}
+                        />
+                    </DropdownSubmenu>
+                </Dropdown.Item>
+            </>
+        )
+    }
 }

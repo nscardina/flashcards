@@ -33,3 +33,7 @@
 .fc-text-editor-bar-min-content {
     width: min-content;
 }
+
+#layout-toggle-button-disabled > a {
+    color: var(--bs-secondary);
+}
