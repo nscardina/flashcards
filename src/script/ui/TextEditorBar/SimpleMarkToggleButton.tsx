@@ -1,8 +1,9 @@
 import NonUserSelectableButton from "./NonUserSelectableButton";
 import { Editor } from "slate";
-import React, { useCallback, useContext } from "react";
-import { AppState } from "../../App";
+import React, { useCallback } from "react";
 import { FormattedText, isFormattedTextMarks } from "../types/leaf/FormattedText";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 export type SimpleMarkToggleButtonProps = {
     markToggleProperty: keyof Omit<FormattedText, "text">,
@@ -13,11 +14,8 @@ export type SimpleMarkToggleButtonProps = {
 export default function SimpleMarkToggleButton(
     props: SimpleMarkToggleButtonProps
 ) {
-    const appState = useContext(AppState)
-
-    const selectedEditor = appState.textEditors[
-        appState.lastEditedTextEditorIndex
-    ]
+    const selectedEditor = useFCState(state => state.currentEditor)();
+    const deck = useFCState(useShallow(state => state.deck));
 
     const onClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         if (selectedEditor !== null) {
@@ -34,8 +32,8 @@ export default function SimpleMarkToggleButton(
     }, [selectedEditor, props.markToggleProperty])
 
     return (
-        <NonUserSelectableButton disabled={appState.deck === null} className={props.className} onClick={onClick}
-        style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+        <NonUserSelectableButton disabled={deck === null} className={props.className} onClick={onClick}
+        style={{color: (deck === null) ? "var(--bs-secondary)" : "inherit"}}
         >
             {props.children}
         </NonUserSelectableButton>

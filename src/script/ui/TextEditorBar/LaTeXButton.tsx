@@ -1,36 +1,31 @@
-import { useContext } from "react";
 import Latex from "react-latex-next";
-import { AppState } from "../../App";
 import NonUserSelectableButton from "./NonUserSelectableButton";
-import { Path } from "slate";
-import { LaTeXTextSpan } from "../types/block/LaTeXTextSpan";
+import { useFCState } from "../../state/FCState";
 
 export default function LaTeXButton() {
 
-    const appState = useContext(AppState);
+    const currentEditor = useFCState(state => state.currentEditor)();
+    const setShouldLaTeXEditorReplace = useFCState(state => state.setShouldLaTeXEditorReplace);
+    const setShowLaTeXEditor = useFCState(state => state.setShowLaTeXEditor);
 
     return (
         <NonUserSelectableButton className="flashcard-button" onClick={event => {
-            const currentEditor = appState.textEditors[
-                appState.lastEditedTextEditorIndex
-            ]
-
             // Parent of currently selected element in the document.
             const parentElem = currentEditor.above()
 
             // If there is no parent element, don't do anything.
             if (parentElem !== undefined) {
-                const node: LaTeXTextSpan = {
-                    type: "latex_text_span",
-                    children: [
-                        {
-                            type: "latex_text",
-                            text: "test"
-                        }
-                    ]
-                }
+                // const node: LaTeXTextSpan = {
+                //     type: "latex_text_span",
+                //     children: [
+                //         {
+                //             type: "latex_text",
+                //             text: "test"
+                //         }
+                //     ]
+                // }
 
-                const path = Path.next(parentElem[1])
+                // const path = Path.next(parentElem[1])
                 // appState.setLastEditedNodePath(path);
 
                 // Transforms.insertNodes(currentEditor, node, {
@@ -45,8 +40,8 @@ export default function LaTeXButton() {
                 // ]);
             }
 
-            appState.setShouldLaTeXEditorReplace(false);
-            appState.setShowLaTeXEditor(true);
+            setShouldLaTeXEditorReplace(false);
+            setShowLaTeXEditor(true);
             
             event.preventDefault();
         }}>

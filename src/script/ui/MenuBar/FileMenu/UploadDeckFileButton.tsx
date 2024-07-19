@@ -1,13 +1,14 @@
-import { useContext } from "react";
-import { AppState } from "../../../App";
 import { UnableToOpenFileErrorDialog } from "./UnableToOpenFileErrorDialog";
 import { Deck } from "../../../card/deck";
 import { KeyboardShortcuts } from "../../KeyboardShortcuts";
 import MaterialSymbol from "../../MaterialSymbol";
+import { useFCState } from "../../../state/FCState";
 
 export default function UploadDeckFileButton() {
 
-    const appState = useContext(AppState)
+    const setDeck = useFCState(state => state.setDeck);
+    const setVisibleCardIndex = useFCState(state => state.setVisibleCardIndex);
+    const setCurrentDialog = useFCState(state => state.setCurrentDialog);
 
     return (
     <>
@@ -25,13 +26,13 @@ export default function UploadDeckFileButton() {
                         try {
                             const deck = JSON.parse(await event.target.files[0].text())
                             if (Deck.isDeck(deck)) {
-                                appState.setDeck(deck)
-                                appState.setVisibleCardIndex(0)
+                                setDeck(deck)
+                                setVisibleCardIndex(0)
                             } else {
                                 <UnableToOpenFileErrorDialog errMessage="Selected file is not a valid deck file." />
                             }
                         } catch (e) {
-                            appState.setCurrentDialog(
+                            setCurrentDialog(
                                 <UnableToOpenFileErrorDialog errMessage="Selected file is not a valid deck file." />
                             )
                         }

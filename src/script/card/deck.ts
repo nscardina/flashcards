@@ -180,6 +180,9 @@ export namespace Deck {
         boxNumber: BoxNumber,
         box: Box,
     ): Deck {
+        console.log(deck.cards);
+        console.log(indexOfCardInDeck);
+
         const newBoxes = deck.cards[indexOfCardInDeck][side].box
         newBoxes[boxNumber] = box
         

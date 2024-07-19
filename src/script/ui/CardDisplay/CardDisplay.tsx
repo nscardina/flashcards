@@ -1,6 +1,4 @@
 import AppMode from "../../app/AppMode"
-import { useContext } from "react"
-import { AppState } from "../../App"
 import { NoDeckOpenedMessage } from "./NoDeckOpenedMessage"
 import "./CardDisplay.scss"
 import 'katex/dist/katex.min.css';
@@ -11,6 +9,7 @@ import { CardContentData } from "../../card/CardContentData"
 import { Side } from "../../card/side"
 import { BoxNumber } from "../../card/Box"
 import { FCEditor } from "../Editor/FCEditor"
+import { useFCState } from "../../state/FCState";
 
 function getCSSClassFromCardLayout(layout: CardLayout): string {
   switch (layout) {
@@ -41,13 +40,16 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
   fillAvailableSpace?: boolean,
 }) {
 
-  const appState = useContext(AppState)
+  const deck = useFCState(state => state.deck);
+  const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+  const appMode = useFCState(state => state.appMode);
+  const visibleSide = useFCState(state => state.visibleSide);
 
-  if (!appState.deck) {
+  if (!deck) {
     return <NoDeckOpenedMessage />
   }
 
-  const visibleCard = appState.deck.cards[appState.visibleCardIndex]
+  const visibleCard = deck.cards[visibleCardIndex]
   if (visibleCard === undefined) {
     return <NoDeckOpenedMessage />
   }
@@ -62,18 +64,17 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
     }}>
       {
         Object.values(Side).map(side => {
-          const visibleSide = visibleCard[side]
         
           return (
-            <div key={side} className={`flashcard-face ${appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
+            <div key={side} className={`flashcard-face ${visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
               } ${getCSSClassFromCardLayout(visibleCard[side].layout)}`
             }>
 
               {
                 (["1", "2", "3", "4"] as BoxNumber[]).map(boxNumber => {
-                  const box = visibleSide.box[boxNumber]
+                  const box = visibleCard[side].box[boxNumber]
 
-                  if (box === null && appState.appMode === AppMode.EDITING_DECK) {
+                  if (box === null && appMode === AppMode.EDITING_DECK) {
                     return (
                       <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
                         <EditModeBox side={side} box={boxNumber} />
@@ -92,7 +93,7 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                             editorIndex={(side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)}
                           />
                           {
-                            appState.appMode === AppMode.EDITING_DECK ?
+                            appMode === AppMode.EDITING_DECK ?
                               <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
                           }
                         </div>
@@ -100,7 +101,7 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                       )
                     case CardContentData.Type.IMAGE:
                       return (
-                        <div className={`${appState.appMode === AppMode.EDITING_DECK
+                        <div className={`${appMode === AppMode.EDITING_DECK
                           ? "flashcard-edit-mode-box" : ""} flashcard-box`}
                           style={{
                             display: "flex",
@@ -111,12 +112,12 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                             style={{ objectFit: "contain" }}
                             src={box.base64ImageData}
                             className={`flashcard-display-box-container`}
-                            onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
+                            onClick={appMode === AppMode.EDITING_DECK ? () => {
 
                             } : () => { }}
                           />
                           {
-                            appState.appMode === AppMode.EDITING_DECK ?
+                            appMode === AppMode.EDITING_DECK ?
                               <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
                           }
                         </div>

@@ -1,13 +1,16 @@
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
 import Dialog from "../app/Dialog"
-import { useContext } from "react"
-import { AppState } from "../App"
 import { downloadDeck } from "../file/CardFile"
 import { Deck } from "../card/deck"
+import { useFCState } from "../state/FCState"
+import { useShallow } from "zustand/react/shallow"
 
 function NewDeckConfirmationMessage() {
 
-  const appState = useContext(AppState)
+  const setVisibleDialog = useFCState(state => state.setVisibleDialog);
+  const deck = useFCState(useShallow(state => state.deck));
+  const setDeck = useFCState(state => state.setDeck);
+  const setVisibleCardIndex = useFCState(state => state.setVisibleCardIndex);
 
   return (
     <Modal show={true}>
@@ -28,7 +31,7 @@ function NewDeckConfirmationMessage() {
             <Col className="d-inline-block me-auto">
               <Button
                 onClick={() =>
-                  appState.setVisibleDialog(Dialog.NONE)}
+                  setVisibleDialog(Dialog.NONE)}
               >
                 Cancel
               </Button>
@@ -37,16 +40,16 @@ function NewDeckConfirmationMessage() {
               className="d-inline-block">
               <Button variant="danger" className="me-3"
                 onClick={() => {
-                  appState.setDeck(Deck.makeDefault())
-                  appState.setVisibleCardIndex(0)
-                  appState.setVisibleDialog(Dialog.NONE)
+                  setDeck(Deck.makeDefault())
+                  setVisibleCardIndex(0)
+                  setVisibleDialog(Dialog.NONE)
                 }}
               >Delete Deck</Button>
               <Button
-                onClick={appState.deck !== null ?
+                onClick={deck !== null ?
                   () => {
-                    downloadDeck(appState.deck!)
-                    appState.setVisibleDialog(Dialog.NONE)
+                    downloadDeck(deck)
+                    setVisibleDialog(Dialog.NONE)
                   } :
                   () => { }}
               >

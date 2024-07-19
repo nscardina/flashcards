@@ -1,17 +1,14 @@
 import MaterialSymbol from "../MaterialSymbol";
-import { useContext } from "react";
-import { AppState } from "../../App";
 import NonUserSelectableButton from "./NonUserSelectableButton";
 import { Editor } from "slate";
 import { isFormattedTextMarks } from "../types/leaf/FormattedText";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 export default function SubscriptButton() {
 
-    const appState = useContext(AppState)
-
-    const textEditor = appState.textEditors[
-        appState.lastEditedTextEditorIndex
-    ]
+    const textEditor = useFCState(state => state.currentEditor)();
+    const deck = useFCState(useShallow(state => state.deck));
 
     return (
         <NonUserSelectableButton className="flashcard-button" onClick={event => {
@@ -27,7 +24,7 @@ export default function SubscriptButton() {
                 }
             }   
         }}
-        style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+        style={{color: (deck === null) ? "var(--bs-secondary)" : "inherit"}}
         >
             <MaterialSymbol>subscript</MaterialSymbol>
         </NonUserSelectableButton>

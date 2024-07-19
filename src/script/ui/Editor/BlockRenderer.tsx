@@ -1,12 +1,12 @@
 import { RenderElementProps } from "slate-react";
 import { Property } from "csstype"
 import { CustomElement } from "../types/slate_defs";
-import { HTMLProps, useContext } from "react";
+import { HTMLProps } from "react";
 import 'katex/dist/katex.min.css';
 import Latex from "react-latex-next";
 import { LaTeXText } from "../types/leaf/LaTeXText";
-import { AppState } from "../../App";
 import { Range } from "slate";
+import { useFCState } from "../../state/FCState";
 
 
 //@ts-ignore
@@ -63,10 +63,11 @@ function FormattedTextSpan(props: RenderElementProps) {
 
 function LaTeXTextSpan(props: RenderElementProps) {
 
-    const appState = useContext(AppState);
-    const editor = appState.textEditors[
-        appState.lastEditedTextEditorIndex
-    ]
+    const editor = useFCState(state => state.currentEditor)();
+    const lastEditedNodePath = useFCState(state => state.lastEditedNodePath);
+    const setLastEditedNodePath = useFCState(state => state.setLastEditedNodePath);
+    const setShouldLaTeXEditorReplace = useFCState(state => state.setShouldLaTeXEditorReplace);
+    const setShowLaTeXEditor = useFCState(state => state.setShowLaTeXEditor);
 
     const latexContents =
         (props.element.children as LaTeXText[])
@@ -86,17 +87,13 @@ function LaTeXTextSpan(props: RenderElementProps) {
                 if (editor.selection !== null 
                     && Range.isCollapsed(editor.selection)
                 ) {
-                    appState.setShouldLaTeXEditorReplace(true);
-                    appState.setShowLaTeXEditor(true);
+                    setShouldLaTeXEditorReplace(true);
+                    setShowLaTeXEditor(true);
                     const path = editor.selection.anchor.path
-                    console.log(`path: ${path.toString()}`)
-                    console.log(`appState.lePath: ${appState.lastEditedNodePath}`)
-                    if (appState.lastEditedNodePath.length <= path.length) {
-                        console.log("1")
-                        appState.setLastEditedNodePath(path)
+                    if (lastEditedNodePath.length <= path.length) {
+                        setLastEditedNodePath(path)
                     } else {
-                        console.log("1")
-                        appState.setLastEditedNodePath([...path, 0])
+                        setLastEditedNodePath([...path, 0])
                     }
                     
                 }

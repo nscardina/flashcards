@@ -1,8 +1,8 @@
-import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
-import { AppState } from "../../App";
 import { Editor } from "slate";
 import { isFormattedTextMarks } from "../types/leaf/FormattedText";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 const FONT_SIZES = [
     ["xx-small", "super small"],
@@ -17,22 +17,22 @@ const FONT_SIZES = [
 
 export default function FontSizeSelectButton() {
 
-    const appState = useContext(AppState)
-    const selectedEditor = appState.textEditors[
-        appState.lastEditedTextEditorIndex
-    ]
+    const deck = useFCState(useShallow(state => state.deck));
+    const currentMarks = useFCState(state => state.currentMarks);
+    const setCurrentMarks = useFCState(state => state.setCurrentMarks);
+    const selectedEditor = useFCState(state => state.currentEditor)();
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button" style={{
                 textTransform: "capitalize",
-                color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
+                color: (deck === null) ? "var(--bs-secondary)" : "inherit",
             }}
-                disabled={appState.deck === null}
+                disabled={deck === null}
             >
-                {(appState.currentMarks !== null
-                    && isFormattedTextMarks(appState.currentMarks)
-                    ? (appState.currentMarks.fontSize ?? "medium") : "medium"
+                {(currentMarks !== null
+                    && isFormattedTextMarks(currentMarks)
+                    ? (currentMarks.fontSize ?? "medium") : "medium"
                 )}
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -48,7 +48,7 @@ export default function FontSizeSelectButton() {
                                     Editor.removeMark(selectedEditor, "fontSize");
                                 }
                                 Editor.addMark(selectedEditor, "fontSize", size[0]);
-                                appState.setCurrentMarks(Editor.marks(selectedEditor))
+                                setCurrentMarks(Editor.marks(selectedEditor))
                             }
                         }
                         event.preventDefault();

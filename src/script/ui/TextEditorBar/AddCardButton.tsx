@@ -1,33 +1,31 @@
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
-import { useContext } from "react";
-import { AppState } from "../../App";
 import { Card } from "../../card/Card";
+import { useFCState } from "../../state/FCState";
 
 export default function AddCardButton() {
 
-    const appState = useContext(AppState);
+    const deck = useFCState(state => state.deck);
+    const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+    const setCards = useFCState(state => state.setCards);
 
     return (
         <OverlayTrigger overlay={<Tooltip>Add Card</Tooltip>}>
             <Button
-                disabled={appState.deck === null}
-                style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+                disabled={deck === null}
+                style={{color: (deck === null) ? "var(--bs-secondary)" : "inherit"}}
                 className="flashcard-button" onClick={() => {
                     if (
-                        appState.deck !== null
-                        && appState.visibleCardIndex >= 0
+                        deck !== null
+                        && visibleCardIndex >= 0
                     ) {
                         const cards = [
-                            ...appState.deck.cards.slice(0, appState.visibleCardIndex + 1),
+                            ...deck.cards.slice(0, visibleCardIndex + 1),
                             Card.makeDefault(),
-                            ...appState.deck.cards.slice(appState.visibleCardIndex + 1)
+                            ...deck.cards.slice(visibleCardIndex + 1)
                         ];
 
-                        appState.setDeck({
-                            ...appState.deck,
-                            cards: cards
-                        });
+                        setCards(cards);
                     }
                 }}>
                 <MaterialSymbol>add</MaterialSymbol>

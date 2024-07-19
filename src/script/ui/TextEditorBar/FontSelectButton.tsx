@@ -1,8 +1,8 @@
-import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
-import { AppState } from "../../App";
 import { Editor } from "slate";
 import { FormattedText, isFormattedTextMarks } from "../types/leaf/FormattedText";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 const WEB_SAFE_FONTS: string[] = [
     "Arial",
@@ -19,19 +19,19 @@ const OTHER_FONTS: string[] = [
 
 export default function FontSelectButton() {
 
-    const appState = useContext(AppState)
-    const selectedEditor = appState.textEditors[
-        appState.lastEditedTextEditorIndex
-    ]
+    const selectedEditor = useFCState(state => state.currentEditor)();
+    const deck = useFCState(useShallow(state => state.deck));
+    const currentMarks = useFCState(state => state.currentMarks);
+    const setCurrentMarks = useFCState(state => state.setCurrentMarks);
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button"
-            disabled={appState.deck === null}
-            style={{color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit"}}
+            disabled={deck === null}
+            style={{color: (deck === null) ? "var(--bs-secondary)" : "inherit"}}
             >
-                {appState.currentMarks?.type === "formatted_text"
-                    ? ((appState.currentMarks as Omit<FormattedText, "text"> | null)?.fontFamily ?? "Roboto")
+                {currentMarks?.type === "formatted_text"
+                    ? ((currentMarks as Omit<FormattedText, "text"> | null)?.fontFamily ?? "Roboto")
                     : "Roboto"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
@@ -46,7 +46,7 @@ export default function FontSelectButton() {
                                     Editor.removeMark(selectedEditor, "fontFamily");
                                 }
                                 Editor.addMark(selectedEditor, "fontFamily", font);
-                                appState.setCurrentMarks(Editor.marks(selectedEditor))
+                                setCurrentMarks(Editor.marks(selectedEditor))
                             }
                         }
                         event.preventDefault();
@@ -65,7 +65,7 @@ export default function FontSelectButton() {
                                 Editor.removeMark(selectedEditor, "fontFamily");
                             }
                             Editor.addMark(selectedEditor, "fontFamily", font);
-                            appState.setCurrentMarks(Editor.marks(selectedEditor))
+                            setCurrentMarks(Editor.marks(selectedEditor))
                         }
                     }
                     event.preventDefault();

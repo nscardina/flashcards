@@ -1,12 +1,14 @@
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
 import Dialog from "../app/Dialog"
-import { useContext } from "react"
-import { AppState } from "../App"
 import { downloadDeck } from "../file/CardFile"
+import { useFCState } from "../state/FCState"
 
 function DeleteDeckConfirmationMessage() {
 
-  const appState = useContext(AppState)
+  const deck = useFCState(state => state.deck);
+  const setDeck = useFCState(state => state.setDeck);
+  const setVisibleCardIndex = useFCState(state => state.setVisibleCardIndex);
+  const setVisibleDialog = useFCState(state => state.setVisibleDialog);
 
   return (
     <Modal show={true}>
@@ -25,7 +27,7 @@ function DeleteDeckConfirmationMessage() {
             <Col className="d-inline-block me-auto">
               <Button
                 onClick={() =>
-                  appState.setVisibleDialog(Dialog.NONE)}
+                  setVisibleDialog(Dialog.NONE)}
               >
                 Cancel
               </Button>
@@ -34,16 +36,16 @@ function DeleteDeckConfirmationMessage() {
               className="d-inline-block">
               <Button variant="danger" className="me-3"
                 onClick={() => {
-                  appState.setDeck(null)
-                  appState.setVisibleCardIndex(-1)
-                  appState.setVisibleDialog(Dialog.NONE)
+                  setDeck(null)
+                  setVisibleCardIndex(-1)
+                  setVisibleDialog(Dialog.NONE)
                 }}
               >Delete Deck</Button>
               <Button
-                onClick={appState.deck !== null ?
+                onClick={deck !== null ?
                   () => {
-                    downloadDeck(appState.deck!)
-                    appState.setVisibleDialog(Dialog.NONE)
+                    downloadDeck(deck!)
+                    setVisibleDialog(Dialog.NONE)
                   } :
                   () => { }}
               >

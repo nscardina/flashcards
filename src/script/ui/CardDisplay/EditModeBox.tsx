@@ -1,12 +1,9 @@
 import { Dropdown } from "react-bootstrap";
-import { useContext } from "react";
-import { AppState } from "../../App";
 import { Side } from "../../card/side";
 import { BoxNumber } from "../../card/Box";
-import { Deck } from "../../card/deck";
 import { CardContentData } from "../../card/CardContentData";
 import { ParagraphElement } from "../types/block/ParagraphElement";
-import { Transforms } from "slate";
+import { useFCState } from "../../state/FCState";
 
 /**
  * React component which encapsulates the "edit mode box" functionality; that is, the pencil dropdown
@@ -18,7 +15,8 @@ import { Transforms } from "slate";
  */
 export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
 
-  const appState = useContext(AppState);
+  const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+  const setBoxOnCardFace = useFCState(state => state.setBoxOnCardFace);
 
   return (
     <div className="d-flex w-100 h-100 align-items-center justify-content-center">
@@ -41,9 +39,8 @@ export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
           <Dropdown.Item as="button" className="flashcard-button d-flex align-items-center"
             onClick={() => {
 
-              const deck = Deck.setBoxOnCardFace(
-                appState.deck!,
-                appState.visibleCardIndex,
+              setBoxOnCardFace(
+                visibleCardIndex,
                 side,
                 box,
                 {
@@ -51,8 +48,6 @@ export function EditModeBox({ side, box }: { side: Side, box: BoxNumber; }) {
                   textNodes: [ParagraphElement.makeDefault()]
                 }
               )
-
-              appState.setDeck(deck)
 
               // appState.deck!.cards[appState.visibleCardIndex][side].box[box] = 
             }}>

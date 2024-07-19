@@ -1,20 +1,16 @@
-import { useContext } from "react";
 import { Button, Col, Container, Modal, Row } from "react-bootstrap";
-import { AppState } from "../App";
-
-
+import { useFCState } from "../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 export type DeckEditorPayload = {
 
   text: string
 }
 
-
-
-
-
 function DeckNameEditor() {
-  const appState = useContext(AppState)
+
+  const deck = useFCState(useShallow(state => state.deck));
+  const setDeckName = useFCState(state => state.setDeckName);
 
   return (
     <Modal show={true}>
@@ -45,13 +41,8 @@ function DeckNameEditor() {
               <Button className="ms-3 mt-3" onClick={() => {
 
                 //TODO fix Card face and Box
-                if (!!appState.deck) {
-                  appState.setDeck({
-                    ...appState.deck,
-                    name: document.getElementById("deckNameEditorBox")?.innerText ?? "",
-                  })
-                  
-                  // appState.setVisibleEditor(Editor.NONE)
+                if (!!deck) {
+                  setDeckName(document.getElementById("deckNameEditorBox")?.innerText ?? "")
                 }
 
               }}>

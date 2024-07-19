@@ -1,19 +1,18 @@
 import { Dropdown } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
 import { Editor, Transforms } from "slate";
-import React, { useContext } from "react";
-import { AppState } from "../../App";
+import React from "react";
 import { Element } from "slate";
 import { HorizontalAlignment } from "../types/slate_defs";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 
 
 export default function TextAlignmentButton() {
 
-    const appState = useContext(AppState)
-    const textEditor = appState.textEditors[
-        appState.lastEditedTextEditorIndex
-    ]
+    const textEditor = useFCState(state => state.currentEditor)();
+    const deck = useFCState(useShallow(state => state.deck));
 
     function textAlignmentOnClickFactory(
         propertyName: HorizontalAlignment,
@@ -38,9 +37,9 @@ export default function TextAlignmentButton() {
         <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button d-flex flex-row" style={{
                 alignItems: "center",
-                color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
+                color: (deck === null) ? "var(--bs-secondary)" : "inherit",
             }}
-            disabled={appState.deck === null}    
+            disabled={deck === null}    
             > 
                 <MaterialSymbol>format_align_left</MaterialSymbol>
             </Dropdown.Toggle>

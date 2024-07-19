@@ -1,12 +1,14 @@
-
-import { useContext } from "react";
-import { AppState } from "../../App";
+import { useShallow } from "zustand/react/shallow";
 import { BoxNumber } from "../../card/Box";
 import { Side } from "../../card/side";
+import { useFCState } from "../../state/FCState";
 
 export function CardDisplayXButton({ side, boxNumber }: { boxNumber: BoxNumber; side: Side; }) {
 
-  const appState = useContext(AppState);
+  const deck = useFCState(useShallow(state => state.deck));
+  const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+
+  const setCards = useFCState(useShallow(state => state.setCards))
 
   return (
     <svg className={`flashcard-x-button-${boxNumber}`}
@@ -16,19 +18,18 @@ export function CardDisplayXButton({ side, boxNumber }: { boxNumber: BoxNumber; 
         // Don't trigger the editor popover
         event.stopPropagation();
 
-        if (appState.deck) {
+        if (deck) {
 
-          const modifiedCard = structuredClone(appState.deck.cards[appState.visibleCardIndex]);
+          const modifiedCard = structuredClone(deck.cards[visibleCardIndex]);
           modifiedCard[side].box[boxNumber] = null;
-
-          appState.setDeck({
-            ...appState.deck,
-            cards: [
-              ...appState.deck.cards.slice(0, appState.visibleCardIndex),
+          
+          setCards(
+            [
+              ...deck.cards.slice(0, visibleCardIndex),
               modifiedCard,
-              ...appState.deck.cards.slice(appState.visibleCardIndex + 1)
+              ...deck.cards.slice(visibleCardIndex + 1)
             ]
-          });
+          )
         }
       }}>
       <circle cx="50%" cy="50%" r="45%" fill="var(--bs-body-bg)" stroke="var(--bs-body-color)" strokeWidth="5%" />

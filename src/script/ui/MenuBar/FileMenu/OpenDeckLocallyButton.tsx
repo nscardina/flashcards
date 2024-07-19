@@ -1,13 +1,12 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import { OverlayTrigger, Tooltip, TooltipProps } from "react-bootstrap";
-import { AppState } from "../../../App";
 import OpenFileByHandleWorker from "./OpenFileByHandleWorker?worker"
 import { Err, isOk } from "../../../misc/Result";
-import { AppStateType } from "../../../state/AppState";
 import { Deck } from "../../../card/deck";
 import { UnableToOpenFileErrorDialog } from "./UnableToOpenFileErrorDialog";
 import CustomMenuItem from "../CustomMenuItem";
 import { KeyboardShortcuts } from "../../KeyboardShortcuts";
+import { useFCState } from "../../../state/FCState";
 
 
 function isFileSystemAPISupported(): boolean {
@@ -18,12 +17,17 @@ function isString(arg: unknown): arg is string {
   return typeof (arg) === "string"
 }
 
-export async function loadDeckFileFromLocalFile(state: AppStateType) {
+export async function loadDeckFileFromLocalFile() {
 
+  const recentFiles = useFCState(state => state.recentFiles);
+  const addRecentFile = useFCState(state => state.addRecentFile);
+  const setDeck = useFCState(state => state.setDeck);
+  const setVisibleCardIndex = useFCState(state => state.setVisibleCardIndex);
+  const setCurrentDialog = useFCState(state => state.setCurrentDialog);
 
-  const oldRecentFiles = (state.recentFiles.length > 9)
-    ? state.recentFiles.slice(state.recentFiles.length - 9)
-    : state.recentFiles
+  // const oldRecentFiles = (recentFiles.length > 9)
+  //   ? recentFiles.slice(recentFiles.length - 9)
+  //   : recentFiles
 
   if (isFileSystemAPISupported() && window.Worker) {
     const [fileHandle] = await window.showOpenFilePicker({
@@ -40,11 +44,8 @@ export async function loadDeckFileFromLocalFile(state: AppStateType) {
     })
 
     if (fileHandle !== undefined &&
-      state.recentFiles.every(value => !value.isSameEntry(fileHandle))) {
-      state.setRecentFiles([
-        ...oldRecentFiles,
-        fileHandle
-      ])
+      recentFiles.every(value => !value.isSameEntry(fileHandle))) {
+      addRecentFile(fileHandle);
     }
 
 
@@ -64,16 +65,16 @@ export async function loadDeckFileFromLocalFile(state: AppStateType) {
       .then(message => {
         const deck = JSON.parse(message)
         if (Deck.isDeck(deck)) {
-          state.setDeck(deck)
-          state.setVisibleCardIndex(0)
+          setDeck(deck)
+          setVisibleCardIndex(0)
         } else {
-          state.setCurrentDialog(
+          setCurrentDialog(
             <UnableToOpenFileErrorDialog errMessage="Selected file is not a valid deck file." />
           )
         }
       })
       .catch(message => {
-        state.setCurrentDialog(
+        setCurrentDialog(
           <UnableToOpenFileErrorDialog errMessage="Selected file is not a valid deck file." />
         )
         console.log(message)
@@ -84,7 +85,6 @@ export async function loadDeckFileFromLocalFile(state: AppStateType) {
 
 export function OpenDeckLocallyButton() {
 
-  const appState = useContext(AppState)
   const dropdownItemRef = useRef(null)
 
   if (!isFileSystemAPISupported()) {
@@ -107,7 +107,7 @@ export function OpenDeckLocallyButton() {
             as="div"
             {...triggerHandler}
             className="d-flex align-items-center"
-            onClick={() => loadDeckFileFromLocalFile(appState)}
+            onClick={() => loadDeckFileFromLocalFile()}
             disabled={!isFileSystemAPISupported()}
             style={{
               cursor: "pointer",
@@ -127,7 +127,7 @@ export function OpenDeckLocallyButton() {
         ref={dropdownItemRef}
         as="div"
         className="d-flex align-items-center"
-        onClick={() => loadDeckFileFromLocalFile(appState)}
+        onClick={() => loadDeckFileFromLocalFile()}
         disabled={!isFileSystemAPISupported()}
         style={{
           cursor: "pointer",

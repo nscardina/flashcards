@@ -1,10 +1,9 @@
-import { useContext } from "react";
 import { Button, Container, Modal, Row } from "react-bootstrap";
-import { AppState } from "../../../App";
+import { useFCState } from "../../../state/FCState";
 
 export const UnableToOpenFileErrorDialog = ({ errMessage }: { errMessage?: string; }) => {
 
-  const appState = useContext(AppState)
+  const setCurrentDialog = useFCState(state => state.setCurrentDialog);
 
   return (
     <Modal show={true}>
@@ -17,7 +16,7 @@ export const UnableToOpenFileErrorDialog = ({ errMessage }: { errMessage?: strin
           {errMessage && <Row>{errMessage}</Row>}
           <Row>
             <Button
-              onClick={() => appState.setCurrentDialog(<></>)}
+              onClick={() => setCurrentDialog(<></>)}
             >Ok</Button>
           </Row>
         </Container>

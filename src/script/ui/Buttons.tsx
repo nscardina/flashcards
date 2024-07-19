@@ -1,78 +1,87 @@
 import { Button } from "react-bootstrap";
 import AppMode from "../app/AppMode";
-import { useContext } from "react";
-import { AppState } from "../App";
-import { AppStateType } from "../state/AppState";
 import { Deck } from "../card/deck";
 import { Card } from "../card/Card";
 import { Side } from "../card/side";
+import { useFCState } from "../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
-function createNewCard(state: AppStateType) {
+function createNewCard() {
+
+  const deck = useFCState(useShallow(state => state.deck));
+  const setDeck = useFCState(state => state.setDeck);
+  const setCards = useFCState(state => state.setCards);
+  const setAppMode = useFCState(state => state.setAppMode);
+  const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+  const setVisibleCardIndex = useFCState(state => state.setVisibleCardIndex);
+
   // If no deck is loaded yet, create a new empty deck
-  if (state.deck === null) {
+  if (deck === null) {
     // Create an empty deck, set the app mode to EDITING_DECK, set the only 
     // card in the deck to be visible.
-    state.setDeck(Deck.makeDefault())
-    state.setAppMode(AppMode.EDITING_DECK)
-    state.setVisibleCardIndex(0)
+    setDeck(Deck.makeDefault())
+    setAppMode(AppMode.EDITING_DECK)
+    setVisibleCardIndex(0)
   } else {
     // Create a deck containing all existing cards, and insert a new blank card 
     // after the currently visible card. Set the new card as the currently 
     // visible card.
-    state.setDeck({
-      ...state.deck,
-      cards: [
-        ...state.deck.cards.slice(0, state.visibleCardIndex + 1),
+    setCards([
+        ...deck.cards.slice(0, visibleCardIndex + 1),
         Card.makeDefault(),
-        ...state.deck.cards.slice(state.visibleCardIndex + 1)
+        ...deck.cards.slice(visibleCardIndex + 1)
       ]
-    })
-    state.setVisibleCardIndex(state.visibleCardIndex + 1)
+    )
+    setVisibleCardIndex(visibleCardIndex + 1);
   }
 }
 
 
 
-function deleteCard(state: AppStateType, index: number) {
+function deleteCard(index: number) {
+
+  const deck = useFCState(useShallow(state => state.deck));
+  const setCards = useFCState(state => state.setCards);
+  const setAppMode = useFCState(state => state.setAppMode);
+  const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+  const setVisibleCardIndex = useFCState(state => state.setVisibleCardIndex);
+
   // If the deck only contains one card, create a new deck with only one empty 
   // card in it. Set the app mode to EDITING_DECK.
-  if (state.deck !== null && index === 0 && state.deck.cards.length === 1) {
-    state.setDeck({
-      ...state.deck,
-      cards: [Card.makeDefault()]
-    })
-    state.setVisibleCardIndex(0)
-    state.setAppMode(AppMode.EDITING_DECK)
+  if (deck !== null && index === 0 && deck.cards.length === 1) {
+    setCards([Card.makeDefault()])
+    setVisibleCardIndex(0)
+    setAppMode(AppMode.EDITING_DECK)
   }
   // If there is more than one card in the deck, and the card to be deleted is 
   // in the deck (which should always be the case), 
-  else if (state.deck !== null && index >= 0 && index < state.deck.cards.length)
+  else if (deck !== null && index >= 0 && index < deck.cards.length)
   {
-    state.deck.cards.splice(index, 1)
+    deck.cards.splice(index, 1)
 
     // If the currently visible card should be deleted...
-    if (index === state.visibleCardIndex) {
+    if (index === visibleCardIndex) {
       // If the currently visible card is the first one in the deck, set the 
       // visible card to the last card in the deck (which is guaranteed to 
       // exist, as the deck will always have at least two cards at this point).
-      if (state.visibleCardIndex === 0) {
-        state.setVisibleCardIndex(state.deck.cards.length - 1)
+      if (visibleCardIndex === 0) {
+        setVisibleCardIndex(deck.cards.length - 1)
       }
       // If the currently visible card is not the first one in the deck, then 
       // set the currently visible card to the previous one in the deck.
       else {
-        state.setVisibleCardIndex(state.visibleCardIndex - 1)
+        setVisibleCardIndex(visibleCardIndex - 1)
       }
     }
     // If the card to be deleted is greater than or equal to the length of the 
     // new array of cards (which means that the last card was deleted), then 
     // set the new last card to be visible.
-    else if (index >= state.deck.cards.length) {
-      state.setVisibleCardIndex(state.deck.cards.length - 1)
+    else if (index >= deck.cards.length) {
+      setVisibleCardIndex(deck.cards.length - 1)
     }
     // Otherwise, the currently visible card does not need to be changed.
 
-    state.setAppMode(AppMode.EDITING_DECK)
+    setAppMode(AppMode.EDITING_DECK)
   }
 }
 
@@ -82,11 +91,9 @@ export type ButtonPropsType = {
 
 function AddCardButton() {
 
-  const appState = useContext(AppState)
-
   return (
     <Button
-      onClick={() => createNewCard(appState)}
+      onClick={() => createNewCard()}
       className="d-flex align-items-center flashcard-button border-0"
     >
       <span className="material-symbols-outlined" aria-hidden="true">add</span>
@@ -96,12 +103,13 @@ function AddCardButton() {
 
 function EditCardButton() {
 
-  const appState = useContext(AppState)
+  const deck = useFCState(useShallow(state => state.deck));
+  const setAppMode = useFCState(state => state.setAppMode);
 
   return (
     <Button
-      disabled={!appState.deck}
-      onClick={() => appState.setAppMode(AppMode.EDITING_DECK)}
+      disabled={!deck}
+      onClick={() => setAppMode(AppMode.EDITING_DECK)}
       className="d-flex align-items-center flashcard-button border-0"
     >
       <span className="material-symbols-outlined" aria-hidden="true">edit</span>
@@ -111,13 +119,14 @@ function EditCardButton() {
 
 function DeleteCardButton() {
 
-  const appState = useContext(AppState)
+  const deck = useFCState(useShallow(state => state.deck));
+  const visibleCardIndex = useFCState(state => state.visibleCardIndex);
 
   return (
     <Button
-      disabled={!appState.deck}
+      disabled={!deck}
       className="d-flex align-items-center flashcard-button border-0 z-1"
-      onClick={() => deleteCard(appState, appState.visibleCardIndex)}
+      onClick={() => deleteCard(visibleCardIndex)}
     >
       <span className="material-symbols-outlined" aria-hidden="true">
         close
@@ -127,10 +136,11 @@ function DeleteCardButton() {
 }
 
 function ReviewDeckButton({ onClick }: ButtonPropsType) {
-  const appState = useContext(AppState)
+
+  const deck = useFCState(useShallow(state => state.deck));
 
   return (
-    <Button onClick={onClick} disabled={appState.deck === null}>
+    <Button onClick={onClick} disabled={deck === null}>
       Review
     </Button>
   )
@@ -138,26 +148,29 @@ function ReviewDeckButton({ onClick }: ButtonPropsType) {
 
 function DoneButton() {
 
-  const appState = useContext(AppState)
+  const setAppMode = useFCState(state => state.setAppMode);
 
   return (
-    <Button onClick={() => appState.setAppMode(AppMode.MANAGING_FILES)}>
+    <Button onClick={() => setAppMode(AppMode.MANAGING_FILES)}>
       Done
     </Button>
   )
 }
 
 function FlipCardButton() {
-  const appState = useContext(AppState)
+
+  const deck = useFCState(useShallow(state => state.deck));
+  const visibleSide = useFCState(state => state.visibleSide);
+  const setVisibleSide = useFCState(state => state.setVisibleSide);
 
   return (
     <Button onClick={() => {
-      if (appState.visibleSide === Side.FRONT) {
-        appState.setVisibleSide(Side.BACK)
+      if (visibleSide === Side.FRONT) {
+        setVisibleSide(Side.BACK)
       } else {
-        appState.setVisibleSide(Side.FRONT)
+        setVisibleSide(Side.FRONT)
       }
-    }} disabled={!appState.deck}
+    }} disabled={!deck}
     className="d-flex align-items-center flashcard-button border-0 z-1">
       <span className="material-symbols-outlined" aria-hidden="true">
         flip

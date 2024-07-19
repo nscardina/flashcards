@@ -1,46 +1,46 @@
 import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
-import { useContext } from "react";
-import { AppState } from "../../App";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 
 export default function MoveCardForwardsButton() {
 
-    const appState = useContext(AppState);
+    // DO NOT MAKE THIS SHALLOW!
+    const deck = useFCState(state => state.deck);
+    const setCards = useFCState(state => state.setCards);
+    const visibleCardIndex = useFCState(useShallow(state => state.visibleCardIndex));
 
     return (
         <OverlayTrigger overlay={<Tooltip placement="bottom-end">View Next Card</Tooltip>}>
             <Button
-                style={(appState.deck === null
-                    || appState.deck.cards.length > 0) ? {
+                style={(deck === null
+                    || deck.cards.length > 0) ? {
                     pointerEvents: "none",
-                    color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
+                    color: (deck === null) ? "var(--bs-secondary)" : "inherit",
                 } : {}}
                 className="flashcard-button" disabled={
-                    appState.deck === null
-                    || appState.deck.cards.length > 0
+                    deck === null
+                    || deck.cards.length > 0
                 } onClick={() => {
                     if (
-                        appState.deck !== null
-                        && appState.deck.cards.length >= 2
-                        && appState.visibleCardIndex >= 0
-                        && appState.visibleCardIndex < appState.deck.cards.length
+                        deck !== null
+                        && deck.cards.length >= 2
+                        && visibleCardIndex >= 0
+                        && visibleCardIndex < deck.cards.length
                     ) {
-                        const cards = [...appState.deck.cards];
-                        if (appState.visibleCardIndex === cards.length - 1) {
+                        const cards = [...deck.cards];
+                        if (visibleCardIndex === cards.length - 1) {
                             const temp = cards[cards.length - 1];
                             cards[cards.length - 1] = cards[0];
                             cards[0] = temp;
                         } else {
-                            const temp = cards[appState.visibleCardIndex];
-                            cards[appState.visibleCardIndex] = cards[appState.visibleCardIndex + 1];
-                            cards[appState.visibleCardIndex + 1] = temp;
+                            const temp = cards[visibleCardIndex];
+                            cards[visibleCardIndex] = cards[visibleCardIndex + 1];
+                            cards[visibleCardIndex + 1] = temp;
                         }
 
-                        appState.setDeck({
-                            ...appState.deck,
-                            cards: cards
-                        });
+                        setCards(cards);
                     }
                 }}>
                 <MaterialSymbol>arrow_forward</MaterialSymbol>

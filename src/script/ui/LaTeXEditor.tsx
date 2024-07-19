@@ -1,5 +1,4 @@
-import { useContext, useState } from "react";
-import { AppState } from "../App";
+import { useState } from "react";
 import { Button, Modal, Row } from "react-bootstrap";
 import Latex from "react-latex-next";
 import { createEditor, Node, Path, Transforms } from "slate";
@@ -9,9 +8,9 @@ import { ParagraphElement } from "./types/block/ParagraphElement";
 import { LaTeXTextSpan } from "./types/block/LaTeXTextSpan";
 import GeneratorToArray from "../misc/GeneratorToArray";
 import { CustomElement } from "./types/slate_defs";
+import { useFCState } from "../state/FCState";
 
 export default function LaTeXEditor() {
-    const appState = useContext(AppState);
 
     const [editor] = useState(() => withReact(withHistory(createEditor())));
 
@@ -35,9 +34,7 @@ export default function LaTeXEditor() {
                 <Row>
                     <Button onClick={() => {
                         try {
-                            const editor = appState.textEditors[
-                                appState.lastEditedTextEditorIndex
-                            ]
+                            const editor = useFCState(state => state.currentEditor)();
     
                             const node: LaTeXTextSpan = {
                                 type: "latex_text_span",
@@ -49,9 +46,7 @@ export default function LaTeXEditor() {
                                 ]
                             }
     
-                            console.log(editor.selection)
                             const selection = editor.selection
-                            console.log(editor.children)
                             
                             if (selection !== null) {
                                 const path = selection.anchor.path
@@ -113,7 +108,7 @@ export default function LaTeXEditor() {
                                
                                 console.log(editor.children)
     
-                                if (appState.shouldLaTeXEditorReplace) {
+                                if (useFCState(state => state.shouldLaTeXEditorReplace)) {
                                     Transforms.delete(editor, {
                                         at: Path.next(selection.anchor.path)
                                     });
@@ -122,7 +117,7 @@ export default function LaTeXEditor() {
                             }
                             
                         } finally {
-                            appState.setShowLaTeXEditor(false);
+                            useFCState(state => state.setShowLaTeXEditor)(false);
                         }
                        
 

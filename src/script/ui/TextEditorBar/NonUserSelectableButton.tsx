@@ -1,14 +1,14 @@
-import { useContext } from "react";
 import { Button } from "react-bootstrap";
-import { AppState } from "../../App";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 function NonUserSelectableButton(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
 
-    const appState = useContext(AppState);
+    const deck = useFCState(useShallow(state => state.deck));
 
     return (
         <Button 
-            disabled={appState.deck === null}
+            disabled={deck === null}
             as="button" 
             className="user-select-none" 
             onMouseDown={event => event.preventDefault()}

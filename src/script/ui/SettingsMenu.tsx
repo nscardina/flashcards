@@ -1,12 +1,14 @@
 import { Dropdown } from "react-bootstrap";
 import { ReviewOrder } from "../ReviewOrder";
 import { ShowSideProviderNames } from "../ShowSideProvider";
-import { useContext } from "react";
-import { AppState } from "../App";
+import { useFCState } from "../state/FCState";
 
 function SettingsMenu() {
 
-  const appState = useContext(AppState)
+  const reviewOrder = useFCState(state => state.reviewOrder);
+  const setReviewOrder = useFCState(state => state.setReviewOrder);
+  const showSideProviderName = useFCState(state => state.showSideProviderName);
+  const setShowSideProviderName = useFCState(state => state.setShowSideProviderName);
 
   return (
     <Dropdown align="end">
@@ -51,13 +53,13 @@ function SettingsMenu() {
           Review order:
           <Dropdown>
             <Dropdown.Toggle className="flashcard-button border-0">
-              {appState.reviewOrder}
+              {reviewOrder}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {
                 Object.values(ReviewOrder).map(order => (
                   <Dropdown.Item key={order}
-                    onClick={() => appState.setReviewOrder(order)}
+                    onClick={() => setReviewOrder(order)}
                   >
                     {order}
                   </Dropdown.Item>
@@ -70,15 +72,15 @@ function SettingsMenu() {
           Show side of card:
           <Dropdown>
             <Dropdown.Toggle className="flashcard-button border-0">
-              {appState.showSideProviderName.charAt(0).toUpperCase() +
-                appState.showSideProviderName.substring(1).toLowerCase()}
+              {showSideProviderName.charAt(0).toUpperCase() +
+                showSideProviderName.substring(1).toLowerCase()}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {
                 (ShowSideProviderNames).map(
                   providerName => (
                     <Dropdown.Item key={providerName} onClick={
-                      () => appState.setShowSideProviderName(providerName)
+                      () => setShowSideProviderName(providerName)
                     }>
                       {providerName.charAt(0).toUpperCase() +
                         providerName.substring(1).toLowerCase()}

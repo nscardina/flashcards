@@ -1,8 +1,7 @@
 import { Dropdown } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
 import { Editor, Element, Node, Path, Transforms } from "slate";
-import { KeyboardEvent, useContext } from "react";
-import { AppState } from "../../App";
+import { KeyboardEvent } from "react";
 import { Range } from "slate";
 import { CustomText } from "../types/slate_defs";
 import { ParagraphElement } from "../types/block/ParagraphElement";
@@ -10,6 +9,8 @@ import { OrderedListElement } from "../types/block/OrderedListElement";
 import { OrderedListMember } from "../types/block/OrderedListMember";
 import { UnorderedListMember } from "../types/block/UnorderedListMember";
 import { UnorderedListElement } from "../types/block/UnorderedListElement";
+import { useFCState } from "../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 export function listEnterKeyEventHandler(
     event: KeyboardEvent,
@@ -287,16 +288,16 @@ function orderedListEnterKeyEventHandler(
 
 export default function ListButton() {
 
-    const appState = useContext(AppState)
-    const textEditor = appState.textEditors[appState.lastEditedTextEditorIndex]
+    const textEditor = useFCState(state => state.currentEditor)();
+    const deck = useFCState(useShallow(state => state.deck));
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">
             <Dropdown.Toggle className="flashcard-button d-flex flex-row" style={{ 
                 alignItems: "center",
-                color: (appState.deck === null) ? "var(--bs-secondary)" : "inherit",
+                color: (deck === null) ? "var(--bs-secondary)" : "inherit",
             }}
-                disabled={appState.deck === null}
+                disabled={deck === null}
             >
                 <MaterialSymbol>format_list_bulleted</MaterialSymbol>
             </Dropdown.Toggle>

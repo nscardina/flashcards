@@ -1,38 +1,40 @@
-import { HTMLAttributes, SVGAttributes, useContext, useState } from "react";
+import { HTMLAttributes, SVGAttributes, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { DropdownSubmenu } from "react-bootstrap-submenu";
 import "react-bootstrap-submenu/dist/index.css";
 import CustomMenuItem from "../CustomMenuItem";
-import { AppState } from "../../../App";
 import CardLayout from "../../../card/cardlayout";
-import { AppStateType } from "../../../state/AppState";
 import { Side } from "../../../card/side";
+import { useFCState } from "../../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
-function changeCardLayout(state: AppStateType, layout: CardLayout): void {
-    if (state.deck !== null && state.deck.cards.length > 0) {
-        const updatedCard = (state.visibleSide === Side.FRONT) ? {
+function changeCardLayout(layout: CardLayout): void {
+
+    const deck = useFCState(state => state.deck);
+    const setCards = useFCState(state => state.setCards);
+    const visibleSide = useFCState(state => state.visibleSide);
+    const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+
+    if (deck !== null && deck.cards.length > 0) {
+        const updatedCard = (visibleSide === Side.FRONT) ? {
             front: {
-                ...state.deck.cards[state.visibleCardIndex].front,
+                ...deck.cards[visibleCardIndex].front,
                 layout: layout
             },
-            back: state.deck.cards[state.visibleCardIndex].back,
+            back: deck.cards[visibleCardIndex].back,
         } : {
-            front: state.deck.cards[state.visibleCardIndex].front,
+            front: deck.cards[visibleCardIndex].front,
             back: {
-                ...state.deck.cards[state.visibleCardIndex].back,
+                ...deck.cards[visibleCardIndex].back,
                 layout: layout
             }
         }
 
-        state.setDeck({
-            name: state.deck.name,
-            cards: [
-                ...state.deck.cards.slice(0, state.visibleCardIndex),
-                updatedCard,
-                ...state.deck.cards.slice(state.visibleCardIndex + 1)
-            ]
-        })
-
+        setCards([
+            ...deck.cards.slice(0, visibleCardIndex),
+            updatedCard,
+            ...deck.cards.slice(visibleCardIndex + 1)
+        ])
     }
 }
 
@@ -125,6 +127,10 @@ const TwoTopVerticalBoxesOneBottomHorizontalBox = (props: HTMLAttributes<SVGElem
 
 export default function LayoutToggleButton() {
 
+    const deck = useFCState(useShallow(state => state.deck));
+    const visibleSide = useFCState(state => state.visibleSide);
+    const visibleCardIndex = useFCState(state => state.visibleCardIndex);
+
     const oneBoxIcon = <OneBoxIcon strokecolor="black" className="ms-2 mt-1" />
     const twoVerticalBoxesIcon = <TwoVerticalBoxesIcon strokecolor="black" className="ms-2 mt-1" />
     const twoHorizontalBoxesIcon = <TwoHorizontalBoxesIcon strokecolor="black" className="ms-2 mt-1" />
@@ -157,12 +163,11 @@ export default function LayoutToggleButton() {
         }
     }
 
-    const appState = useContext(AppState)
-    const [currentIcon, setCurrentIcon] = useState<JSX.Element>(mapLayout(appState?.deck?.cards[appState?.visibleCardIndex][appState?.visibleSide]?.layout))
+    const [currentIcon, setCurrentIcon] = useState<JSX.Element>(mapLayout(deck?.cards[visibleCardIndex][visibleSide]?.layout))
 
-    if (appState.deck === null) {
+    if (deck === null) {
         return (
-            <Dropdown.Item as="button" style={{ display: "flex", flexDirection: "row", }} disabled={appState.deck === null}> 
+            <Dropdown.Item as="button" style={{ display: "flex", flexDirection: "row", }} disabled={deck === null}>
                 {currentIcon}
                 Card Layout
             </Dropdown.Item>
@@ -173,13 +178,13 @@ export default function LayoutToggleButton() {
             <>
                 <Dropdown.Item as="button" style={{ margin: "0px", padding: "0px", display: "flex", flexDirection: "row", }} >
                     {currentIcon}
-                    <DropdownSubmenu as="button" id={`layout-toggle-button${(appState.deck === null) ? "-disabled" : ""}`} title="Card Layout">
+                    <DropdownSubmenu as="button" id={`layout-toggle-button${(deck === null) ? "-disabled" : ""}`} title="Card Layout">
                         <CustomMenuItem
                             style={{ display: "flex", flexDirection: "row" }}
                             icon={<OneBoxIcon strokecolor="black" className="me-2" />}
                             body={<>One Box</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.ONE_BOX)
+                                changeCardLayout(CardLayout.ONE_BOX)
                                 setCurrentIcon(oneBoxIcon)
                             }}
                         />
@@ -187,7 +192,7 @@ export default function LayoutToggleButton() {
                             icon={<TwoVerticalBoxesIcon strokecolor="black" className="me-2" />}
                             body={<>Two Vertical Boxes</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.TWO_BOXES_V)
+                                changeCardLayout(CardLayout.TWO_BOXES_V)
                                 setCurrentIcon(twoVerticalBoxesIcon)
                             }}
                         />
@@ -195,7 +200,7 @@ export default function LayoutToggleButton() {
                             icon={<TwoHorizontalBoxesIcon strokecolor="black" className="me-2" />}
                             body={<>Two Horizontal Boxes</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.TWO_BOXES_H)
+                                changeCardLayout(CardLayout.TWO_BOXES_H)
                                 setCurrentIcon(twoHorizontalBoxesIcon)
                             }}
                         />
@@ -203,7 +208,7 @@ export default function LayoutToggleButton() {
                             icon={<FourBoxesIcon strokecolor="black" className="me-2" />}
                             body={<>Four Boxes</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.FOUR_BOXES)
+                                changeCardLayout(CardLayout.FOUR_BOXES)
                                 setCurrentIcon(fourBoxesIcon)
                             }}
                         />
@@ -211,7 +216,7 @@ export default function LayoutToggleButton() {
                             icon={<OneLeftVerticalBoxTwoRightHorizontalBoxes strokecolor="black" className="me-2" />}
                             body={<>One vertical box on left, two horizontal boxes on right</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.ONE_BOX_LV_TWO_BOXES_RV)
+                                changeCardLayout(CardLayout.ONE_BOX_LV_TWO_BOXES_RV)
                                 setCurrentIcon(oneLeftVTwoRightHIcon)
                             }}
                         />
@@ -219,7 +224,7 @@ export default function LayoutToggleButton() {
                             icon={<OneRightVerticalBoxTwoLeftHorizontalBoxes strokecolor="black" className="me-2" />}
                             body={<>One vertical box on right, two horizontal boxes on left</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.ONE_BOX_RV_TWO_BOXES_LV)
+                                changeCardLayout(CardLayout.ONE_BOX_RV_TWO_BOXES_LV)
                                 setCurrentIcon(oneRightVTwoLeftHIcon)
                             }}
                         />
@@ -227,7 +232,7 @@ export default function LayoutToggleButton() {
                             icon={<OneTopHorizontalBoxTwoBottomVerticalBoxes strokecolor="black" className="me-2" />}
                             body={<>One horizontal box on top, two vertical boxes on bottom</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.ONE_BOX_TH_TWO_BOXES_BH)
+                                changeCardLayout(CardLayout.ONE_BOX_TH_TWO_BOXES_BH)
                                 setCurrentIcon(oneTopHTwoBottomVIcon)
                             }}
                         />
@@ -235,7 +240,7 @@ export default function LayoutToggleButton() {
                             icon={<TwoTopVerticalBoxesOneBottomHorizontalBox strokecolor="black" className="me-2" />}
                             body={<>Two vertical boxes on top, one horizontal box on bottom</>}
                             onClick={() => {
-                                changeCardLayout(appState, CardLayout.ONE_BOX_BH_TWO_BOXES_TH)
+                                changeCardLayout(CardLayout.ONE_BOX_BH_TWO_BOXES_TH)
                                 setCurrentIcon(twoTopVOneBottomHIcon)
                             }}
                         />

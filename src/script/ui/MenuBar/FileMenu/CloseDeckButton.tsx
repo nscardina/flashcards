@@ -1,17 +1,19 @@
-import { useContext } from "react";
-import { AppState } from "../../../App";
 import CustomMenuItem from "../CustomMenuItem";
 import Dialog from "../../../app/Dialog";
+import { useFCState } from "../../../state/FCState";
+import { useShallow } from "zustand/react/shallow";
 
 export function CloseDeckButton() {
-    const appState = useContext(AppState);
+    
+  const deck = useFCState(useShallow(state => state.deck));
+  const setVisibleDialog = useFCState(state => state.setVisibleDialog);
 
     return (
         <CustomMenuItem
         as="div"
         className="d-flex align-items-center"
-        disabled={appState.deck === null}
-        onClick={() => appState.setVisibleDialog(Dialog.DELETE_DECK_CONFIRMATION_MESSAGE)}
+        disabled={deck === null}
+        onClick={() => setVisibleDialog(Dialog.DELETE_DECK_CONFIRMATION_MESSAGE)}
         style={{
           cursor: "pointer",
           pointerEvents: "all"
