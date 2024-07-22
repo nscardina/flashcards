@@ -1,17 +1,20 @@
 import { Dropdown } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
 import { Editor, Transforms } from "slate";
-import React from "react";
+import React, { useContext } from "react";
 import { Element } from "slate";
 import { HorizontalAlignment } from "../types/slate_defs";
 import { useFCState } from "../../state/FCState";
 import { useShallow } from "zustand/react/shallow";
+import { getEditorByIndex, ReactEditorContext } from "../../App";
 
 
 
 export default function TextAlignmentButton() {
 
-    const textEditor = useFCState(state => state.currentEditor)();
+    const state = useContext(ReactEditorContext);
+    const textEditor = getEditorByIndex(state, state.lastEditedTextEditorIndex);
+    // const textEditor = useFCState(state => state.currentEditor)();
     const deck = useFCState(useShallow(state => state.deck));
 
     function textAlignmentOnClickFactory(
@@ -20,10 +23,13 @@ export default function TextAlignmentButton() {
     
         return (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
             event.preventDefault()
-            Transforms.setNodes(textEditor, 
-                {type: "paragraph", alignment: propertyName}, 
-                {match: node => Element.isElement(node) && 
-                    Editor.isBlock(textEditor, node)})
+            if (textEditor !== null) {
+                Transforms.setNodes(textEditor, 
+                    {type: "paragraph", alignment: propertyName}, 
+                    {match: node => Element.isElement(node) && 
+                        Editor.isBlock(textEditor, node)})
+            }
+            
         }
     }   
 

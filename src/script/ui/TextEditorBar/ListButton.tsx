@@ -1,7 +1,7 @@
 import { Dropdown } from "react-bootstrap";
 import MaterialSymbol from "../MaterialSymbol";
 import { Editor, Element, Node, Path, Transforms } from "slate";
-import { KeyboardEvent } from "react";
+import { KeyboardEvent, useContext } from "react";
 import { Range } from "slate";
 import { CustomText } from "../types/slate_defs";
 import { ParagraphElement } from "../types/block/ParagraphElement";
@@ -11,6 +11,7 @@ import { UnorderedListMember } from "../types/block/UnorderedListMember";
 import { UnorderedListElement } from "../types/block/UnorderedListElement";
 import { useFCState } from "../../state/FCState";
 import { useShallow } from "zustand/react/shallow";
+import { getEditorByIndex, ReactEditorContext } from "../../App";
 
 export function listEnterKeyEventHandler(
     event: KeyboardEvent,
@@ -288,7 +289,8 @@ function orderedListEnterKeyEventHandler(
 
 export default function ListButton() {
 
-    const textEditor = useFCState(state => state.currentEditor)();
+    const state = useContext(ReactEditorContext);
+    const textEditor = getEditorByIndex(state, state.lastEditedTextEditorIndex);
     const deck = useFCState(useShallow(state => state.deck));
 
     return (
@@ -306,7 +308,7 @@ export default function ListButton() {
                 <Dropdown.Item className="d-flex flex-row" onClick={event => {
                     event.preventDefault()
 
-                    if (!textEditor.selection) {
+                    if (textEditor === null || !textEditor.selection) {
                         return
                     }
 
@@ -377,7 +379,7 @@ export default function ListButton() {
                 <Dropdown.Item className="d-flex flex-row" onClick={event => {
                     event.preventDefault()
 
-                    if (!textEditor.selection) {
+                    if (textEditor === null || !textEditor.selection) {
                         return
                     }
 

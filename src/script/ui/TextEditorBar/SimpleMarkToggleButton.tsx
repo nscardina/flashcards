@@ -1,9 +1,10 @@
 import NonUserSelectableButton from "./NonUserSelectableButton";
 import { Editor } from "slate";
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import { FormattedText, isFormattedTextMarks } from "../types/leaf/FormattedText";
 import { useFCState } from "../../state/FCState";
 import { useShallow } from "zustand/react/shallow";
+import { getEditorByIndex, ReactEditorContext } from "../../App";
 
 export type SimpleMarkToggleButtonProps = {
     markToggleProperty: keyof Omit<FormattedText, "text">,
@@ -14,7 +15,9 @@ export type SimpleMarkToggleButtonProps = {
 export default function SimpleMarkToggleButton(
     props: SimpleMarkToggleButtonProps
 ) {
-    const selectedEditor = useFCState(state => state.currentEditor)();
+    // const selectedEditor = useFCState(state => state.currentEditor)();
+    const state = useContext(ReactEditorContext);
+    const selectedEditor = getEditorByIndex(state, state.lastEditedTextEditorIndex);
     const deck = useFCState(useShallow(state => state.deck));
 
     const onClick = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

@@ -3,6 +3,8 @@ import { Editor } from "slate";
 import { isFormattedTextMarks } from "../types/leaf/FormattedText";
 import { useFCState } from "../../state/FCState";
 import { useShallow } from "zustand/react/shallow";
+import { useContext } from "react";
+import { getEditorByIndex, ReactEditorContext } from "../../App";
 
 const FONT_SIZES = [
     ["xx-small", "super small"],
@@ -20,7 +22,9 @@ export default function FontSizeSelectButton() {
     const deck = useFCState(useShallow(state => state.deck));
     const currentMarks = useFCState(state => state.currentMarks);
     const setCurrentMarks = useFCState(state => state.setCurrentMarks);
-    const selectedEditor = useFCState(state => state.currentEditor)();
+    // const selectedEditor = useFCState(state => state.currentEditor)();
+    const state = useContext(ReactEditorContext);
+    const selectedEditor = getEditorByIndex(state, state.lastEditedTextEditorIndex);
 
     return (
         <Dropdown className="fc-text-editor-bar-min-content">

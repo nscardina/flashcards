@@ -1,12 +1,13 @@
 import { RenderElementProps } from "slate-react";
 import { Property } from "csstype"
 import { CustomElement } from "../types/slate_defs";
-import { HTMLProps } from "react";
+import { HTMLProps, useContext } from "react";
 import 'katex/dist/katex.min.css';
 import Latex from "react-latex-next";
 import { LaTeXText } from "../types/leaf/LaTeXText";
 import { Range } from "slate";
 import { useFCState } from "../../state/FCState";
+import { getEditorByIndex, ReactEditorContext } from "../../App";
 
 
 //@ts-ignore
@@ -63,7 +64,9 @@ function FormattedTextSpan(props: RenderElementProps) {
 
 function LaTeXTextSpan(props: RenderElementProps) {
 
-    const editor = useFCState(state => state.currentEditor)();
+    // const editor = useFCState(state => state.currentEditor)();
+    // const state = useContext(ReactEditorContext);
+    const editor = null as any;
     const lastEditedNodePath = useFCState(state => state.lastEditedNodePath);
     const setLastEditedNodePath = useFCState(state => state.setLastEditedNodePath);
     const setShouldLaTeXEditorReplace = useFCState(state => state.setShouldLaTeXEditorReplace);
@@ -78,13 +81,15 @@ function LaTeXTextSpan(props: RenderElementProps) {
                 } else {
                     return curr
                 }
-            });
+            }
+            );
 
     return (
         <span {...props.attributes} contentEditable={false} onClick={
             () => {
-                
-                if (editor.selection !== null 
+
+                if (editor !== null
+                    && editor.selection !== null
                     && Range.isCollapsed(editor.selection)
                 ) {
                     setShouldLaTeXEditorReplace(true);
@@ -95,7 +100,7 @@ function LaTeXTextSpan(props: RenderElementProps) {
                     } else {
                         setLastEditedNodePath([...path, 0])
                     }
-                    
+
                 }
             }
         }>

@@ -3,6 +3,8 @@ import { Editor } from "slate";
 import { FormattedText, isFormattedTextMarks } from "../types/leaf/FormattedText";
 import { useFCState } from "../../state/FCState";
 import { useShallow } from "zustand/react/shallow";
+import { useContext } from "react";
+import { getEditorByIndex, ReactEditorContext } from "../../App";
 
 const WEB_SAFE_FONTS: string[] = [
     "Arial",
@@ -19,7 +21,9 @@ const OTHER_FONTS: string[] = [
 
 export default function FontSelectButton() {
 
-    const selectedEditor = useFCState(state => state.currentEditor)();
+    // const selectedEditor = useFCState(state => state.currentEditor)();
+    const state = useContext(ReactEditorContext);
+    const selectedEditor = getEditorByIndex(state, state.lastEditedTextEditorIndex);
     const deck = useFCState(useShallow(state => state.deck));
     const currentMarks = useFCState(state => state.currentMarks);
     const setCurrentMarks = useFCState(state => state.setCurrentMarks);
