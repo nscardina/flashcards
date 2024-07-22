@@ -8,7 +8,7 @@ import CardLayout from "../../card/cardlayout"
 import { CardContentData } from "../../card/CardContentData"
 import { Side } from "../../card/side"
 import { BoxNumber } from "../../card/Box"
-import { FCEditor } from "../Editor/FCEditor"
+import { FCEditor } from "../OldSlateEditor/FCEditor"
 import { useFCState } from "../../state/FCState";
 
 function getCSSClassFromCardLayout(layout: CardLayout): string {
