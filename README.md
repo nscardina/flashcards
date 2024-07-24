@@ -11,16 +11,16 @@ A user-friendly flashcard app for memorizing information.
 </a>
 
 <a href="https://github.com/nscardina/flashcards/blob/main/LICENSE">
-<img display="inline" src="https://img.shields.io/badge/license-MIT-blue">
+<img display="inline" src="https://img.shields.io/badge/View License-blue">
 </a>
 
 <a href="https://nscardina.github.io/flashcards">
-<img display="inline" src="https://img.shields.io/badge/GitHub Pages-blue">
+<img display="inline" src="https://img.shields.io/badge/View on GitHub Pages-blue">
 </a>
 
 </p>
 
-Do you like using flashcards as a study tool? This is the app for you! Create decks of flashcards, with support for plain text, images, and mathematics rendering using $\LaTeX$. You can save the decks to your computer as a `.deck` file, and send them to your friends. Anyone can then open the `.deck` file in the Flashcards app later!
+Do you like using flashcards as a study tool? This is the app for you! Create decks of flashcards, with support for plain text and images. You can save the decks to your computer as a `.deck` file, and send them to your friends. Anyone can then open the `.deck` file in the Flashcards app later!
 
 You can review your flashcards in order, in reverse order, or in random order. Also, when reviewing, you can have the Flashcards app show you the front of the card, the back of the card, or a random side of the card. This can help you learn information both ways - for example, if you're memorizing definitions of words, you can learn the definitions of each word and the word corresponding to each definition.
 
