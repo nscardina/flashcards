@@ -6,8 +6,6 @@ import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
 
 import "../style/App.scss"
 import DeleteDeckConfirmationMessage from './ui/DeleteDeckConfirmationMessage';
-import TextEditorBar from './ui/TextEditorBar/TextEditorBar';
-// import LaTeXEditor from './ui/LaTeXEditor';
 import { useFCState } from './state/FCState';
 import { BaseEditor, createEditor } from 'slate';
 import { ReactEditor, withReact } from 'slate-react';

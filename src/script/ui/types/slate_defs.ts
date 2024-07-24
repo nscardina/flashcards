@@ -1,4 +1,4 @@
-import { BaseEditor, Text } from "slate";
+import { BaseEditor } from "slate";
 import { HistoryEditor } from "slate-history";
 import { ReactEditor } from "slate-react";
 import { ParagraphElement } from "./block/ParagraphElement";

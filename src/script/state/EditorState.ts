@@ -24,25 +24,11 @@ export type EditorState = {
 
 
 
-export const createEditorState: StateCreator<EditorState> = (set, get) => ({
+export const createEditorState: StateCreator<EditorState> = (set) => ({
         visibleCardIndex: -1,
         setVisibleCardIndex: newVisibleCardIndex => set(_state => ({ visibleCardIndex: newVisibleCardIndex })),
         visibleSide: Side.FRONT,
         setVisibleSide: newVisibleSide => set(_state => ({ visibleSide: newVisibleSide })),
-        
-        // textEditors: [
-        //     withReact(withHistory(createEditor())), // 0 to 7 are for the flashcards
-        //     withReact(withHistory(createEditor())),
-        //     withReact(withHistory(createEditor())),
-        //     withReact(withHistory(createEditor())),
-        //     withReact(withHistory(createEditor())),
-        //     withReact(withHistory(createEditor())),
-        //     withReact(withHistory(createEditor())),
-        //     withReact(withHistory(createEditor())),
-        //     withReact(withHistory(createEditor())), // 8 is for the LaTeX editor
-        // ],
-        // lastEditedTextEditorIndex: -1,
-        // setLastEditedTextEditorIndex: newLastEditedTextEditorIndex => set(_state => ({ lastEditedTextEditorIndex: newLastEditedTextEditorIndex })),
         lastEditedNodePath: [],
         setLastEditedNodePath: newLastEditedNodePath => set(_state => ({ lastEditedNodePath: newLastEditedNodePath })),
         currentMarks: { type: "formatted_text" },
@@ -52,12 +38,4 @@ export const createEditorState: StateCreator<EditorState> = (set, get) => ({
         shouldLaTeXEditorReplace: false,
         setShouldLaTeXEditorReplace: shouldLaTeXEditorReplace => set(_state => ({ shouldLaTeXEditorReplace: shouldLaTeXEditorReplace })),
 
-        // currentEditor: function() {
-        //     const editor = get().textEditors[get().lastEditedTextEditorIndex];
-        //     if (editor === undefined) {
-        //         return null;
-        //     } else {
-        //         return editor;
-        //     }
-        // }
     })

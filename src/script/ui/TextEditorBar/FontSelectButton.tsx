@@ -1,6 +1,6 @@
 import { Dropdown } from "react-bootstrap";
 import { Editor } from "slate";
-import { FormattedText, isFormattedTextMarks } from "../types/leaf/FormattedText";
+import { isFormattedTextMarks } from "../types/leaf/FormattedText";
 import { useFCState } from "../../state/FCState";
 import { useShallow } from "zustand/react/shallow";
 import { useContext } from "react";
@@ -25,7 +25,7 @@ export default function FontSelectButton() {
     const state = useContext(ReactEditorContext);
     const selectedEditor = getEditorByIndex(state, state.lastEditedTextEditorIndex);
     const deck = useFCState(useShallow(state => state.deck));
-    const currentMarks = useFCState(state => state.currentMarks);
+    // const currentMarks = useFCState(state => state.currentMarks);
     const setCurrentMarks = useFCState(state => state.setCurrentMarks);
 
     return (
@@ -34,9 +34,9 @@ export default function FontSelectButton() {
             disabled={deck === null}
             style={{color: (deck === null) ? "var(--bs-secondary)" : "inherit"}}
             >
-                {currentMarks?.type === "formatted_text"
+                {/* {currentMarks?.type === "formatted_text"
                     ? ((currentMarks as Omit<FormattedText, "text"> | null)?.fontFamily ?? "Roboto")
-                    : "Roboto"}
+                    : "Roboto"} */}
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 <Dropdown.Header>Web Safe Fonts</Dropdown.Header>
