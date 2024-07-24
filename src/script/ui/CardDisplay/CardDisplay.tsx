@@ -8,8 +8,8 @@ import CardLayout from "../../card/cardlayout"
 import { CardContentData } from "../../card/CardContentData"
 import { Side } from "../../card/side"
 import { BoxNumber } from "../../card/Box"
-import { FCEditor } from "../OldSlateEditor/FCEditor"
 import { useFCState } from "../../state/FCState";
+import TextEditor from "../Editor/TextEditor";
 
 function getCSSClassFromCardLayout(layout: CardLayout): string {
   switch (layout) {
@@ -88,14 +88,15 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
                     case CardContentData.Type.TEXT:
                       return (
                         <div key={boxNumber} className="flashcard-box flashcard-edit-mode-box">
-                          <FCEditor
+                          {/* <FCEditor
                             initialValue={structuredClone(box.textNodes)}
                             editorIndex={(side === Side.FRONT ? 0 : 4) + (Number(boxNumber) - 1)}
                           />
                           {
                             appMode === AppMode.EDITING_DECK ?
                               <CardDisplayXButton boxNumber={boxNumber} side={Side.FRONT} /> : ""
-                          }
+                          } */}
+                          <TextEditor />
                         </div>
 
                       )

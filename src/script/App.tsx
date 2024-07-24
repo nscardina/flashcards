@@ -59,7 +59,7 @@ function App() {
             setLastEditedTextEditorIndex: setLastEditedTextEditorIndex,
         }}>
             <MenuBar />
-            <TextEditorBar />
+            {/* <TextEditorBar /> */}
             <DeckInteractionArea />
 
             {/* {showLaTeXEditor && <LaTeXEditor />} */}

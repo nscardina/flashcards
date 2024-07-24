@@ -1,17 +1,15 @@
-import { HorizontalAlignment } from "../slate_defs";
-import { FormattedTextSpan } from "./FormattedTextSpan";
-import { LaTeXTextSpan } from "./LaTeXTextSpan";
+import { CustomText } from "../slate_defs";
 
 export type ParagraphElement = {
     type: "paragraph",
-    children: (FormattedTextSpan | LaTeXTextSpan)[],
-    alignment: HorizontalAlignment,
+    children: CustomText[],
+    // children: (FormattedTextSpan | LaTeXTextSpan)[],
+    // alignment: HorizontalAlignment,
 };
 
 const DEFAULT_PARAGRAPH_ELEMENT: ParagraphElement = {
     type: "paragraph",
-    children: [FormattedTextSpan.makeDefault()],
-    alignment: "left",
+    children: [{text: ""}],
 };
 
 export namespace ParagraphElement {
@@ -26,12 +24,8 @@ export namespace ParagraphElement {
             && "children" in object
             && Array.isArray(object.children)
             && object.children.every(element => (
-                FormattedTextSpan.isFormattedTextSpan(element)
-                || LaTeXTextSpan.isLaTeXTextSpan(element)
+                CustomText.isCustomText(element)
             ))
-
-            && "alignment" in object
-            && HorizontalAlignment.isHorizontalAlignment(object.alignment)
         )
     }
 
