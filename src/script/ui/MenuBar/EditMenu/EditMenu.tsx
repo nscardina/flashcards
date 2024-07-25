@@ -1,4 +1,4 @@
-import LayoutToggleButton from "./LayoutToggleButton"
+import LayoutToggleButton from "./LayoutMenu/LayoutToggleButton"
 import { NavDropdownMenu } from "react-bootstrap-submenu"
 
 export default function EditMenu({disabled}: {disabled: boolean}) {
