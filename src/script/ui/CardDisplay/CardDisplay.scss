@@ -83,43 +83,39 @@ $-whole-area-dim: calc(2 * $-half-area-dim);
 }
 
 .card-layout-one-box {
-    @include -visibleBoxes(1);
-
     grid-template-columns: 100%;
     grid-template-rows: 100%;
 
+    @include -visibleBoxes(1);
     @include -box(1, 0rem, 0rem, $-whole-area-dim, $-whole-area-dim);
 }
 
 .card-layout-two-boxes-v {
-    @include -visibleBoxes(2);
-
     grid-template-columns: $-half-area-dim $-half-area-dim;
     grid-template-rows: calc($-whole-area-dim + 1rem);
 
+    @include -visibleBoxes(2);
     @include -box(1, 0rem, 0rem, $-half-area-dim, $-whole-area-dim);
     @include -box(2, 0rem, 0rem, $-whole-area-dim, $-whole-area-dim);
 }
 
 .card-layout-two-boxes-h {
-    @include -visibleBoxes(2);
-
     grid-template-columns: calc($-whole-area-dim + 1rem);
     grid-template-rows: $-half-area-dim $-half-area-dim;
 
+    @include -visibleBoxes(2);
     @include -box(1, 0rem, 0rem, $-whole-area-dim, $-half-area-dim);
     @include -box(2, 0rem, $-half-area-dim, $-whole-area-dim, $-whole-area-dim);
 }
 
 .card-layout-four-boxes {
-    @include -visibleBoxes(4);
-
     grid-template:
-        "a b" 
-        "c d";
+    "a b" 
+    "c d";
     grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
     grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
 
+    @include -visibleBoxes(4);
     @include -box(1, 0rem, 0rem, calc($-half-area-dim), calc($-half-area-dim));
     @include -box(2, calc($-half-area-dim), 0rem, calc($-half-area-dim), calc($-half-area-dim));
     @include -box(3, 0rem, calc($-half-area-dim), calc($-half-area-dim), calc($-half-area-dim));
@@ -127,14 +123,13 @@ $-whole-area-dim: calc(2 * $-half-area-dim);
 }
 
 .card-layout-one-box-lv-two-boxes-rv {
-    @include -visibleBoxes(3);
-
     grid-template:
         "a b"
         "a c";
     grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
     grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
 
+    @include -visibleBoxes(3);
     @include -assign-grid-areas(3);
 
     @include -box(1, 0rem, 0rem, $-half-area-dim, $-whole-area-dim);
@@ -143,14 +138,13 @@ $-whole-area-dim: calc(2 * $-half-area-dim);
 }
 
 .card-layout-one-box-rv-two-boxes-lv {
-    @include -visibleBoxes(3);
-
     grid-template:
-        "a b"
-        "c b";
+    "a b"
+    "c b";
     grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
     grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
 
+    @include -visibleBoxes(3);
     @include -assign-grid-areas(3);
 
     @include -box(1, 0rem, 0rem, $-half-area-dim, $-half-area-dim);
@@ -159,14 +153,13 @@ $-whole-area-dim: calc(2 * $-half-area-dim);
 }
 
 .card-layout-one-box-th-two-boxes-bh {
-    @include -visibleBoxes(3);
-
     grid-template:
         "a a"
         "b c";
     grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
     grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
 
+    @include -visibleBoxes(3);
     @include -assign-grid-areas(3);
 
     @include -box(1, 0rem, 0rem, $-whole-area-dim, $-half-area-dim);
@@ -175,14 +168,13 @@ $-whole-area-dim: calc(2 * $-half-area-dim);
 }
 
 .card-layout-one-box-bh-two-boxes-th {
-    @include -visibleBoxes(3);
-
     grid-template:
         "a b"
         "c c";
     grid-template-rows: calc(50% - 0.5rem) calc(50% - 0.5rem);
     grid-template-columns: calc(50% - 0.5rem) calc(50% - 0.5rem);
 
+    @include -visibleBoxes(3);
     @include -assign-grid-areas(3);
 
     @include -box(1, 0rem, 0rem, $-half-area-dim, $-half-area-dim);
