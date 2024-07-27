@@ -1,11 +1,11 @@
-import { useContext, useState } from "react"
-import { AppState } from "../App"
+import { useState } from "react"
 import { Button, Col, Container, Modal, Row } from "react-bootstrap"
-import CardDisplay from "../card/card_display/CardDisplay"
 import { Side } from "../card/side"
 import ShowSideProvider from "../ShowSideProvider"
 import AppMode from "../app/AppMode"
 import "./ReviewCardPopover.scss"
+import CardDisplay from "./CardDisplay/CardDisplay"
+import { useFCState } from "../state/FCState"
 
 enum ReviewingCardState {
   VIEWING_QUESTION_SIDE,
@@ -13,9 +13,14 @@ enum ReviewingCardState {
 }
 
 function ReviewCardPopover() {
-  const appState = useContext(AppState)
 
   const [reviewingCardState, setReviewingCardState] = useState(ReviewingCardState.VIEWING_QUESTION_SIDE)
+
+  const [ visibleSide, setVisibleSide ] = useFCState(state => [state.visibleSide, state.setVisibleSide]);
+  const [ visibleCardIndex, setVisibleCardIndex ] = useFCState(state => [ state.visibleCardIndex, state.setVisibleCardIndex ]);
+  const deck = useFCState(state => state.deck);
+  const setAppMode = useFCState(state => state.setAppMode);
+  const showSideProviderName = useFCState(state => state.showSideProviderName);
 
   return (
     <Modal show={true} dialogClassName="review-card-popover">
@@ -34,19 +39,19 @@ function ReviewCardPopover() {
                   (
                     <Button className="d-flex align-items-center flashcard-button" onClick={() => {
                       setReviewingCardState(ReviewingCardState.VIEWING_ANSWER_SIDE)
-                      appState.setVisibleSide(appState.visibleSide === Side.FRONT ? Side.BACK : Side.FRONT)
+                      setVisibleSide(visibleSide === Side.FRONT ? Side.BACK : Side.FRONT)
                     }}>
                       View Answer
                     </Button>
                   )
                   :
-                  (appState.visibleCardIndex === appState.deck!.cards.length - 1) ?
+                  (visibleCardIndex === deck!.cards.length - 1) ?
                     (
                       <Button className="d-flex align-items-center flashcard-button" onClick={() => {
                         setReviewingCardState(ReviewingCardState.VIEWING_ANSWER_SIDE)
-                        appState.setVisibleSide(Side.FRONT)
-                        appState.setAppMode(AppMode.MANAGING_FILES)
-                        appState.setVisibleCardIndex(0)
+                        setVisibleSide(Side.FRONT)
+                        setAppMode(AppMode.MANAGING_FILES)
+                        setVisibleCardIndex(0)
                       }}>
                         Finish
                       </Button>
@@ -54,7 +59,7 @@ function ReviewCardPopover() {
                     (
                       <Button className="d-flex align-items-center flashcard-button" onClick={() => {
                         setReviewingCardState(ReviewingCardState.VIEWING_QUESTION_SIDE)
-                        appState.setVisibleSide(ShowSideProvider.get(appState.showSideProviderName)())
+                        setVisibleSide(ShowSideProvider.get(showSideProviderName)())
                       }}>
                         Next Card
                       </Button>

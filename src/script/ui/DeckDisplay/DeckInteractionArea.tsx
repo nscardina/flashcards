@@ -1,17 +1,18 @@
 import { Col, Row } from "react-bootstrap"
-import CardDisplay from "../../card/card_display/CardDisplay"
-import { useContext } from "react"
-import { AppState } from "../../App"
+import CardDisplay from "../CardDisplay/CardDisplay"
 import AppMode from "../../app/AppMode"
 import ReviewCardPopover from "../ReviewCardPopover"
 import BackButton from "./BackButton"
 import ForwardButton from "./ForwardButton"
+import { useFCState } from "../../state/FCState"
+import { useShallow } from "zustand/react/shallow"
 
 
 
 function DeckInteractionArea() {
 
-  const appState = useContext(AppState)
+  const appMode = useFCState(state => state.appMode);
+  const deck = useFCState(useShallow(state => state.deck));
 
   return (
     <>
@@ -31,7 +32,7 @@ function DeckInteractionArea() {
         </Col>
       </Row>
       <Row className="mt-3 d-flex">
-        {appState.appMode === AppMode.REVIEWING_DECK && appState.deck && 
+        {appMode === AppMode.REVIEWING_DECK && deck && 
           <ReviewCardPopover />
         }
       </Row>

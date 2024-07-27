@@ -1,6 +1,7 @@
 /**
  * Enum containing the different editors that can be shown in the app, and 
  * which one is currently visible.
+ * @deprecated
  */
 export enum Editor {
     /**

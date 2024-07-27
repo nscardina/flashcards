@@ -1,85 +1,84 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { createContext, useState } from 'react';
-import AppMode from './app/AppMode';
-import { AppStateType, NO_CARD_FOCUSED } from './state/AppState';
-import { ReviewOrder } from './ReviewOrder';
-import { ShowSideProviderName } from './ShowSideProvider';
 import Dialog from './app/Dialog';
-import { Editor } from './app/Editor';
-import { Side } from './card/side';
-import MenuBar from './ui/MenuBar';
+import MenuBar from './ui/MenuBar/MenuBar';
 import DeckInteractionArea from './ui/DeckDisplay/DeckInteractionArea';
-import TextEditor from './ui/TextEditor';
-import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
-import { Deck } from './card/deck';
-import { BoxNumber } from './card/Box';
-import { ImageEditor } from './ui/ImageEditor';
 
 import "../style/App.scss"
-import LaTeXTextEditor from './ui/LaTeXTextEditor';
 import DeleteDeckConfirmationMessage from './ui/DeleteDeckConfirmationMessage';
+import TextEditorBar from './ui/TextEditorBar/TextEditorBar';
+// import LaTeXEditor from './ui/LaTeXEditor';
+import { useFCState } from './state/FCState';
+import { BaseEditor, createEditor } from 'slate';
+import { ReactEditor, withReact } from 'slate-react';
+import { HistoryEditor, withHistory } from 'slate-history';
+import { createContext } from "react";
+import { useState } from 'react';
 
-export const AppState = createContext<AppStateType>(undefined!)
+export type EditorKeyType = `editor${0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8}`
+
+export type ReactEditorStateType = {
+    
+    lastEditedTextEditorIndex: number,
+    setLastEditedTextEditorIndex: React.Dispatch<React.SetStateAction<number>>,
+} & {
+    [Property in EditorKeyType]: BaseEditor & ReactEditor & HistoryEditor
+};
+
+
+
+export function getEditorByIndex(state: ReactEditorStateType, index: number): (BaseEditor & ReactEditor & HistoryEditor) | null {
+    if (index >= 0 && index <= 8) {
+        return state[`editor${index}` as EditorKeyType]
+    } else {
+        return null
+    }
+}
+
+export const ReactEditorContext = createContext<ReactEditorStateType>(undefined!);
 
 function App() {
 
-    const [appMode, setAppMode] = useState<AppMode>(AppMode.MANAGING_FILES)
-    const [boxBeingEdited, setBoxBeingEdited] = useState<BoxNumber | null>(null)
-    const [deck, setDeck] = useState<Deck | null>(null)
-    const [recentFiles, setRecentFiles] = useState<FileSystemFileHandle[]>([])
-    const [reviewOrder, setReviewOrder] =
-        useState<ReviewOrder>(ReviewOrder.IN_ORDER)
-    const [showSideProviderName, setShowSideProviderName] =
-        useState<ShowSideProviderName>("FRONT")
-    const [visibleDialog, setVisibleDialog] = useState<Dialog>(Dialog.NONE)
-    const [visibleEditor, setVisibleEditor] = useState<Editor>(Editor.NONE)
-    const [visibleCardIndex, setVisibleCardIndex] =
-        useState<number>(NO_CARD_FOCUSED)
-    const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
+    const [lastEditedTextEditorIndex, setLastEditedTextEditorIndex] = useState(-1);
+
+    // const showLaTeXEditor = useFCState(state => state.showLaTeXEditor)
+    const visibleDialog = useFCState(state => state.visibleDialog)
 
     return (
-        <>
-            <AppState.Provider value={{
-                appMode: appMode,
-                setAppMode: setAppMode,
-                boxBeingEdited: boxBeingEdited,
-                setBoxBeingEdited: setBoxBeingEdited,
-                deck: deck,
-                setDeck: setDeck,
-                recentFiles: recentFiles,
-                setRecentFiles: setRecentFiles,
-                reviewOrder: reviewOrder,
-                setReviewOrder: setReviewOrder,
-                showSideProviderName: showSideProviderName,
-                setShowSideProviderName: setShowSideProviderName,
-                visibleDialog: visibleDialog,
-                setVisibleDialog: setVisibleDialog,
-                visibleEditor: visibleEditor,
-                setVisibleEditor: setVisibleEditor,
-                visibleCardIndex: visibleCardIndex,
-                setVisibleCardIndex: setVisibleCardIndex,
-                visibleSide: visibleSide,
-                setVisibleSide: setVisibleSide,
-            }}>
-                <MenuBar />
-                <DeckInteractionArea />
-                {visibleEditor === Editor.PLAIN_TEXT && <TextEditor />}
-                {visibleEditor === Editor.IMAGE && <ImageEditor />}
-                {visibleEditor === Editor.LATEX_TEST && <LaTeXTextEditor />}
-                {visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
+        <ReactEditorContext.Provider value={{
+            editor0: withReact(withHistory(createEditor())),
+            editor1: withReact(withHistory(createEditor())),
+            editor2: withReact(withHistory(createEditor())),
+            editor3: withReact(withHistory(createEditor())),
+            editor4: withReact(withHistory(createEditor())),
+            editor5: withReact(withHistory(createEditor())),
+            editor6: withReact(withHistory(createEditor())),
+            editor7: withReact(withHistory(createEditor())),
+            editor8: withReact(withHistory(createEditor())),
+            lastEditedTextEditorIndex: lastEditedTextEditorIndex,
+            setLastEditedTextEditorIndex: setLastEditedTextEditorIndex,
+        }}>
+            <MenuBar />
+            <TextEditorBar />
+            <DeckInteractionArea />
 
-                {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
-                    <NewDeckConfirmationMessage />
-                }
-                {
-                    visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
-                    <DeleteDeckConfirmationMessage />
-                }
+            {/* {showLaTeXEditor && <LaTeXEditor />} */}
 
-            </AppState.Provider>
-        </>
+            {/* {currentDialog} */}
+
+            {visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
+                <NewDeckConfirmationMessage />
+            }
+            {
+                visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
+                <DeleteDeckConfirmationMessage />
+            }
+        </ReactEditorContext.Provider>
     )
+}
+
+namespace App {
+    export const LATEX_EDITOR_INDEX = 8;
 }
 
 export default App
