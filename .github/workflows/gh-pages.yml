@@ -22,12 +22,8 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Fix permissions if necessary
-        run: |
-          chmod -v -R +rX "dist/"
-
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         env:
           INPUT_PATH: "dist/"
         with: 
@@ -46,4 +42,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
