@@ -191,7 +191,7 @@ function CardDisplay({ position, forceAspectRatio, fillAvailableSpace }: {
           return (
             <div key={side} className={`flashcard-face ${
               appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
-              } ${getCSSClassFromCardLayout(visibleCard.front.layout)}`
+              } ${getCSSClassFromCardLayout(visibleCard[side].layout)}`
             }>
 
               {
