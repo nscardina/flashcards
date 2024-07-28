@@ -38,7 +38,7 @@ function EditMenu() {
   const appState = useContext(AppState)
 
   return (
-    <Dropdown className="d-inline-block">
+    <Dropdown style={{width: "min-content", padding: "0px"}}>
       <Dropdown.Toggle className="flashcard-button border-0">
         Edit
       </Dropdown.Toggle>

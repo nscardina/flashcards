@@ -1,11 +1,11 @@
-import { Col, Container, Row } from "react-bootstrap"
+import { Container, Navbar, Row } from "react-bootstrap"
 import FileMenu from "./FileMenu"
 import EditMenu from "./EditMenu"
 import { AddCardButton, DeleteCardButton, EditCardButton, DoneButton, FlipCardButton, ReviewDeckButton } from "./Buttons"
 import AppMode from "../app/AppMode"
 import SettingsMenu from "./SettingsMenu"
 import { Editor } from "../app/Editor"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AppState } from "../App"
 import Latex from "react-latex-next"
 
@@ -17,68 +17,58 @@ function MenuBar() {
 
   const appMode = appState.appMode
 
+  const [collapseMenu, setCollapseMenu] = useState(false);
+
   return (
-    <Container>
-      <Row>
-        <Col xs={{ span: 8, order: 1 }} md={{ span: 'auto', order: 1 }}
-          className="d-flex flex-row"
-        >
-          <Col style={{ width: "min-content" }}><FileMenu /></Col>
-          {appMode === AppMode.EDITING_DECK && (
-            <>
-              <Col style={{ width: "min-content" }}><EditMenu /></Col>
-            </>
-          )}
+    <Navbar expand="sm" style={{
+      padding: "0px", margin: "0px", width: "100vw",
+    }} collapseOnSelect>
+      <Container style={{justifyContent: "normal"}}>
+      <object
+        style={{
+          height: "32px",
+          width: "min-content",
+        }}
+        className="ms-1 mt-1"
 
-        </Col>
-        <Col
-          className="d-flex align-items-center justify-content-center"
-          xs={{ span: 12, order: 4 }}
-          md={{ span: 'auto', order: 2 }}
-        >
-          {(
-            appMode === AppMode.MANAGING_FILES ||
-            appMode === AppMode.EDITING_DECK
-          ) && <AddCardButton /> }
+        data="/flashcards/favicon/favicon.svg" type="image/svg+xml">
+        <img src="/flashcards/favicon/favicon.png" />
+      </object>
 
-          {appMode === AppMode.MANAGING_FILES && <EditCardButton />}
+      <span style={{ userSelect: 'none', width: "min-content" }}
+        onClick={appState.deck ? () => appState.setVisibleEditor(Editor.DECK_NAME) : () => { }}
+      ><Latex>{appState.deck ? appState.deck.name : ""}</Latex>
 
-          {(
-            appMode === AppMode.MANAGING_FILES ||
-            appMode === AppMode.EDITING_DECK
-          ) && <DeleteCardButton /> }
+      </span>
+      <FileMenu />
+      <EditMenu />
+      <Navbar.Toggle aria-controls="menu-collapse" className="ms-auto" />
 
-          <FlipCardButton />
-        </Col>
-        <Col
-          xs={{ span: 12, order: 3 }}
-          md={{ span: 2, order: 3 }}
-          className="ms-auto d-flex justify-content-center align-items-center"
-        >
-          <span style={{userSelect: 'none'}} 
-            onClick={appState.deck ? () => appState.setVisibleEditor(Editor.DECK_NAME) : () => {}}
-          ><Latex>{appState.deck ? appState.deck.name : ""}</Latex>
-            
-          </span>
-          
-        </Col>
-        <Col
-          xs={{ span: 4, order: 2 }}
-          md={{ span: 5, order: 4 }}
-          className="d-flex justify-content-end"
-        >
-          {appMode === AppMode.MANAGING_FILES && (
-            <SettingsMenu />
-          )}
-          {appMode === AppMode.MANAGING_FILES &&
-            <ReviewDeckButton onClick={() => appState.setAppMode(AppMode.REVIEWING_DECK)} />
-          }
-          {(appMode === AppMode.EDITING_DECK || appMode === AppMode.REVIEWING_DECK) &&
-            <DoneButton />
-          }
-        </Col>
-      </Row>
-    </Container>
+      
+
+
+
+      
+      {appMode === AppMode.MANAGING_FILES &&
+        <ReviewDeckButton onClick={() => appState.setAppMode(AppMode.REVIEWING_DECK)} />
+      }
+      {(appMode === AppMode.EDITING_DECK || appMode === AppMode.REVIEWING_DECK) &&
+        <DoneButton />
+      }
+
+<Navbar.Collapse id="menu-collapse" style={{flexDirection: "row"}}>
+        <AddCardButton />
+        <EditCardButton />
+        <DeleteCardButton />
+        <FlipCardButton />
+        {appMode === AppMode.MANAGING_FILES && (
+        <SettingsMenu />
+      )}
+      </Navbar.Collapse>
+      </Container>
+
+      
+    </Navbar>
   )
 
 }

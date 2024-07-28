@@ -9,7 +9,7 @@ function SettingsMenu() {
   const appState = useContext(AppState)
 
   return (
-    <Dropdown align="end">
+    <Dropdown align="end" style={{width: "min-content", padding: "0px"}}>
       <style>
         {
           `

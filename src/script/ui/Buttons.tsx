@@ -90,7 +90,8 @@ function AddCardButton() {
   return (
     <Button
       onClick={() => createNewCard(appState)}
-      className="d-flex align-items-center flashcard-button border-0"
+      style={{width: "min-content"}}
+      className="d-flex ms-auto align-items-center flashcard-button border-0"
     >
       <span className="material-symbols-outlined" aria-hidden="true">add</span>
     </Button>
@@ -105,6 +106,7 @@ function EditCardButton() {
     <Button
       disabled={!appState.deck}
       onClick={() => appState.setAppMode(AppMode.EDITING_DECK)}
+      style={{width: "min-content"}}
       className="d-flex align-items-center flashcard-button border-0"
     >
       <span className="material-symbols-outlined" aria-hidden="true">edit</span>
@@ -119,6 +121,7 @@ function DeleteCardButton() {
   return (
     <Button
       disabled={!appState.deck}
+      style={{width: "min-content"}}
       className="d-flex align-items-center flashcard-button border-0 z-1"
       onClick={() => deleteCard(appState, appState.visibleCardIndex)}
     >
@@ -133,7 +136,8 @@ function ReviewDeckButton({ onClick }: ButtonPropsType) {
   const appState = useContext(AppState)
 
   return (
-    <Button onClick={onClick} disabled={appState.deck === null}>
+    <Button onClick={onClick} disabled={appState.deck === null} style={{width: "min-content"}}
+    className="order-sm-last">
       Review
     </Button>
   )
@@ -144,7 +148,8 @@ function DoneButton() {
   const appState = useContext(AppState)
 
   return (
-    <Button onClick={() => appState.setAppMode(AppMode.MANAGING_FILES)}>
+    <Button onClick={() => appState.setAppMode(AppMode.MANAGING_FILES)} style={{width: "min-content"}}
+    className="order-sm-last">
       Done
     </Button>
   )
@@ -161,6 +166,7 @@ function FlipCardButton() {
         appState.setVisibleSide(Side.FRONT)
       }
     }} disabled={!appState.deck}
+    style={{width: "min-content"}}
     className="d-flex align-items-center flashcard-button border-0 z-1">
       <span className="material-symbols-outlined" aria-hidden="true">
         flip

@@ -92,7 +92,7 @@ function FileMenu() {
   const appState = useContext(AppState)
 
   return (
-    <Dropdown className="d-inline-block">
+    <Dropdown style={{width: "min-content", padding: "0px", flexBasis: "content"}}>
       <Dropdown.Toggle className="flashcard-button border-0">
         File
       </Dropdown.Toggle>

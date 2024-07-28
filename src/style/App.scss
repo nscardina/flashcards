@@ -63,6 +63,15 @@ $flashcard-light: rgb(220, 220, 220);
     margin: auto;
 }
 
+.navbar-collapse.collapse.show#menu-collapse,
+.navbar-collapse.collapsing#menu-collapse {
+    display: flex;
+}
+
+
+
+
+
 @media screen and (prefers-color-scheme: dark) {
 
     body {
