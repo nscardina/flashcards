@@ -1,11 +1,11 @@
-import { Container, Navbar, Row } from "react-bootstrap"
+import { Container, Navbar } from "react-bootstrap"
 import FileMenu from "./FileMenu"
 import EditMenu from "./EditMenu"
 import { AddCardButton, DeleteCardButton, EditCardButton, DoneButton, FlipCardButton, ReviewDeckButton } from "./Buttons"
 import AppMode from "../app/AppMode"
 import SettingsMenu from "./SettingsMenu"
 import { Editor } from "../app/Editor"
-import { useContext, useEffect, useState } from "react"
+import { useContext } from "react"
 import { AppState } from "../App"
 import Latex from "react-latex-next"
 
@@ -16,8 +16,6 @@ function MenuBar() {
   const appState = useContext(AppState)
 
   const appMode = appState.appMode
-
-  const [collapseMenu, setCollapseMenu] = useState(false);
 
   return (
     <Navbar expand="sm" style={{
