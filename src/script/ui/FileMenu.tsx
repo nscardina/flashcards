@@ -116,7 +116,7 @@ function FileMenu() {
             `}
           </style>
 
-          <Dropdown.Toggle
+          {/* <Dropdown.Toggle
             style={{ border: "0px black" }}
             className="d-flex align-items-center flashcard-button w-100 btn-block"
             disabled={appState.recentFiles.length === 0}
@@ -126,7 +126,7 @@ function FileMenu() {
               <MSIcon name="menu_open" />
               &nbsp;Open Recent...
             </span>
-          </Dropdown.Toggle>
+          </Dropdown.Toggle> */}
           <Dropdown.Menu>
             {
               appState.recentFiles.map(file => (
