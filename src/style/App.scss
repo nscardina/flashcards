@@ -55,13 +55,20 @@ $flashcard-light: rgb(220, 220, 220);
     }
 }
 
+
 .flashcard-display {
-    min-width: calc(100vw / 3);
+    width: auto;
     aspect-ratio: 5 / 3;
     padding: 1rem;
-    max-width: 960px;
     margin: auto;
 }
+@media screen and (min-width: 768px) {
+    .flashcard-display {
+        width: 80vw;
+    }
+}
+
+
 
 .navbar-collapse.collapse.show#menu-collapse,
 .navbar-collapse.collapsing#menu-collapse {

@@ -19,53 +19,59 @@ function MenuBar() {
 
   return (
     <Navbar expand="sm" style={{
-      padding: "0px", margin: "0px", width: "100vw",
+      paddingTop: "0px", paddingBottom: "0px", width: "100vw",
     }} collapseOnSelect>
-      <Container style={{justifyContent: "normal"}}>
-      <object
-        style={{
-          height: "32px",
-          width: "min-content",
-        }}
-        className="ms-1 mt-1"
-
-        data="/flashcards/favicon/favicon.svg" type="image/svg+xml">
-        <img src="/flashcards/favicon/favicon.png" />
-      </object>
-
-      <span style={{ userSelect: 'none', width: "min-content" }}
-        onClick={appState.deck ? () => appState.setVisibleEditor(Editor.DECK_NAME) : () => { }}
-      ><Latex>{appState.deck ? appState.deck.name : ""}</Latex>
-
-      </span>
-      <FileMenu />
-      <EditMenu />
-      <Navbar.Toggle aria-controls="menu-collapse" className="ms-auto" />
-
+      <style>{`
       
+.container {
+    max-width: 100% !important;
+}
+      `}</style>
+      <Container style={{ justifyContent: "normal" }}>
+        <object
+          style={{
+            height: "32px",
+            width: "min-content",
+          }}
+          className="ms-1 mt-1"
+
+          data="/flashcards/favicon/favicon.svg" type="image/svg+xml">
+          <img src="/flashcards/favicon/favicon.png" />
+        </object>
+
+        <span style={{ userSelect: 'none', width: "min-content" }}
+          onClick={appState.deck ? () => appState.setVisibleEditor(Editor.DECK_NAME) : () => { }}
+        ><Latex>{appState.deck ? appState.deck.name : ""}</Latex>
+
+        </span>
+        <FileMenu />
+        <EditMenu />
+        <Navbar.Toggle aria-controls="menu-collapse" className="ms-auto" />
 
 
 
-      
-      {appMode === AppMode.MANAGING_FILES &&
-        <ReviewDeckButton onClick={() => appState.setAppMode(AppMode.REVIEWING_DECK)} />
-      }
-      {(appMode === AppMode.EDITING_DECK || appMode === AppMode.REVIEWING_DECK) &&
-        <DoneButton />
-      }
 
-<Navbar.Collapse id="menu-collapse" style={{flexDirection: "row"}}>
-        <AddCardButton />
-        <EditCardButton />
-        <DeleteCardButton />
-        <FlipCardButton />
-        {appMode === AppMode.MANAGING_FILES && (
-        <SettingsMenu />
-      )}
-      </Navbar.Collapse>
+
+
+        {appMode === AppMode.MANAGING_FILES &&
+          <ReviewDeckButton onClick={() => appState.setAppMode(AppMode.REVIEWING_DECK)} />
+        }
+        {(appMode === AppMode.EDITING_DECK || appMode === AppMode.REVIEWING_DECK) &&
+          <DoneButton />
+        }
+
+        <Navbar.Collapse id="menu-collapse" style={{ flexDirection: "row" }}>
+          <AddCardButton />
+          <EditCardButton />
+          <DeleteCardButton />
+          <FlipCardButton />
+          {appMode === AppMode.MANAGING_FILES && (
+            <SettingsMenu />
+          )}
+        </Navbar.Collapse>
       </Container>
 
-      
+
     </Navbar>
   )
 
