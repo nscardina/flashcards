@@ -19,6 +19,7 @@ import { ImageEditor } from './ui/ImageEditor';
 import "../style/App.scss"
 import LaTeXTextEditor from './ui/LaTeXTextEditor';
 import DeleteDeckConfirmationMessage from './ui/DeleteDeckConfirmationMessage';
+import CreditsPopover from './ui/CreditsPopover';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -76,6 +77,8 @@ function App() {
                     visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
                     <DeleteDeckConfirmationMessage />
                 }
+
+                {visibleDialog === Dialog.CREDITS && <CreditsPopover />}
 
             </AppState.Provider>
         </>

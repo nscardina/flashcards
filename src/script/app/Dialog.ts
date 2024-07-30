@@ -20,6 +20,8 @@ enum Dialog {
      * which is a message that is triggered by closing the currently open deck.
      */
     DELETE_DECK_CONFIRMATION_MESSAGE,
+
+    CREDITS,
 }
 
 export default Dialog

@@ -3,6 +3,7 @@ import { ReviewOrder } from "../ReviewOrder";
 import { ShowSideProviderNames } from "../ShowSideProvider";
 import { useContext } from "react";
 import { AppState } from "../App";
+import Dialog from "../app/Dialog";
 
 function SettingsMenu() {
 
@@ -87,6 +88,11 @@ function SettingsMenu() {
               }
             </Dropdown.Menu>
           </Dropdown>
+          <Dropdown.Item onClick={() => {
+            appState.setVisibleDialog(Dialog.CREDITS);
+          }}>
+            Show Credits
+          </Dropdown.Item>
         </Dropdown.ItemText>
       </Dropdown.Menu>
     </Dropdown>
