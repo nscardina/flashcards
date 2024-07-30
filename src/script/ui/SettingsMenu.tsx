@@ -88,12 +88,13 @@ function SettingsMenu() {
               }
             </Dropdown.Menu>
           </Dropdown>
-          <Dropdown.Item onClick={() => {
+        </Dropdown.ItemText>
+        <Dropdown.Divider />
+        <Dropdown.Item onClick={() => {
             appState.setVisibleDialog(Dialog.CREDITS);
           }}>
             Show Credits
           </Dropdown.Item>
-        </Dropdown.ItemText>
       </Dropdown.Menu>
     </Dropdown>
   )
