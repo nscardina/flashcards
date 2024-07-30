@@ -65,9 +65,7 @@ function MenuBar() {
           <EditCardButton />
           <DeleteCardButton />
           <FlipCardButton />
-          {appMode === AppMode.MANAGING_FILES && (
-            <SettingsMenu />
-          )}
+          <SettingsMenu />
         </Navbar.Collapse>
       </Container>
 
