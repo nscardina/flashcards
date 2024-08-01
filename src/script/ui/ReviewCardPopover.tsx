@@ -14,18 +14,9 @@ enum ReviewingCardState {
 
 function ReviewCardPopover() {
   const appState = useContext(AppState)
-  console.log(appState.reviewOrderProviderNextValue.value)
-  console.log(appState.deck?.cards.length)
-  console.trace()
+
   const [reviewingCardState, setReviewingCardState] = useState(ReviewingCardState.VIEWING_QUESTION_SIDE)
-
-  // const next = useMemo(() => )
-  // console.log(`next`)
-  // console.log(next);
   
-
- 
-
   return (
     <Modal show={true} dialogClassName="review-card-popover">
       <Modal.Header>
@@ -56,8 +47,6 @@ function ReviewCardPopover() {
                         appState.setVisibleSide(Side.FRONT)
                         appState.setAppMode(AppMode.MANAGING_FILES)
                         appState.setVisibleCardIndex(0)
-
-                        console.log("sdgjklajdflk");
                       }}>
                         Finish
                       </Button>
@@ -68,7 +57,6 @@ function ReviewCardPopover() {
                         appState.setVisibleSide(ShowSideProvider.get(appState.showSideProviderName)());
 
                         const next = appState.reviewOrderProvider.next()
-                        // console.log(appState.reviewOrderProviderNextValue)
                         appState.setReviewOrderProviderNextValue(next);
                         if (typeof (next.value) === "number") {
                           appState.setVisibleCardIndex(next.value);

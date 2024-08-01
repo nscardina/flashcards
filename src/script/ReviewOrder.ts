@@ -85,9 +85,9 @@ export const makeRandomOrderProvider = (numCards: number) => {
 
     for (let i = 0; i < numCards; i++) {
         let index;
-        do { index = Math.floor(Math.random() * numCards); } while (!used[index]);
+        do { index = Math.floor(Math.random() * numCards); } while (used[index]);
+        console.log(`i=${i}; index=${index}; numbers=${numbers.toString()}`)
         
-        i++;
         used[index] = true;
         numbers[i] = index;
     }

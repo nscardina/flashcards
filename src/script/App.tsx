@@ -42,10 +42,6 @@ function App() {
         useState<number>(NO_CARD_FOCUSED)
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
 
-    console.log("rerendering app");
-    console.log(reviewOrderProvider);
-    console.log(reviewOrderProviderNextValue);
-
     return (
         <>
             <AppState.Provider value={{

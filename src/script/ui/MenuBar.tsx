@@ -66,8 +66,6 @@ function MenuBar() {
               appState.setVisibleCardIndex(peekValue);
             }
             appState.setReviewOrderProviderNextValue(reviewOrderProvider.next());
-            
-            console.log(appState.reviewOrderProvider);
           }} />
         }
         {(appMode === AppMode.EDITING_DECK || appMode === AppMode.REVIEWING_DECK) &&
