@@ -45,11 +45,11 @@ export const makeInOrderProvider = (numCards: number): ReviewOrderProvider => {
 };
 
 export const makeReverseOrderProvider = (numCards: number) => {
-    let index = 0;
+    let index = numCards - 1;
     
     const iterator: ReviewOrderProvider = {
         next() {
-            if (index < numCards) {
+            if (index >= 0) {
                 return {
                     value: index--,
                     done: false,
@@ -62,7 +62,7 @@ export const makeReverseOrderProvider = (numCards: number) => {
             }
         },
         peek() {
-            if (index < numCards) {
+            if (index >= 0) {
                 return {
                     value: index,
                     done: false,
