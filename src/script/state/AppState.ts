@@ -1,4 +1,4 @@
-import { ReviewOrder } from "../ReviewOrder"
+import { ReviewOrder, ReviewOrderProvider } from "../ReviewOrder"
 import { ShowSideProviderName } from "../ShowSideProvider"
 import AppMode from "../app/AppMode"
 import Dialog from "../app/Dialog"
@@ -24,6 +24,10 @@ export type AppStateType = {
     readonly setRecentFiles: ReactSetter<FileSystemFileHandle[]>,
     readonly reviewOrder: ReviewOrder,
     readonly setReviewOrder: ReactSetter<ReviewOrder>,
+    readonly reviewOrderProvider: ReviewOrderProvider,
+    readonly setReviewOrderProvider: ReactSetter<ReviewOrderProvider>,
+    readonly reviewOrderProviderNextValue: IteratorResult<number, void>,
+    readonly setReviewOrderProviderNextValue: ReactSetter<IteratorResult<number, void>>,
     readonly showSideProviderName: ShowSideProviderName,
     readonly setShowSideProviderName: ReactSetter<ShowSideProviderName>,
     readonly visibleDialog: Dialog,
