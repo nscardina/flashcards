@@ -16,7 +16,7 @@ function ReviewCardPopover() {
   const appState = useContext(AppState)
 
   const [reviewingCardState, setReviewingCardState] = useState(ReviewingCardState.VIEWING_QUESTION_SIDE)
-
+  
   return (
     <Modal show={true} dialogClassName="review-card-popover">
       <Modal.Header>
@@ -40,7 +40,7 @@ function ReviewCardPopover() {
                     </Button>
                   )
                   :
-                  (appState.visibleCardIndex === appState.deck!.cards.length - 1) ?
+                  (appState.reviewOrderProvider.peek().done) ?
                     (
                       <Button className="d-flex align-items-center flashcard-button" onClick={() => {
                         setReviewingCardState(ReviewingCardState.VIEWING_ANSWER_SIDE)
@@ -53,8 +53,14 @@ function ReviewCardPopover() {
                     ) :
                     (
                       <Button className="d-flex align-items-center flashcard-button" onClick={() => {
-                        setReviewingCardState(ReviewingCardState.VIEWING_QUESTION_SIDE)
-                        appState.setVisibleSide(ShowSideProvider.get(appState.showSideProviderName)())
+                        setReviewingCardState(ReviewingCardState.VIEWING_QUESTION_SIDE);
+                        appState.setVisibleSide(ShowSideProvider.get(appState.showSideProviderName)());
+
+                        const next = appState.reviewOrderProvider.next()
+                        appState.setReviewOrderProviderNextValue(next);
+                        if (typeof (next.value) === "number") {
+                          appState.setVisibleCardIndex(next.value);
+                        }
                       }}>
                         Next Card
                       </Button>

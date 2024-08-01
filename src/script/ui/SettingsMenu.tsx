@@ -1,5 +1,5 @@
 import { Dropdown } from "react-bootstrap";
-import { ReviewOrder } from "../ReviewOrder";
+import { makeReviewOrderProvider, ReviewOrder } from "../ReviewOrder";
 import { ShowSideProviderNames } from "../ShowSideProvider";
 import { useContext } from "react";
 import { AppState } from "../App";
@@ -58,7 +58,11 @@ function SettingsMenu() {
               {
                 Object.values(ReviewOrder).map(order => (
                   <Dropdown.Item key={order}
-                    onClick={() => appState.setReviewOrder(order)}
+                    onClick={() => {
+                      appState.setReviewOrder(order);
+                      appState.setReviewOrderProvider(makeReviewOrderProvider(order)(appState.deck?.cards.length ?? 0));
+                      appState.setReviewOrderProviderNextValue(appState.reviewOrderProvider.next());
+                    }}
                   >
                     {order}
                   </Dropdown.Item>

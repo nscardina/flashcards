@@ -8,6 +8,7 @@ import { Editor } from "../app/Editor"
 import { useContext } from "react"
 import { AppState } from "../App"
 import Latex from "react-latex-next"
+import { makeReviewOrderProvider } from "../ReviewOrder"
 
 
 
@@ -54,7 +55,18 @@ function MenuBar() {
 
 
         {appMode === AppMode.MANAGING_FILES &&
-          <ReviewDeckButton onClick={() => appState.setAppMode(AppMode.REVIEWING_DECK)} />
+          <ReviewDeckButton onClick={() => {
+            appState.setAppMode(AppMode.REVIEWING_DECK);
+
+            const reviewOrderProvider = makeReviewOrderProvider(appState.reviewOrder)(appState.deck?.cards.length ?? 0)
+
+            appState.setReviewOrderProvider(reviewOrderProvider);
+            const peekValue = reviewOrderProvider.peek().value
+            if (typeof(peekValue) === "number") {
+              appState.setVisibleCardIndex(peekValue);
+            }
+            appState.setReviewOrderProviderNextValue(reviewOrderProvider.next());
+          }} />
         }
         {(appMode === AppMode.EDITING_DECK || appMode === AppMode.REVIEWING_DECK) &&
           <DoneButton />
