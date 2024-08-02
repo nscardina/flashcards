@@ -9,6 +9,7 @@ import { useContext } from "react"
 import { AppState } from "../App"
 import Latex from "react-latex-next"
 import { makeReviewOrderProvider } from "../ReviewOrder"
+import ShowSideProvider from "../ShowSideProvider"
 
 
 
@@ -66,6 +67,7 @@ function MenuBar() {
               appState.setVisibleCardIndex(peekValue);
             }
             appState.setReviewOrderProviderNextValue(reviewOrderProvider.next());
+            appState.setVisibleSide(ShowSideProvider.get(appState.showSideProviderName)());
           }} />
         }
         {(appMode === AppMode.EDITING_DECK || appMode === AppMode.REVIEWING_DECK) &&
