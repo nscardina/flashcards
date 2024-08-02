@@ -54,7 +54,10 @@ function ReviewCardPopover() {
                     (
                       <Button className="d-flex align-items-center flashcard-button" onClick={() => {
                         setReviewingCardState(ReviewingCardState.VIEWING_QUESTION_SIDE);
-                        appState.setVisibleSide(ShowSideProvider.get(appState.showSideProviderName)());
+
+                        const side = ShowSideProvider.get(appState.showSideProviderName)();
+                        console.log(side);
+                        appState.setVisibleSide(side);
 
                         const next = appState.reviewOrderProvider.next()
                         appState.setReviewOrderProviderNextValue(next);
