@@ -6,12 +6,12 @@ const incompleteLaTeXTextBox1 = {
 }
 
 const incompleteLaTeXTextBox2 = {
-    link: "Test Link Text"
+    latex_text: "Test Link Text"
 }
 
 const completeLaTeXTextBox = {
     type: CardContentData.Type.LATEX,
-    link: "Test Link Text"
+    latex_text: "Test Link Text"
 }
 
 describe("LaTeXTextBox.isLaTeXTextBox() function", () => {
