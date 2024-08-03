@@ -25,4 +25,8 @@ export default defineConfig({
 
   envDir: '.',
 
+  assetsInclude: [
+    "src/favicon/*",
+  ]
+
 })
