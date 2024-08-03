@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { createContext, useContext, useState } from 'react';
 import AppMode from './app/AppMode';
-import { AppStateType, NO_CARD_FOCUSED } from './state/AppState';
+import { AppStateType } from './state/AppState';
 import { ReviewOrder, ReviewOrderProvider } from './ReviewOrder';
 import { ShowSideProviderName } from './ShowSideProvider';
 import Dialog from './app/Dialog';
@@ -12,7 +12,7 @@ import DeckInteractionArea from './ui/DeckDisplay/DeckInteractionArea';
 import TextEditor from './ui/TextEditor';
 import DeckNameEditor from './ui/DeckNameEditor';
 import NewDeckConfirmationMessage from './ui/NewDeckConfirmationMessage';
-import { Deck } from './card/deck';
+import { Deck, SAMPLE_DECK } from './card/deck';
 import { BoxNumber } from './card/Box';
 import { ImageEditor } from './ui/ImageEditor';
 
@@ -24,9 +24,9 @@ import CreditsPopover from './ui/CreditsPopover';
 export const AppState = createContext<AppStateType>(undefined!)
 
 function App() {
-    const [appMode, setAppMode] = useState<AppMode>(AppMode.MANAGING_FILES)
+    const [appMode, setAppMode] = useState<AppMode>(AppMode.EDITING_DECK)
     const [boxBeingEdited, setBoxBeingEdited] = useState<BoxNumber | null>(null)
-    const [deck, setDeck] = useState<Deck | null>(null)
+    const [deck, setDeck] = useState<Deck | null>(SAMPLE_DECK)
     const [recentFiles, setRecentFiles] = useState<FileSystemFileHandle[]>([])
     const [reviewOrder, setReviewOrder] =
         useState<ReviewOrder>(ReviewOrder.IN_ORDER)
@@ -39,7 +39,7 @@ function App() {
     const [visibleDialog, setVisibleDialog] = useState<Dialog>(Dialog.NONE)
     const [visibleEditor, setVisibleEditor] = useState<Editor>(Editor.NONE)
     const [visibleCardIndex, setVisibleCardIndex] =
-        useState<number>(NO_CARD_FOCUSED)
+        useState<number>(0)
     const [visibleSide, setVisibleSide] = useState<Side>(Side.FRONT)
 
     return (

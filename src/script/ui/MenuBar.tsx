@@ -29,7 +29,7 @@ function MenuBar() {
     max-width: 100% !important;
 }
       `}</style>
-      <Container style={{ justifyContent: "normal" }}>
+      <Container style={{ justifyContent: "normal", alignItems: "center", }}>
         <object
           style={{
             height: "32px",
@@ -41,11 +41,12 @@ function MenuBar() {
           <img src="/flashcards/favicon/favicon.png" />
         </object>
 
-        <span style={{ userSelect: 'none', width: "min-content" }}
+        <div style={{ userSelect: 'none', width: "min-content", textWrap: "nowrap", }}
+         className="ms-3"
           onClick={appState.deck ? () => appState.setVisibleEditor(Editor.DECK_NAME) : () => { }}
         ><Latex>{appState.deck ? appState.deck.name : ""}</Latex>
 
-        </span>
+        </div>
         <FileMenu />
         <EditMenu />
         <Navbar.Toggle aria-controls="menu-collapse" className="ms-auto" />
