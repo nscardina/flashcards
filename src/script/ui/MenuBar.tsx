@@ -10,6 +10,8 @@ import { AppState } from "../App"
 import Latex from "react-latex-next"
 import { makeReviewOrderProvider } from "../ReviewOrder"
 import ShowSideProvider from "../ShowSideProvider"
+import faviconSVG from "../../favicon/favicon.svg"
+import faviconICO from "../../favicon/favicon.ico"
 
 
 
@@ -37,8 +39,8 @@ function MenuBar() {
           }}
           className="ms-1 mt-1"
 
-          data="/flashcards/favicon/favicon.svg" type="image/svg+xml">
-          <img src="/flashcards/favicon/favicon.png" />
+          data={faviconSVG} type="image/svg+xml">
+          <img src={faviconICO} />
         </object>
 
         <div style={{ userSelect: 'none', width: "min-content", textWrap: "nowrap", }}
