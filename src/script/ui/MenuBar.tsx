@@ -34,10 +34,11 @@ function MenuBar() {
       <Container style={{ justifyContent: "normal", alignItems: "center", }}>
         <object
           style={{
-            height: "32px",
-            width: "min-content",
+            height: "28px",
+            width: "28px",
+            minWidth: "0px",
           }}
-          className="ms-1 mt-1"
+          className=""
 
           data={faviconSVG} type="image/svg+xml">
           <img src={faviconICO} />
