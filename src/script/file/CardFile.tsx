@@ -1,10 +1,17 @@
 import { Deck } from "../card/deck"
-
+import filenamify from "filenamify/browser"
 
 export function downloadDeck(deck: Deck) {
 
     const linkElem = document.createElement("a")
-    linkElem.download = `${deck.name}.deck`
+    linkElem.download = filenamify((
+        deck.name.at(-1) == "\n")
+        ? `${deck.name.substring(0, deck.name.length - 2)}.deck`
+        : `${deck.name}.deck`,
+        {
+            replacement: "_"
+        }
+    )
     linkElem.href = `data:text/plain,${encodeURIComponent(JSON.stringify(deck))}`
 
     document.body.appendChild(linkElem)

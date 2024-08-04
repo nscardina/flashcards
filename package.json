@@ -15,6 +15,7 @@
     "@types/node": "^22.0.2",
     "bootstrap": "^5.3.0",
     "browser-fs-access": "^0.35.0",
+    "filenamify": "^6.0.0",
     "material-symbols": "^0.21.2",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
