@@ -1,6 +1,37 @@
 @use "sass:list";
 @use "sass:map";
 
+
+
+.flashcard-face {
+    position: absolute;
+    width: calc(100% - 2rem);
+    
+    aspect-ratio: 5 / 3;
+    padding: 1rem;
+
+    transition: all 1s ease-in-out;
+    backface-visibility: hidden;
+
+    border: 1px solid;
+    border-radius: 25px;
+}
+
+@media screen and (min-width: 600px) {
+    .flashcard-face {
+        height: calc(100% - 2rem);
+    }
+}
+
+.flashcard-front-face-rotated {
+    transform: rotateY(180deg);
+}
+
+.flashcard-back-face-rotated {
+    transform: rotateY(-180deg);
+}
+
+
 @mixin -box-properties() {
     display: grid;
     gap: 1rem;
@@ -179,26 +210,8 @@ $-whole-area-dim: calc(2 * $-half-area-dim);
     @include -box(3, 0rem, $-half-area-dim, $-whole-area-dim, $-half-area-dim);
 }
 
-.flashcard-face {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    transition: all 1s ease-in-out;
-    backface-visibility: hidden;
-    border: 1px solid;
-    border-radius: 25px;
-    padding: 1rem;
-}
 
-.flashcard-front-face-rotated {
-    transform: rotateY(180deg);
-}
 
-.flashcard-back-face-rotated {
-    transform: rotateY(-180deg);
-}
 
 .flashcard-x-button {
     width: 1.5rem;

@@ -33,7 +33,7 @@ function App() {
     const [reviewOrderProvider, setReviewOrderProvider] = useState<ReviewOrderProvider>(
         null as any
     );
-    const [reviewOrderProviderNextValue, setReviewOrderProviderNextValue] = useState<IteratorResult<number, void>>({value: -1});
+    const [reviewOrderProviderNextValue, setReviewOrderProviderNextValue] = useState<IteratorResult<number, void>>({ value: -1 });
     const [showSideProviderName, setShowSideProviderName] =
         useState<ShowSideProviderName>("FRONT")
     const [visibleDialog, setVisibleDialog] = useState<Dialog>(Dialog.NONE)
@@ -70,8 +70,8 @@ function App() {
                 visibleSide: visibleSide,
                 setVisibleSide: setVisibleSide,
             }}>
-                
-<AppInternal />
+
+                <AppInternal />
             </AppState.Provider>
         </>
     )
@@ -83,25 +83,25 @@ function AppInternal() {
 
     return (
         <>
-        <MenuBar />
-                <DeckInteractionArea />
-                {appState.visibleEditor === Editor.PLAIN_TEXT && <TextEditor />}
-                {appState.visibleEditor === Editor.IMAGE && <ImageEditor />}
-                {appState.visibleEditor === Editor.LATEX_TEST && <LaTeXTextEditor />}
-                {appState.visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
+            <MenuBar />
+            <DeckInteractionArea />
+            {appState.visibleEditor === Editor.PLAIN_TEXT && <TextEditor />}
+            {appState.visibleEditor === Editor.IMAGE && <ImageEditor />}
+            {appState.visibleEditor === Editor.LATEX_TEST && <LaTeXTextEditor />}
+            {appState.visibleEditor === Editor.DECK_NAME && <DeckNameEditor />}
 
-                {appState.visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
-                    <NewDeckConfirmationMessage />
-                }
-                {
-                    appState.visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
-                    <DeleteDeckConfirmationMessage />
-                }
+            {appState.visibleDialog === Dialog.NEW_DECK_CONFIRMATION_MESSAGE &&
+                <NewDeckConfirmationMessage />
+            }
+            {
+                appState.visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
+                <DeleteDeckConfirmationMessage />
+            }
 
-                {appState.visibleDialog === Dialog.CREDITS && <CreditsPopover />}
-                </>
+            {appState.visibleDialog === Dialog.CREDITS && <CreditsPopover />}
+        </>
     )
-   
+
 }
 
 export default App
