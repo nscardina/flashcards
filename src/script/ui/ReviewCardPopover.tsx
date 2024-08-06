@@ -25,7 +25,7 @@ function ReviewCardPopover() {
       <Modal.Body>
         <Container>
           <Row>
-            <CardDisplay position="relative" forceAspectRatio={true} />
+            <CardDisplay style={{padding: "0px", height: "unset"}} />
           </Row>
           <Row className="mt-3">
             <Col className="d-flex flex-row justify-content-center">

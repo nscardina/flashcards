@@ -4,7 +4,7 @@ import { Side } from "../side"
 import AppMode from "../../app/AppMode"
 import { Editor } from "../../app/Editor"
 import { BoxNumber, getEditorTypeFromBoxType } from "../Box"
-import { useCallback, useContext } from "react"
+import React, { useCallback, useContext } from "react"
 import { AppState } from "../../App"
 import { changeEditor } from "../../state/AppState"
 import { CardContentData } from "../CardContentData"
@@ -165,7 +165,7 @@ function getCSSClassFromCardLayout(layout: CardLayout): string {
  * renders the currently visible side of the currently visible flashcard.
  * @returns card display, as a JSX element.
  */
-function CardDisplay() {
+function CardDisplay({style}: {style?: React.CSSProperties}) {
 
   const appState = useContext(AppState)
 
@@ -180,7 +180,7 @@ function CardDisplay() {
 
 
   return (
-    <div className="flashcard-display">
+    <div className="flashcard-display" style={style}>
       {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
