@@ -14,36 +14,6 @@ import "./CardDisplay.scss"
 import 'katex/dist/katex.min.css';
 import Latex from "react-latex-next"
 
-
-/**
- * Returns the `onClick` function to be bound to a box to edit its contents. 
- * This function will display an editor which can update the contents of a 
- * specific box.
- * @param editor {@linkcode Editor} to use.
- * @param box box to edit.
- * @returns `onClick` function which can be bound to a React `button`.
- * 
- */
-//@ts-expect-error
-function getOnClickFuncFromEditorType(editor: Editor, box: BoxNumber) {
-  const appState = useContext(AppState)
-  if (appState.appMode === AppMode.EDITING_DECK ||
-    appState.appMode === AppMode.MANAGING_FILES) {
-    switch (editor) {
-      case Editor.PLAIN_TEXT:
-        return () => changeEditor(appState, Editor.PLAIN_TEXT, box)
-      case Editor.IMAGE:
-        return () => changeEditor(appState, Editor.IMAGE, box)
-      case Editor.LATEX_TEST:
-        return () => changeEditor(appState, Editor.LATEX_TEST, box)
-      default:
-        return () => { }
-    }
-  } else {
-    return () => { }
-  }
-}
-
 const CardDisplayXButton = ({ side, boxNumber }: { boxNumber: BoxNumber, side: Side }) => {
 
   const appState = useContext(AppState)
@@ -67,9 +37,9 @@ const CardDisplayXButton = ({ side, boxNumber }: { boxNumber: BoxNumber, side: S
         });
       }
     }, [
-      appState.deck,
-      appState.deck?.cards,
-      appState.visibleCardIndex,
+      appState,
+      boxNumber,
+      side
     ]);
 
   return (
@@ -165,7 +135,7 @@ function getCSSClassFromCardLayout(layout: CardLayout): string {
  * renders the currently visible side of the currently visible flashcard.
  * @returns card display, as a JSX element.
  */
-function CardDisplay({style}: {style?: React.CSSProperties}) {
+function CardDisplay({style, className}: {style?: React.CSSProperties, className?: string}) {
 
   const appState = useContext(AppState)
 
@@ -180,12 +150,12 @@ function CardDisplay({style}: {style?: React.CSSProperties}) {
 
 
   return (
-    <div className="flashcard-display" style={style}>
+    <div className="flashcard-display"  style={style}>
       {
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
           return (
-            <div key={side} className={`flashcard-face ${appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
+            <div key={side} className={`flashcard-face ${className} ${appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
               } ${getCSSClassFromCardLayout(visibleCard[side].layout)}`
             }>
 

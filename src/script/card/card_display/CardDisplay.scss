@@ -31,6 +31,10 @@
     transform: rotateY(-180deg);
 }
 
+.flashcard-face-no-animation {
+    transition: none !important;
+}
+
 
 @mixin -box-properties() {
     display: grid;
