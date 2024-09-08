@@ -17,12 +17,6 @@
     border-radius: 25px;
 }
 
-@media screen and (min-width: 600px) {
-    .flashcard-face {
-        height: calc(100% - 2rem);
-    }
-}
-
 .flashcard-front-face-rotated {
     transform: rotateY(180deg);
 }
