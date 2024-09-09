@@ -238,7 +238,7 @@ function CardDisplay({style, className}: {style?: React.CSSProperties, className
                             src={box.base64ImageData}
                             className={`flashcard-display-box-container`}
                             onClick={appState.appMode === AppMode.EDITING_DECK ? () => {
-                              changeEditor(appState, Editor.LATEX_TEST, boxNumber)
+                              changeEditor(appState, Editor.IMAGE, boxNumber)
                             } : () => { }}
                           />
                           {
