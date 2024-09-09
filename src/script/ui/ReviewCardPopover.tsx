@@ -25,7 +25,7 @@ function ReviewCardPopover() {
       </Modal.Header>
       <Modal.Body>
         <Container>
-          <Row>
+          <Row className="card-display-container">
             <CardDisplay 
             style={{padding: "0px", height: "unset"}} 
             className={showAnimationState ? "" : "flashcard-face-no-animation"}

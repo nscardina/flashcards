@@ -4,13 +4,14 @@ import thirdPartyLicenses from "../../third-party-licenses.txt?raw";
 import { useContext } from "react";
 import { AppState } from "../App";
 import Dialog from "../app/Dialog";
+import "./CreditsPopover.scss";
 
 function CreditsPopover() {
 
   const appState = useContext(AppState);
 
   return (
-    <Modal show={true} dialogClassName="review-card-popover">
+    <Modal show={true} dialogClassName="credits-popover">
       <Modal.Header>
         <Modal.Title>Review Cards</Modal.Title>
       </Modal.Header>

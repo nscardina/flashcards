@@ -20,7 +20,7 @@ function DeckInteractionArea() {
           <BackButton />
         </div>
         <div id="card-display-container">
-          <CardDisplay />
+          {appState.appMode !== AppMode.REVIEWING_DECK && <CardDisplay />}
         </div>
         <div id="forward-button-container">
           <ForwardButton />
