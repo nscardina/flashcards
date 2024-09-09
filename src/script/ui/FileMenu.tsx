@@ -68,6 +68,9 @@ function OpenDeckButton() {
     <Dropdown.Item
           as="div"
           className="d-flex align-items-center"
+          style={{
+            cursor: "pointer",
+          }}
           onClick={async () => {
             const file = await fileOpen({
               extensions: [".deck"]
