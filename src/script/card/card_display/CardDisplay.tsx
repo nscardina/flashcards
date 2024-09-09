@@ -103,7 +103,7 @@ function EditModeBox({ box }: { box: BoxNumber }) {
             onClick={() => {
               changeEditor(appState, Editor.LATEX_TEST, box)
             }}>
-            <span className="material-symbols-outlined">play_arrow</span>&nbsp;<Latex>$\LaTeX$</Latex>
+            <span className="material-symbols-outlined">function</span>&nbsp;<Latex>$\LaTeX$</Latex>
           </Dropdown.Item>
         </Dropdown.Menu>
 
