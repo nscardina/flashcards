@@ -23,7 +23,7 @@
     "react-drag-drop-files": "^2.3.10",
     "react-latex-next": "^3.0.0",
     "slate": "^0.103.0",
-    "slate-react": "^0.107.1",
+    "slate-react": "^0.110.0",
     "vite-plugin-ejs": "^1.6.4"
   },
   "devDependencies": {
