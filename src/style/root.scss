@@ -1,0 +1,27 @@
+:root {
+
+    --bs-font-sans-serif: "Roboto", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+
+    color-scheme: light dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+:root,
+body,
+div#root {
+    width: 100vw;
+    height: 100vh;
+}
+
+div#root {
+    display: flex;
+    flex-direction: column;
+    container: root / size;
+}

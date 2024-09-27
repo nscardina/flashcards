@@ -12,8 +12,9 @@ const DEFAULT_DECK = {
     cards: [Card.makeDefault()]
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Deck {
-    export function isDeck(object: unknown) {
+    export function isDeck(object: unknown): object is Deck {
         return (
             typeof(object) === "object" && 
             object !== null && 

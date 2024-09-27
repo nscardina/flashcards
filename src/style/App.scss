@@ -1,8 +1,6 @@
-:root {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-}
+@use "./root.scss";
+@use "./flashcard-display.scss";
+@use "./deck-interaction-area.scss";
 
 .flashcard-round-button {
     border-radius: 50% !important;
@@ -56,17 +54,8 @@ $flashcard-light: rgb(220, 220, 220);
 }
 
 
-.flashcard-display {
-    width: auto;
-    aspect-ratio: 5 / 3;
-    padding: 1rem;
-    margin: auto;
-}
-@media screen and (min-width: 768px) {
-    .flashcard-display {
-        width: 80vw;
-    }
-}
+
+
 
 
 
@@ -115,10 +104,6 @@ $flashcard-light: rgb(220, 220, 220);
 
     .flashcard-button:disabled {
         background-color: $flashcard-dark;
-    }
-
-    .flashcard-display {
-        border-color: var(--flashcard-light);
     }
 
     .modal-content {

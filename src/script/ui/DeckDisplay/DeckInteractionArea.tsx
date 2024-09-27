@@ -1,4 +1,4 @@
-import { Col, Row } from "react-bootstrap"
+import { Row } from "react-bootstrap"
 import CardDisplay from "../../card/card_display/CardDisplay"
 import { useContext } from "react"
 import { AppState } from "../../App"
@@ -15,23 +15,19 @@ function DeckInteractionArea() {
 
   return (
     <>
-      <Row className="mt-3 d-flex">
-        <Col xs={{ span: 6, order: 2 }} md={{ span: "auto", order: 1 }}
-          className="d-flex align-items-center justify-content-center ms-auto"
-        >
+      <div id="deck-interaction-area" className="mt-3">
+        <div id="back-button-container">
           <BackButton />
-        </Col>
-        <Col xs={{ span: 12, order: 1 }} md={{ span: "auto", order: 2 }}>
-          <CardDisplay forceAspectRatio={true} fillAvailableSpace={true}/>
-        </Col>
-        <Col xs={{ span: 6, order: 3 }} md={{ span: "auto", order: 3 }} 
-          className="d-flex align-items-center justify-content-center me-auto"
-        >
+        </div>
+        <div id="card-display-container">
+          {appState.appMode !== AppMode.REVIEWING_DECK && <CardDisplay />}
+        </div>
+        <div id="forward-button-container">
           <ForwardButton />
-        </Col>
-      </Row>
-      <Row className="mt-3 d-flex">
-        {appState.appMode === AppMode.REVIEWING_DECK && appState.deck && 
+        </div>
+      </div>
+      <Row>
+        {appState.appMode === AppMode.REVIEWING_DECK && appState.deck &&
           <ReviewCardPopover />
         }
       </Row>
