@@ -155,7 +155,7 @@ function CardDisplay({style, className}: {style?: React.CSSProperties, className
         Object.values(Side).map(side => {
           const visibleSide = visibleCard[side]
           return (
-            <div key={side} className={`flashcard-face ${className} ${appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : ""
+            <div key={side} className={`flashcard-face ${className} ${appState.visibleSide !== side ? `flashcard-${side}-face-rotated` : `flashcard-${side}-face`
               } ${getCSSClassFromCardLayout(visibleCard[side].layout)}`
             }>
 

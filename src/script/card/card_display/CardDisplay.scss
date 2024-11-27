@@ -4,8 +4,7 @@
 
 
 .flashcard-face {
-    position: absolute;
-    width: calc(100% - 2rem);
+    position: relative;
     
     aspect-ratio: 5 / 3;
     padding: 1rem;
@@ -17,12 +16,32 @@
     border-radius: 25px;
 }
 
-.flashcard-front-face-rotated {
-    transform: rotateY(180deg);
+@keyframes front-face-hide {
+    0% { transform: rotateY(0deg); }
+    50% { transform: rotateY(90deg); }
+    51% { transform: rotateY(91deg); display: none; }
+    100% { transform: rotateY(180deg); display: none; }
 }
 
-.flashcard-back-face-rotated {
-    transform: rotateY(-180deg);
+@keyframes front-face-show {
+    0% { transform: rotateY(180deg); display: none; }
+    50% { transform: rotateY(90deg); display: none; }
+    51% { transform: rotateY(89deg); }
+    100% { transform: rotateY(0deg); }
+}
+
+.flashcard-front-face, .flashcard-back-face {
+    animation-name: front-face-show;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+.flashcard-front-face-rotated, .flashcard-back-face-rotated {
+    animation-name: front-face-hide;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in;
 }
 
 .flashcard-face-no-animation {

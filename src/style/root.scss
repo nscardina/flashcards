@@ -24,4 +24,5 @@ div#root {
     display: flex;
     flex-direction: column;
     container: root / size;
+    overflow: overlay;
 }
