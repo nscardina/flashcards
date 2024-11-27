@@ -1,9 +1,8 @@
 .flashcard-display {
-    height: calc(100% - 2rem);
     
     aspect-ratio: 5 / 3;
-    padding: 1rem;
-    display: absolute;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 @media screen and (min-width: 600px) {
