@@ -4,7 +4,8 @@
 
 
 .flashcard-face {
-    position: relative;
+    position: absolute;
+    width: calc(100% - 2rem);
     
     aspect-ratio: 5 / 3;
     padding: 1rem;
