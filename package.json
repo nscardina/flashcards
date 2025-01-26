@@ -16,14 +16,14 @@
     "bootstrap": "^5.3.0",
     "browser-fs-access": "^0.35.0",
     "filenamify": "^6.0.0",
-    "material-symbols": "^0.23.0",
+    "material-symbols": "^0.28.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
     "react-drag-drop-files": "^2.3.10",
     "react-latex-next": "^3.0.0",
-    "slate": "^0.103.0",
-    "slate-react": "^0.110.0",
+    "slate": "^0.112.0",
+    "slate-react": "^0.112.1",
     "vite-plugin-ejs": "^1.6.4"
   },
   "devDependencies": {
