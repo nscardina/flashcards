@@ -22,6 +22,8 @@ enum Dialog {
     DELETE_DECK_CONFIRMATION_MESSAGE,
 
     CREDITS,
+
+    DELETE_CARD_CONFIRMTION_MESSAGE,
 }
 
 export default Dialog

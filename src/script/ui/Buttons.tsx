@@ -7,6 +7,7 @@ import { Editor } from "../app/Editor";
 import { Deck } from "../card/deck";
 import { Card } from "../card/Card";
 import { Side } from "../card/side";
+import Dialog from "../app/Dialog";
 
 function createNewCard(state: AppStateType) {
   // If no deck is loaded yet, create a new empty deck
@@ -36,7 +37,7 @@ function createNewCard(state: AppStateType) {
 
 
 
-function deleteCard(state: AppStateType, index: number) {
+export function deleteCard(state: AppStateType, index: number) {
   // If the deck only contains one card, create a new deck with only one empty 
   // card in it. Set the app mode to EDITING_DECK.
   if (state.deck !== null && index === 0 && state.deck.cards.length === 1) {
@@ -123,7 +124,7 @@ function DeleteCardButton() {
       disabled={!appState.deck}
       style={{width: "min-content"}}
       className="d-flex align-items-center flashcard-button border-0 z-1"
-      onClick={() => deleteCard(appState, appState.visibleCardIndex)}
+      onClick={() => appState.setVisibleDialog(Dialog.DELETE_CARD_CONFIRMTION_MESSAGE)}
     >
       <span className="material-symbols-outlined" aria-hidden="true">
         close

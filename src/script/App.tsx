@@ -20,6 +20,7 @@ import "../style/App.scss"
 import LaTeXTextEditor from './ui/LaTeXTextEditor';
 import DeleteDeckConfirmationMessage from './ui/DeleteDeckConfirmationMessage';
 import CreditsPopover from './ui/CreditsPopover';
+import DeleteCardConfirmationMessage from './ui/DeleteCardConfirmationMessage';
 
 export const AppState = createContext<AppStateType>(undefined!)
 
@@ -96,6 +97,10 @@ function AppInternal() {
             {
                 appState.visibleDialog === Dialog.DELETE_DECK_CONFIRMATION_MESSAGE &&
                 <DeleteDeckConfirmationMessage />
+            }
+            {
+                appState.visibleDialog === Dialog.DELETE_CARD_CONFIRMTION_MESSAGE && 
+                <DeleteCardConfirmationMessage />
             }
 
             {appState.visibleDialog === Dialog.CREDITS && <CreditsPopover />}
