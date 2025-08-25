@@ -24,6 +24,8 @@ const CardDisplayXButton = ({ side, boxNumber }: { boxNumber: BoxNumber, side: S
       event.stopPropagation()
 
       if (appState.deck) {
+        appState.setChangesMade(true)
+
         const modifiedCard = structuredClone(appState.deck.cards[appState.visibleCardIndex]);
         modifiedCard[side].box[boxNumber] = null;
 

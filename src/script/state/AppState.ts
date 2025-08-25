@@ -17,7 +17,9 @@ export type AppStateType = {
     readonly appMode: AppMode,
     readonly setAppMode: ReactSetter<AppMode>
     readonly boxBeingEdited: BoxNumber | null,
-    readonly setBoxBeingEdited: ReactSetter<BoxNumber | null>
+    readonly setBoxBeingEdited: ReactSetter<BoxNumber | null>,
+    readonly changesMade: boolean,
+    readonly setChangesMade: ReactSetter<boolean>
     readonly deck: Deck | null,
     readonly setDeck: ReactSetter<Deck | null>,
     readonly recentFiles: FileSystemFileHandle[],
@@ -59,6 +61,8 @@ export function editCard<T extends CardContentData.Type>(
     box: BoxNumber, 
     data: CardContentDataType<T>
   ) {
+    state.setChangesMade(true)
+
     // Copy old set of cards if they exist, and create an empty set of cards 
     // if not. (This scenario shouldn't be encountered, but it is the fallback 
     // behavior if the situation does occur.)

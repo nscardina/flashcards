@@ -37,6 +37,7 @@ function DeleteDeckConfirmationMessage() {
                   appState.setDeck(null)
                   appState.setVisibleCardIndex(-1)
                   appState.setVisibleDialog(Dialog.NONE)
+                  appState.setChangesMade(false)
                 }}
               >Delete Deck</Button>
               <Button

@@ -58,6 +58,7 @@ function DeckNameEditor() {
                     ...appState.deck,
                     name: document.getElementById("deckNameEditorBox")?.innerText ?? "",
                   })
+                  appState.setChangesMade(true)
                   
                   appState.setVisibleEditor(Editor.NONE)
                 }

@@ -7,6 +7,8 @@ import { Side } from "../card/side"
 
 function changeCardLayout(state: AppStateType, layout: CardLayout): void {
   if (state.deck !== null && state.deck.cards.length > 0) {
+    state.setChangesMade(true)
+
     const updatedCard = (state.visibleSide === Side.FRONT) ? {
       front: {
         ...state.deck.cards[state.visibleCardIndex].front,

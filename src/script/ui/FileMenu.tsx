@@ -29,6 +29,7 @@ function NewDeckButton() {
       appState.setDeck(Deck.makeDefault())
       appState.setVisibleCardIndex(0)
       appState.setAppMode(AppMode.EDITING_DECK)
+      appState.setChangesMade(true)
     }
   }
 
@@ -58,6 +59,7 @@ async function loadDeckFile(
   const deck = JSON.parse(await fileText)
   state.setDeck(deck)
   state.setVisibleCardIndex(0)
+  state.setChangesMade(false)
 }
 
 function OpenDeckButton() {

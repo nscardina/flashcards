@@ -10,6 +10,8 @@ import { Side } from "../card/side";
 import Dialog from "../app/Dialog";
 
 function createNewCard(state: AppStateType) {
+  state.setChangesMade(true)
+
   // If no deck is loaded yet, create a new empty deck
   if (state.deck === null) {
     // Create an empty deck, set the app mode to EDITING_DECK, set the only 
@@ -38,6 +40,8 @@ function createNewCard(state: AppStateType) {
 
 
 export function deleteCard(state: AppStateType, index: number) {
+  state.setChangesMade(true)
+
   // If the deck only contains one card, create a new deck with only one empty 
   // card in it. Set the app mode to EDITING_DECK.
   if (state.deck !== null && index === 0 && state.deck.cards.length === 1) {
