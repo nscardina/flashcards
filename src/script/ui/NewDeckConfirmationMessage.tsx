@@ -48,6 +48,7 @@ function NewDeckConfirmationMessage() {
                   () => {
                     downloadDeck(appState.deck!)
                     appState.setVisibleDialog(Dialog.NONE)
+                    appState.setChangesMade(false);
                   } :
                   () => { }}
               >
